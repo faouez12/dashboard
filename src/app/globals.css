@@ -19,7 +19,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
 
-  --font-sans: var(--font-geist-sans), sans-serif;
+  --font-sans: var(--font-archivo), sans-serif;
+  --font-display: var(--font-space-grotesk), sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
 
