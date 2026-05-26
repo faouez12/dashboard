@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { 
   Camera, 
   ChevronLeft, 
@@ -36,7 +37,7 @@ const HERO_SLIDES = [
     subtitle: "Endurance sports photography built on raw human emotion.",
     stat: "1/2000s shutter speed catches every tear, drop of sweat, and triumphant shout.",
     tag: "Finish Line",
-    gradient: "from-orange-600/30 via-zinc-950 to-zinc-950"
+    gradient: "from-lime-500/20 via-zinc-950 to-zinc-950"
   },
   {
     id: 2,
@@ -44,7 +45,7 @@ const HERO_SLIDES = [
     subtitle: "Documenting the grit of backcountry trail marathons.",
     stat: "Shot in demanding, high-altitude alpine terrain under extreme light shifts.",
     tag: "Mid-Race Grit",
-    gradient: "from-blue-900/30 via-zinc-950 to-zinc-950"
+    gradient: "from-emerald-500/20 via-zinc-950 to-zinc-950"
   },
   {
     id: 3,
@@ -52,7 +53,7 @@ const HERO_SLIDES = [
     subtitle: "Sponsor visibility matched with athlete energy at the start line.",
     stat: "Wide-angle capture of 30,000+ runners beginning their journey.",
     tag: "The Start Line",
-    gradient: "from-purple-900/30 via-zinc-950 to-zinc-950"
+    gradient: "from-cyan-500/20 via-zinc-950 to-zinc-950"
   }
 ];
 
@@ -101,7 +102,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     event: "Chamonix Ultra Trail",
     category: "start",
     specs: "24mm • f/2.8 • 1/125s • ISO 1600",
-    gradient: "from-indigo-950 via-purple-950 to-zinc-900",
+    gradient: "from-emerald-950 via-zinc-950 to-zinc-900",
     description: "The nervous tension of 2,500 runners illuminated under headlamps at the starting arch."
   },
   {
@@ -110,7 +111,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     event: "Zermatt Mountain Marathon",
     category: "grit",
     specs: "70mm • f/4.0 • 1/1600s • ISO 200",
-    gradient: "from-blue-950 via-slate-900 to-zinc-900",
+    gradient: "from-teal-950 via-zinc-950 to-zinc-900",
     description: "A trail runner pushes up a narrow ridge line at 3,000m altitude, glacier in background."
   },
   {
@@ -119,7 +120,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     event: "Boston Marathon",
     category: "finish",
     specs: "200mm • f/2.8 • 1/2000s • ISO 400",
-    gradient: "from-orange-950 via-amber-950 to-zinc-900",
+    gradient: "from-lime-950 via-zinc-950 to-zinc-900",
     description: "A runner collapses in tears of relief immediately after crossing the finish line tape."
   },
   {
@@ -137,7 +138,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     event: "London Marathon",
     category: "start",
     specs: "35mm • f/5.6 • 1/500s • ISO 200",
-    gradient: "from-violet-950 via-sky-950 to-zinc-900",
+    gradient: "from-cyan-950 via-zinc-950 to-zinc-900",
     description: "Vibrant pack dynamics and colorful outfits flooding Tower Bridge in the early miles."
   },
   {
@@ -146,7 +147,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     event: "UTMB Mont Blanc",
     category: "grit",
     specs: "135mm • f/2.0 • 1/1200s • ISO 800",
-    gradient: "from-cyan-950 via-zinc-950 to-zinc-900",
+    gradient: "from-emerald-950 via-zinc-950 to-zinc-900",
     description: "Grit and sweat etched on an athlete's face battling through the final miles of a 100-mile race."
   },
   {
@@ -155,7 +156,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
     event: "New York City Marathon",
     category: "finish",
     specs: "50mm • f/1.8 • 1/800s • ISO 100",
-    gradient: "from-rose-950 via-pink-950 to-zinc-900",
+    gradient: "from-lime-950 via-zinc-950 to-zinc-900",
     description: "A runner proudly wears their finisher medal, steam rising off their shoulders in the air."
   },
   {
@@ -193,6 +194,10 @@ export default function Home() {
   
   // Lightbox Modal State
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
+
+  // Tabs indication refs
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const activeIndicatorRef = useRef<HTMLDivElement>(null);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -351,7 +356,27 @@ export default function Home() {
       { opacity: 0, scale: 0.95, y: 20 },
       { opacity: 1, scale: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power2.out" }
     );
+
+    // Sliding indicator pill transition
+    const activeButton = tabRefs.current[activeTab];
+    if (activeButton && activeIndicatorRef.current) {
+      gsap.to(activeIndicatorRef.current, {
+        x: activeButton.offsetLeft,
+        width: activeButton.offsetWidth,
+        duration: 0.35,
+        ease: "power2.out"
+      });
+    }
   }, { dependencies: [activeTab], scope: containerRef });
+
+  // Carousel timer progress bar animation
+  useGSAP(() => {
+    gsap.fromTo(
+      ".carousel-progress-bar",
+      { width: "0%" },
+      { width: "100%", duration: 6, ease: "linear" }
+    );
+  }, { dependencies: [currentSlide], scope: containerRef });
 
   // Magnetic Button Effect
   const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
@@ -383,32 +408,6 @@ export default function Home() {
   return (
     <div ref={containerRef} className="bg-background text-foreground flex-1 flex flex-col font-sans">
       
-      {/* Header / Nav */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-background/85 backdrop-blur-md border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3 nav-anim">
-            <Camera className="h-6 w-6 text-accent" />
-            <span className="text-xl font-bold tracking-tight uppercase font-display">
-              Shahine<span className="text-accent">.</span>Sports
-            </span>
-          </div>
-          
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-            <a href="#about" className="hover:text-accent transition-colors nav-anim">Specialization</a>
-            <a href="#gallery" className="hover:text-accent transition-colors nav-anim">Race Narrative</a>
-            <a href="#testimonials" className="hover:text-accent transition-colors nav-anim">Trust</a>
-            <a 
-              href="#book" 
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              className="px-5 py-2.5 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wide rounded-md transition-all shadow-lg shadow-accent/15 nav-anim cursor-pointer text-xs"
-            >
-              Book Coverage
-            </a>
-          </nav>
-        </div>
-      </header>
-
       {/* Main Content */}
       <main className="flex-1 flex flex-col pt-20">
 
@@ -468,6 +467,9 @@ export default function Home() {
               />
             ))}
           </div>
+
+          {/* Carousel Timer Progress Bar */}
+          <div className="absolute bottom-0 left-0 h-1 bg-accent/80 carousel-progress-bar z-20 pointer-events-none" style={{ width: "0%" }} />
         </section>
 
         {/* Specialty & Stats Section */}
@@ -537,15 +539,23 @@ export default function Home() {
               </div>
 
               {/* Tabs */}
-              <div className="flex flex-wrap gap-2.5">
+              <div className="relative flex flex-wrap gap-2 bg-muted/40 p-1 rounded-lg border border-border">
+                {/* Sliding indicator pill */}
+                <div 
+                  ref={activeIndicatorRef} 
+                  className="absolute bg-accent rounded pointer-events-none z-0" 
+                  style={{ height: "calc(100% - 8px)", top: "4px", left: 0, width: 0 }}
+                />
+                
                 {(["all", "start", "grit", "finish", "details"] as const).map((tab) => (
                   <button
                     key={tab}
+                    ref={(el) => { tabRefs.current[tab] = el; }}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-4 py-2.5 text-[10px] uppercase tracking-wider font-bold rounded border transition-all cursor-pointer ${
+                    className={`relative z-10 px-4 py-2.5 text-[10px] uppercase tracking-wider font-bold rounded transition-colors duration-300 cursor-pointer ${
                       activeTab === tab
-                        ? "bg-accent border-accent text-accent-foreground shadow-lg shadow-accent/15"
-                        : "bg-muted border-border text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+                        ? "text-accent-foreground"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     {tab}
@@ -560,7 +570,7 @@ export default function Home() {
                 <div
                   key={item.id}
                   onClick={() => setSelectedImage(item)}
-                  className="group relative h-80 rounded-lg overflow-hidden border border-border bg-zinc-950 flex flex-col justify-end p-6 cursor-pointer hover:border-accent transition-all hover:-translate-y-1 gallery-item-anim"
+                  className="group relative h-80 rounded-lg overflow-hidden border border-border bg-zinc-950 flex flex-col justify-end p-6 cursor-pointer hover:border-accent hover:shadow-[0_0_30px_rgba(204,255,0,0.15)] transition-all hover:-translate-y-1 gallery-item-anim"
                 >
                   <div className={`absolute inset-0 bg-gradient-to-tr ${item.gradient} opacity-25 group-hover:opacity-45 transition-opacity duration-500`} />
                   
@@ -789,21 +799,6 @@ export default function Home() {
         </section>
 
       </main>
-
-      {/* Footer */}
-      <footer className="border-t border-border bg-background py-14 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <Camera className="h-5 w-5 text-accent" />
-            <span className="text-sm font-bold tracking-tight uppercase font-display">
-              Shahine<span className="text-accent">.</span>Sports © 2026
-            </span>
-          </div>
-          <div className="text-xs text-muted-foreground font-mono">
-            Optimized via UI/UX Pro Max and GStack.
-          </div>
-        </div>
-      </footer>
 
       {/* Lightbox Modal */}
       {selectedImage && (
