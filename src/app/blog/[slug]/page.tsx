@@ -5,7 +5,9 @@ import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, BookOpen, Camera, Sparkles, User, MapPin } from "lucide-react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import AuroraBackground from "@/components/AuroraBackground";
+import { fetchBlogPosts } from "@/app/admin/actions";
+import { Render } from "@measured/puck";
+import { config } from "@/app/admin/dashboard/components/puck-config";
 
 interface ArticleDetail {
   slug: string;
@@ -27,6 +29,7 @@ interface ArticleDetail {
     exposure: string;
     settingReason: string;
   };
+  puck_data?: any;
 }
 
 const ARTICLES_DETAILS: Record<string, ArticleDetail> = {
@@ -95,48 +98,37 @@ const ARTICLES_DETAILS: Record<string, ArticleDetail> = {
       exposure: "1/1600s • f/2.8 • ISO 200",
       settingReason: "Telephoto compression allows framing the runner directly against the massive alpine peaks from a distance of over 300 meters."
     }
-  },
-  "sponsor-alignment-in-sports-photography": {
-    slug: "sponsor-alignment-in-sports-photography",
-    title: "Biomechanical Framing: Aligning Runners & Brand Logos",
-    categoryLabel: "Behind the Lens",
-    date: "March 15, 2026",
-    readTime: "8 min read",
-    author: "Shahine",
-    gradient: "from-rose-900 via-pink-950 to-zinc-900",
-    leadParagraph: "In commercial sports photography, the primary objective is to capture athletic performance while ensuring maximum visibility for the brand sponsor placements. Achieving this requires a deep understanding of runner strides and body angles.",
-    bodyContent: [
-      {
-        heading: "Focusing on Key Biomechanical Stages",
-        paragraphs: [
-          "The most powerful athletics images capture the peak extension of the runner's stride. At this moment, the body is fully aligned, showing strength and flexibility. Crucially, this stage also highlights footwear and chest logos perfectly.",
-          "We configure autofocus grids to lock on the runner's eyes while tracking shoe movement. This ensures the primary sponsor logo on the chest remains sharp and readable, even when running at speeds exceeding 20 km/h."
-        ],
-        pullQuote: "An image that captures raw athletic emotion only converts if the sponsor's logo remains readable and sharp."
-      },
-      {
-        heading: "Balancing Context and Depth",
-        paragraphs: [
-          "While wide apertures (like f/1.4 or f/1.8) create beautiful background blur, they can make background sponsor banners unreadable. We often shoot at f/2.8 or f/4.0 to separate the runner from the crowd while preserving environmental context."
-        ]
-      }
-    ],
-    technicalNotes: {
-      camera: "Sony Alpha 9 III",
-      lens: "Sony FE 50mm f/1.2 GM",
-      exposure: "1/4000s • f/1.8 • ISO 100",
-      settingReason: "Shutter speed was elevated to freeze fast foot movement, while the f/1.8 aperture provided a clean separation between the runner and background crowd."
-    }
   }
 };
 
 export default function ArticleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
   const slug = resolvedParams.slug;
-  const article = ARTICLES_DETAILS[slug] || ARTICLES_DETAILS["chasing-the-global-shutter-sony-a9-iii"];
+  const [article, setArticle] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const posts = await fetchBlogPosts();
+        const found = posts.find((p: any) => p.slug === slug);
+        if (found) {
+          setArticle(found);
+        } else {
+          setArticle(ARTICLES_DETAILS[slug] || ARTICLES_DETAILS["chasing-the-global-shutter-sony-a9-iii"]);
+        }
+      } catch (err) {
+        console.error(err);
+        setArticle(ARTICLES_DETAILS[slug] || ARTICLES_DETAILS["chasing-the-global-shutter-sony-a9-iii"]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, [slug]);
 
   // Monitor scroll progress for the progress indicator bar
   useEffect(() => {
@@ -151,14 +143,24 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ slug: 
   }, []);
 
   useGSAP(() => {
-    // Header animation
-    gsap.from(".article-header-anim", {
-      opacity: 0,
-      y: 40,
-      duration: 1,
-      ease: "power3.out"
-    });
-  }, { scope: containerRef });
+    if (article) {
+      // Header animation
+      gsap.from(".article-header-anim", {
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: "power3.out"
+      });
+    }
+  }, { dependencies: [article], scope: containerRef });
+
+  if (loading || !article) {
+    return (
+      <div className="bg-background text-foreground flex-1 flex flex-col font-sans min-h-screen items-center justify-center">
+        <span className="text-xs uppercase tracking-widest text-[#ccff00] animate-pulse">Retrieving Publication...</span>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="bg-background text-foreground flex-1 flex flex-col font-sans">
@@ -209,65 +211,14 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ slug: 
         </section>
 
         {/* Article Body Content */}
-        <section className="py-20 px-6 max-w-4xl mx-auto w-full">
-          <div className="flex flex-col gap-12 text-muted-foreground leading-relaxed text-sm md:text-base font-medium">
-            
-            {/* Lead Paragraph */}
-            <p className="text-lg text-white font-semibold leading-relaxed border-l-2 border-accent pl-6 italic">
-              {article.leadParagraph}
-            </p>
-
-            {/* Structured Content blocks */}
-            {article.bodyContent.map((section, idx) => (
-              <div key={idx} className="flex flex-col gap-6">
-                {section.heading && (
-                  <h2 className="text-2xl md:text-3xl font-bold uppercase font-display text-white tracking-tight mt-6">
-                    {section.heading}
-                  </h2>
-                )}
-
-                {section.paragraphs.map((para, pIdx) => (
-                  <p key={pIdx} className="leading-relaxed">
-                    {para}
-                  </p>
-                ))}
-
-                {section.pullQuote && (
-                  <div className="border border-accent/20 bg-accent/5 p-8 rounded-2xl my-4 text-white italic text-center font-semibold text-lg md:text-xl max-w-2xl mx-auto relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent" />
-                    "{section.pullQuote}"
-                  </div>
-                )}
-              </div>
-            ))}
-
-            {/* Technical notes callout */}
-            <div className="border border-border p-8 rounded-[2rem] bg-muted/15 flex flex-col gap-6 mt-10">
-              <h3 className="text-base font-bold uppercase text-white font-display tracking-wider flex items-center gap-2 border-b border-border pb-3">
-                <Camera className="h-5 w-5 text-accent" /> Technical Capture Notes
-              </h3>
-              
-              <div className="grid sm:grid-cols-3 gap-6 text-xs">
-                <div>
-                  <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Equipment</span>
-                  <div className="text-white font-bold mt-1">{article.technicalNotes.camera}</div>
-                  <div className="text-[10px] text-muted-foreground mt-0.5">{article.technicalNotes.lens}</div>
-                </div>
-
-                <div>
-                  <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Exposure Specs</span>
-                  <div className="text-accent font-bold mt-1 font-mono">{article.technicalNotes.exposure}</div>
-                </div>
-
-                <div>
-                  <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Field Rationale</span>
-                  <p className="text-muted-foreground mt-1 leading-relaxed text-[11px]">{article.technicalNotes.settingReason}</p>
-                </div>
-              </div>
+        {article.puck_data && (article.puck_data.content?.length > 0 || article.puck_data.root?.props?.title) ? (
+          <section className="py-20 px-6 max-w-7xl mx-auto w-full">
+            <div className="prose prose-invert max-w-none text-muted-foreground leading-relaxed text-sm md:text-base font-medium prose-p:text-slate-300 prose-headings:text-white prose-strong:text-white prose-a:text-[#ccff00]">
+              <Render config={config} data={article.puck_data} />
             </div>
-
+            
             {/* Back CTA */}
-            <div className="border-t border-border/40 pt-10 mt-10 flex justify-between items-center">
+            <div className="border-t border-border/40 pt-10 mt-10 flex justify-between items-center max-w-4xl mx-auto">
               <Link 
                 href="/blog"
                 className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-accent transition-colors flex items-center gap-2"
@@ -281,9 +232,88 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ slug: 
                 Inquire Coverage Rates
               </Link>
             </div>
+          </section>
+        ) : (
+          <section className="py-20 px-6 max-w-4xl mx-auto w-full">
+            <div className="flex flex-col gap-12 text-muted-foreground leading-relaxed text-sm md:text-base font-medium">
+              
+              {/* Lead Paragraph */}
+              {article.leadParagraph && (
+                <p className="text-lg text-white font-semibold leading-relaxed border-l-2 border-accent pl-6 italic">
+                  {article.leadParagraph}
+                </p>
+              )}
 
-          </div>
-        </section>
+              {/* Structured Content blocks */}
+              {article.bodyContent && article.bodyContent.map((section: any, idx: number) => (
+                <div key={idx} className="flex flex-col gap-6">
+                  {section.heading && (
+                    <h2 className="text-2xl md:text-3xl font-bold uppercase font-display text-white tracking-tight mt-6">
+                      {section.heading}
+                    </h2>
+                  )}
+
+                  {section.paragraphs && section.paragraphs.map((para: string, pIdx: number) => (
+                    <p key={pIdx} className="leading-relaxed">
+                      {para}
+                    </p>
+                  ))}
+
+                  {section.pullQuote && (
+                    <div className="border border-accent/20 bg-accent/5 p-8 rounded-2xl my-4 text-white italic text-center font-semibold text-lg md:text-xl max-w-2xl mx-auto relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent" />
+                      "{section.pullQuote}"
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* Technical notes callout */}
+              {article.technicalNotes && (
+                <div className="border border-border p-8 rounded-[2rem] bg-muted/15 flex flex-col gap-6 mt-10">
+                  <h3 className="text-base font-bold uppercase text-white font-display tracking-wider flex items-center gap-2 border-b border-border pb-3">
+                    <Camera className="h-5 w-5 text-accent" /> Technical Capture Notes
+                  </h3>
+                  
+                  <div className="grid sm:grid-cols-3 gap-6 text-xs">
+                    <div>
+                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Equipment</span>
+                      <div className="text-white font-bold mt-1">{article.technicalNotes.camera}</div>
+                      <div className="text-[10px] text-muted-foreground mt-0.5">{article.technicalNotes.lens}</div>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Exposure Specs</span>
+                      <div className="text-accent font-bold mt-1 font-mono">{article.technicalNotes.exposure}</div>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Field Rationale</span>
+                      <p className="text-muted-foreground mt-1 leading-relaxed text-[11px]">{article.technicalNotes.settingReason}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Back CTA */}
+              <div className="border-t border-border/40 pt-10 mt-10 flex justify-between items-center">
+                <Link 
+                  href="/blog"
+                  className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-accent transition-colors flex items-center gap-2"
+                >
+                  <ArrowLeft className="h-4 w-4" /> Back to Journal Index
+                </Link>
+                <Link
+                  href="/#book"
+                  className="px-6 py-3 bg-accent text-accent-foreground text-xs font-bold uppercase tracking-wider rounded hover:scale-102 transition-transform shadow-lg shadow-accent/15"
+                >
+                  Inquire Coverage Rates
+                </Link>
+              </div>
+
+            </div>
+          </section>
+        )}
 
       </main>
 

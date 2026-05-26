@@ -30,19 +30,25 @@ export default function DashboardContainer({ children, userName, avatarUrl }: Da
     const pathname = usePathname()
     
     const navItems = [
-        { name: 'Réalisations', href: '/admin/dashboard/news', icon: ImageIcon },
-        { name: 'Offres', href: '/admin/dashboard/products', icon: Sparkles },
+        { name: 'Overview', href: '/admin/dashboard', icon: Layout },
+        { name: 'Hero Settings', href: '/admin/dashboard/settings/hero', icon: Sparkles },
+        { name: 'Templates', href: '/admin/dashboard/settings/templates', icon: Layout },
+        { name: 'Gallery', href: '/admin/dashboard/gallery', icon: ImageIcon },
+        { name: 'Events', href: '/admin/dashboard/events', icon: ClipboardList },
+        { name: 'Blog', href: '/admin/dashboard/blog', icon: FileText },
         { name: 'Messages', href: '/admin/dashboard/messages', icon: Mail },
-        { name: 'Demandes de Devis', href: '/admin/dashboard/quotes', icon: ClipboardList },
-        { name: 'Bannières', href: '/admin/dashboard/events', icon: Layout },
-        { name: 'Templates', href: '/admin/dashboard/templates', icon: FileText },
-        { name: 'Paramètres', href: '/admin/dashboard/settings', icon: Settings },
     ]
 
-    const handleSignOut = () => {
+    const handleSignOut = async () => {
         localStorage.clear()
-        window.location.href = '/api/auth/signout'
+        try {
+            await fetch('/api/admin/logout', { method: 'POST' })
+        } catch (e) {
+            console.error(e)
+        }
+        window.location.href = '/admin/login'
     }
+
 
     return (
         <div className="flex h-screen bg-[#0F0F0F] font-sans text-slate-300 overflow-hidden">

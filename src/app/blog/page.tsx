@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Calendar, Clock, BookOpen, ArrowRight, Camera, Sparkles } from "lucide-react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import AuroraBackground from "@/components/AuroraBackground";
+import { fetchBlogPosts } from "@/app/admin/actions";
 
 interface BlogPost {
   slug: string;
@@ -38,36 +39,31 @@ const BLOG_POSTS: BlogPost[] = [
     category: "race-report",
     categoryLabel: "Race Report",
     gradient: "from-teal-900/40 via-cyan-950 to-slate-900"
-  },
-  {
-    slug: "sponsor-alignment-in-sports-photography",
-    title: "Biomechanical Framing: Aligning Runners & Brand Logos",
-    excerpt: "How to compose shots that frame runner emotion without losing primary shoe, bib, and banner placements for athletics brand campaigns.",
-    date: "March 15, 2026",
-    readTime: "8 min read",
-    category: "behind-the-lens",
-    categoryLabel: "Behind the Lens",
-    gradient: "from-rose-900/40 via-teal-950 to-slate-900"
-  },
-  {
-    slug: "chicago-marathon-speed-framing",
-    title: "Framing the Pack: Speed Capture at Chicago Marathon",
-    excerpt: "A tactical breakdown of road race pack compositions. Setting shutter limits for crowded streets and organizing live cloud uploads under high congestion.",
-    date: "February 22, 2026",
-    readTime: "5 min read",
-    category: "race-report",
-    categoryLabel: "Race Report",
-    gradient: "from-sky-900/40 via-teal-950 to-slate-900"
   }
 ];
 
 export default function BlogIndexPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<"all" | "race-report" | "gear" | "behind-the-lens">("all");
+  const [dbPosts, setDbPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await fetchBlogPosts();
+        setDbPosts(data as BlogPost[]);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    load();
+  }, []);
+
+  const blogSource = dbPosts.length > 0 ? dbPosts : BLOG_POSTS;
 
   const filteredPosts = activeTab === "all"
-    ? BLOG_POSTS
-    : BLOG_POSTS.filter(post => post.category === activeTab);
+    ? blogSource
+    : blogSource.filter(post => post.category === activeTab);
 
   useGSAP(() => {
     // Header entry animation

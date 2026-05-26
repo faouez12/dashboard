@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react'
+import { Puck } from '@measured/puck'
 import type { Config } from '@measured/puck'
 import {
     Grid,
@@ -7,8 +8,14 @@ import {
     Image as MediaImage,
     Search,
     ChevronDown,
+    Sparkles,
 } from 'lucide-react'
-import '@measured/puck/puck.css'
+
+// Import refactored components
+import { Heading, Quote, RichText } from './puck-blocks/typography'
+import { OneBlock, FlexBox, Row, GridRow, Link, Button, List, ListItem } from './puck-blocks/structure'
+import { Image, ImageCarousel, Video, VideoCarousel, MediaCarousel } from './puck-blocks/media'
+import { HUDStats, Hero } from './puck-blocks/special'
 
 export const config: Config = {
     categories: {
@@ -20,35 +27,56 @@ export const config: Config = {
         },
         Media: {
             components: ['Image', 'Video', 'ImageCarousel', 'VideoCarousel', 'MediaCarousel']
+        },
+        Special: {
+            components: ['HUDStats', 'Hero']
         }
     },
     components: {
-        Heading: {
-            render: ({ title }) => <h2 className="text-2xl font-bold">{title}</h2>
-        },
-        Quote: {
-            render: ({ text }) => <blockquote className="border-l-4 pl-4 italic">{text}</blockquote>
-        },
-        RichText: {
-            render: ({ html }) => <div dangerouslySetInnerHTML={{ __html: html }} />
-        },
-        OneBlock: {
-            render: ({ children }) => <div className="p-4">{children}</div>
-        },
-        Row: {
-            render: ({ children }) => <div className="flex gap-4">{children}</div>
-        }
+        Heading: Heading,
+        Quote: Quote,
+        RichText: RichText,
+        List: List,
+        ListItem: ListItem,
+        OneBlock: OneBlock,
+        FlexBox: FlexBox,
+        Row: Row,
+        GridRow: GridRow,
+        Image: Image,
+        ImageCarousel: ImageCarousel,
+        Video: Video,
+        VideoCarousel: VideoCarousel,
+        MediaCarousel: MediaCarousel,
+        Link: Link,
+        Button: Button,
+        HUDStats: HUDStats,
+        Hero: Hero
+    },
+    root: {
+        render: ({ children }: any) => (
+            <div style={{ backgroundColor: '#020617', color: '#ffffff', minHeight: '100vh', width: '100%', fontFamily: 'sans-serif' }}>
+                {children}
+            </div>
+        )
     }
 }
 
+// Custom Drawer Component
 export function CustomDrawer({ children }: { children: React.ReactNode }) {
     const [activeTab, setActiveTab] = useState('Elements')
-    const [expandedSections, setExpandedSections] = useState({ Structure: true, Typography: true, Media: true })
+    const [expandedSections, setExpandedSections] = useState({ Structure: true, Typography: true, Media: true, Special: true })
     const [searchQuery, setSearchQuery] = useState('')
 
     const toggleSection = (section: keyof typeof expandedSections) => {
         setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }))
     }
+
+    const drawerSections = [
+        { name: 'Structure', icon: Grid, components: config.categories?.Structure?.components || [] },
+        { name: 'Typography', icon: Type, components: config.categories?.Typography?.components || [] },
+        { name: 'Media', icon: MediaImage, components: config.categories?.Media?.components || [] },
+        { name: 'Special', icon: Sparkles, components: config.categories?.Special?.components || [] },
+    ]
 
     return (
         <aside className="w-72 bg-white/80 backdrop-blur-sm border-r border-slate-200 p-4 flex flex-col shadow-xl h-full">
@@ -76,35 +104,26 @@ export function CustomDrawer({ children }: { children: React.ReactNode }) {
 
             <div className="flex-1 overflow-y-auto space-y-1">
                 {activeTab === 'Elements' ? (
-                    <>
-                        <div>
-                            <button onClick={() => toggleSection('Structure')} className="w-full flex items-center justify-between p-3 text-sm font-semibold text-slate-800 hover:bg-slate-50/50 rounded-xl transition-all group mb-1" style={{ padding: '0', margin: '4px 0' }}>
+                    drawerSections.map((section) => (
+                        <div key={section.name}>
+                            <button
+                                onClick={() => toggleSection(section.name as any)}
+                                className="w-full flex items-center justify-between p-3 text-sm font-semibold text-slate-800 hover:bg-slate-50/50 rounded-xl transition-all group mb-1"
+                                style={{ padding: '0', margin: '4px 0' }}
+                            >
                                 <span className="flex items-center gap-2">
-                                    <Grid className="w-4 h-4 text-blue-500" />Structure
+                                    <section.icon className="w-4 h-4 text-blue-500" />
+                                    {section.name}
                                 </span>
-                                <ChevronDown className={`w-4 h-4 transition-transform ${expandedSections.Structure ? 'rotate-180' : ''}`} />
+                                <ChevronDown className={`w-4 h-4 transition-transform ${expandedSections[section.name as keyof typeof expandedSections] ? 'rotate-180' : ''}`} />
                             </button>
-                            {expandedSections.Structure && <div className="space-y-1 pl-2">{children}</div>}
+                            {expandedSections[section.name as keyof typeof expandedSections] && (
+                                <div className={`space-y-1 pl-2 ${section.name === 'Media' ? 'grid grid-cols-2 gap-1' : ''}`}>
+                                    {children}
+                                </div>
+                            )}
                         </div>
-                        <div>
-                            <button onClick={() => toggleSection('Typography')} className="w-full flex items-center justify-between p-3 text-sm font-semibold text-slate-800 hover:bg-slate-50/50 rounded-xl transition-all group mb-1" style={{ padding: '0', margin: '4px 0' }}>
-                                <span className="flex items-center gap-2">
-                                    <Type className="w-4 h-4 text-blue-500" />Typography
-                                </span>
-                                <ChevronDown className={`w-4 h-4 transition-transform ${expandedSections.Typography ? 'rotate-180' : ''}`} />
-                            </button>
-                            {expandedSections.Typography && <div className="space-y-1 pl-2">{children}</div>}
-                        </div>
-                        <div>
-                            <button onClick={() => toggleSection('Media')} className="w-full flex items-center justify-between p-3 text-sm font-semibold text-slate-800 hover:bg-slate-50/50 rounded-xl transition-all group mb-1" style={{ padding: '0', margin: '4px 0' }}>
-                                <span className="flex items-center gap-2">
-                                    <MediaImage className="w-4 h-4 text-blue-500" />Media
-                                </span>
-                                <ChevronDown className={`w-4 h-4 transition-transform ${expandedSections.Media ? 'rotate-180' : ''}`} />
-                            </button>
-                            {expandedSections.Media && <div className="grid grid-cols-2 gap-1 pl-2">{children}</div>}
-                        </div>
-                    </>
+                    ))
                 ) : (
                     <div className="flex flex-col items-center justify-center py-12">
                         <Grid className="w-16 h-16 text-slate-300 mx-auto" />
@@ -114,6 +133,20 @@ export function CustomDrawer({ children }: { children: React.ReactNode }) {
                 )}
             </div>
         </aside>
+    )
+}
+
+// Main Editor Component
+export function PageEditor({ initialData, onPublish, onChange, title }: { initialData: any, onPublish: (data: any) => void, onChange?: (data: any) => void, title?: string }) {
+    return (
+        <div className="h-full">
+            <Puck
+                config={config}
+                data={initialData}
+                onPublish={onPublish}
+                onChange={onChange}
+            />
+        </div>
     )
 }
 

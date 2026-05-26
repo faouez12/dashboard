@@ -18,12 +18,25 @@ import {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { fetchEvents } from "@/app/admin/actions";
+import Image from "next/image";
+import { Render } from "@measured/puck";
+import { config } from "@/app/admin/dashboard/components/puck-config";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Full detailed dataset for events
+interface RaceEventGalleryItem {
+  id: number;
+  title: string;
+  category: "start" | "grit" | "finish" | "details";
+  specs: string;
+  gradient: string;
+  description: string;
+  image_url?: string;
+}
+
 interface EventDetail {
   slug: string;
   title: string;
@@ -35,14 +48,8 @@ interface EventDetail {
   gradient: string;
   intro: string;
   technicalLog: string;
-  gallery: {
-    id: number;
-    title: string;
-    category: "start" | "grit" | "finish" | "details";
-    specs: string;
-    gradient: string;
-    description: string;
-  }[];
+  gallery: RaceEventGalleryItem[];
+  puck_data?: any;
 }
 
 const EVENTS_DETAILS: Record<string, EventDetail> = {
@@ -58,10 +65,10 @@ const EVENTS_DETAILS: Record<string, EventDetail> = {
     intro: "The Boston Marathon demands capturing raw energy over a long point-to-point course. From the nervous excitement of Hopkinton to the grueling elevation changes of Heartbreak Hill and the crowded tears near Copley Square.",
     technicalLog: "For this race, the high-speed global shutter of the Sony A9 III was crucial to capture runner stride mechanics without rolling shutter distortions. The 70-200mm GM II lens was used for isolating runners against compressed street backgrounds while preserving sponsor banner clarity.",
     gallery: [
-      { id: 101, title: "The Preamble", category: "start", specs: "70mm • f/2.8 • 1/500s", gradient: "from-amber-900/60 to-zinc-900", description: "Corral packing in Hopkinton as final gear adjustments are made in the cool morning air." },
-      { id: 102, title: "Heartbreak Climb", category: "grit", specs: "200mm • f/2.8 • 1/1600s", gradient: "from-orange-900/60 to-zinc-900", description: "Mid-race grit as runners battle the infamous incline, faces etched with effort." },
-      { id: 103, title: "Boylston Scream", category: "finish", specs: "135mm • f/2.0 • 1/2000s", gradient: "from-red-900/60 to-zinc-900", description: "Finisher crossing the line with arms raised in victory, crowd out of focus in the background." },
-      { id: 104, title: "Medals of honor", category: "details", specs: "50mm Macro • f/3.2 • 1/500s", gradient: "from-stone-900/60 to-zinc-900", description: "Finisher medals gleaming on the blue ribbons, stacked near the finish line tents." }
+      { id: 101, title: "The Preamble", category: "start", specs: "70mm • f/2.8 • 1/500s", gradient: "from-amber-900/60 to-zinc-900", description: "Corral packing in Hopkinton as final gear adjustments are made in the cool morning air.", image_url: "" },
+      { id: 102, title: "Heartbreak Climb", category: "grit", specs: "200mm • f/2.8 • 1/1600s", gradient: "from-orange-900/60 to-zinc-900", description: "Mid-race grit as runners battle the infamous incline, faces etched with effort.", image_url: "" },
+      { id: 103, title: "Boylston Scream", category: "finish", specs: "135mm • f/2.0 • 1/2000s", gradient: "from-red-900/60 to-zinc-900", description: "Finisher crossing the line with arms raised in victory, crowd out of focus in the background.", image_url: "" },
+      { id: 104, title: "Medals of honor", category: "details", specs: "50mm Macro • f/3.2 • 1/500s", gradient: "from-stone-900/60 to-zinc-900", description: "Finisher medals gleaming on the blue ribbons, stacked near the finish line tents.", image_url: "" }
     ]
   },
   "utmb-mont-blanc": {
@@ -76,45 +83,19 @@ const EVENTS_DETAILS: Record<string, EventDetail> = {
     intro: "UTMB is the pinnacle of trail running. It is a 170km loop around Mont Blanc with 10,000 meters of elevation change. Capturing this event requires scaling mountains to catch athletes battling night cold, steep peaks, and sunrise crossings.",
     technicalLog: "We packed lightweight weatherized carbon rigs to hike to remote alpine passes. The Sony Alpha 1's 50MP sensor allowed cropping into wide mountain panoramas to isolate runners on high ridge paths under variable morning lighting.",
     gallery: [
-      { id: 201, title: "The Arc Lights", category: "start", specs: "24mm • f/2.8 • 1/120s", gradient: "from-teal-950/60 to-zinc-900", description: "Chamonix town center glows under floodlights as thousands of headlamps await the UTMB start signal." },
-      { id: 202, title: "Col du Bonhomme Pass", category: "grit", specs: "400mm • f/2.8 • 1/1200s", gradient: "from-blue-900/60 to-zinc-900", description: "Runners scale the snowy alpine pass at 2,300m, Materhorn silhouettes visible in distant mist." },
-      { id: 203, title: "Finisher Cheers", category: "finish", specs: "85mm • f/1.4 • 1/800s", gradient: "from-teal-900/60 to-zinc-900", description: "Finisher embraced by family in Chamonix plaza, bell towers ringing in background." },
-      { id: 204, title: "Frozen Hydration", category: "details", specs: "90mm Macro • f/4.0 • 1/1000s", gradient: "from-sky-950/60 to-zinc-900", description: "Frozen ice particles forming on an athlete's collapsible hydration flask." }
-    ]
-  },
-  "london-marathon": {
-    slug: "london-marathon",
-    title: "London Marathon",
-    location: "London, UK",
-    date: "April 2026",
-    runners: "40,000+ Athletes",
-    weather: "Mist clearing, 14°C",
-    gearUsed: "Sony A9 III + 24-70mm f/2.8 GM II",
-    gradient: "from-cyan-950 via-sky-950 to-zinc-900",
-    intro: "The London Marathon features massive crowds and historic cityscapes. Our coverage prioritized capturing the dense packing of runners crossing Tower Bridge, side-by-side with brand integration and public celebration.",
-    technicalLog: "Used high-contrast wide framing to emphasize sponsor branding visibility. The fast burst rates on the Sony A9 III allowed capturing clean action loops of the leading pack with zero shutter lag under changing bridge shadows.",
-    gallery: [
-      { id: 301, title: "The Morning Corrals", category: "start", specs: "35mm • f/4.0 • 1/250s", gradient: "from-teal-900/60 to-zinc-900", description: "Greenwich park corrals fill as thousands of runners stretch under early morning fog." },
-      { id: 302, title: "Tower Bridge Crowd", category: "grit", specs: "24mm • f/5.6 • 1/500s", gradient: "from-sky-900/60 to-zinc-900", description: "A wall of runners crossing Tower Bridge, framed by historical towers and roaring spectators." },
-      { id: 303, title: "Mall Finish", category: "finish", specs: "135mm • f/2.0 • 1/1600s", gradient: "from-rose-900/60 to-zinc-900", description: "Crossing the line under Buckingham Palace arches, arms pointing to the sky." },
-      { id: 304, title: "The Foil Capes", category: "details", specs: "50mm • f/1.8 • 1/800s", gradient: "from-zinc-800/60 to-zinc-900", description: "Finisher capes catching morning light as volunteers wrap shivering runners." }
+      { id: 201, title: "The Arc Lights", category: "start", specs: "24mm • f/2.8 • 1/120s", gradient: "from-teal-950/60 to-zinc-900", description: "Chamonix town center glows under floodlights as thousands of headlamps await the UTMB start signal.", image_url: "" },
+      { id: 202, title: "Col du Bonhomme Pass", category: "grit", specs: "400mm • f/2.8 • 1/1200s", gradient: "from-blue-900/60 to-zinc-900", description: "Runners scale the snowy alpine pass at 2,300m, Materhorn silhouettes visible in distant mist.", image_url: "" },
+      { id: 203, title: "Finisher Cheers", category: "finish", specs: "85mm • f/1.4 • 1/800s", gradient: "from-teal-900/60 to-zinc-900", description: "Finisher embraced by family in Chamonix plaza, bell towers ringing in background.", image_url: "" },
+      { id: 204, title: "Frozen Hydration", category: "details", specs: "90mm Macro • f/4.0 • 1/1000s", gradient: "from-sky-950/60 to-zinc-900", description: "Frozen ice particles forming on an athlete's collapsible hydration flask.", image_url: "" }
     ]
   }
 };
 
-interface GalleryItemType {
-  id: number;
-  title: string;
-  category: "start" | "grit" | "finish" | "details";
-  specs: string;
-  gradient: string;
-  description: string;
-}
-
 export default function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
   const slug = resolvedParams.slug;
-  const event = EVENTS_DETAILS[slug] || EVENTS_DETAILS["boston-marathon"];
+  const [event, setEvent] = useState<EventDetail | null>(null);
+  const [loading, setLoading] = useState(true);
   
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -126,53 +107,77 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
   const activeIndicatorRef = useRef<HTMLDivElement>(null);
 
   // Lightbox Modal State
-  const [selectedImage, setSelectedImage] = useState<GalleryItemType | null>(null);
+  const [selectedImage, setSelectedImage] = useState<RaceEventGalleryItem | null>(null);
 
-  const filteredGallery = activeTab === "all"
-    ? event.gallery
-    : event.gallery.filter(item => item.category === activeTab);
+  useEffect(() => {
+    async function load() {
+      try {
+        const events = await fetchEvents();
+        const found = events.find((e: any) => e.slug === slug);
+        if (found) {
+          setEvent(found as any as EventDetail);
+        } else {
+          setEvent(EVENTS_DETAILS[slug] || EVENTS_DETAILS["boston-marathon"]);
+        }
+      } catch (err) {
+        console.error(err);
+        setEvent(EVENTS_DETAILS[slug] || EVENTS_DETAILS["boston-marathon"]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, [slug]);
+
+  const filteredGallery = event?.gallery
+    ? (activeTab === "all" ? event.gallery : event.gallery.filter(item => item.category === activeTab))
+    : [];
 
   useGSAP(() => {
-    // Entrance animations
-    gsap.from(".event-header-anim", {
-      opacity: 0,
-      y: 40,
-      duration: 1,
-      ease: "power3.out"
-    });
+    if (event) {
+      // Entrance animations
+      gsap.from(".event-header-anim", {
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: "power3.out"
+      });
 
-    gsap.from(".event-panel-anim", {
-      scrollTrigger: {
-        trigger: ".event-panel-trigger",
-        start: "top 80%"
-      },
-      opacity: 0,
-      y: 35,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power2.out"
-    });
-  }, { scope: containerRef });
-
-  // Stagger reveal cards when filter changes
-  useGSAP(() => {
-    gsap.fromTo(
-      ".gallery-card-anim",
-      { opacity: 0, scale: 0.95, y: 20 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power2.out" }
-    );
-
-    // Sliding indicator pill transition
-    const activeButton = tabRefs.current[activeTab];
-    if (activeButton && activeIndicatorRef.current) {
-      gsap.to(activeIndicatorRef.current, {
-        x: activeButton.offsetLeft,
-        width: activeButton.offsetWidth,
-        duration: 0.35,
+      gsap.from(".event-panel-anim", {
+        scrollTrigger: {
+          trigger: ".event-panel-trigger",
+          start: "top 80%"
+        },
+        opacity: 0,
+        y: 35,
+        duration: 0.8,
+        stagger: 0.15,
         ease: "power2.out"
       });
     }
-  }, { dependencies: [activeTab], scope: containerRef });
+  }, { dependencies: [event], scope: containerRef });
+
+  // Stagger reveal cards when filter changes
+  useGSAP(() => {
+    if (event) {
+      gsap.fromTo(
+        ".gallery-card-anim",
+        { opacity: 0, scale: 0.95, y: 20 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power2.out" }
+      );
+
+      // Sliding indicator pill transition
+      const activeButton = tabRefs.current[activeTab];
+      if (activeButton && activeIndicatorRef.current) {
+        gsap.to(activeIndicatorRef.current, {
+          x: activeButton.offsetLeft,
+          width: activeButton.offsetWidth,
+          duration: 0.35,
+          ease: "power2.out"
+        });
+      }
+    }
+  }, { dependencies: [activeTab, event], scope: containerRef });
 
   // Lightbox Modal Animation
   useEffect(() => {
@@ -187,6 +192,14 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
       );
     }
   }, [selectedImage]);
+
+  if (loading || !event) {
+    return (
+      <div className="bg-background text-foreground flex-1 flex flex-col font-sans min-h-screen items-center justify-center">
+        <span className="text-xs uppercase tracking-widest text-[#ccff00] animate-pulse">Retrieving Event Log...</span>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="bg-background text-foreground flex-1 flex flex-col font-sans">
@@ -221,147 +234,169 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
           </div>
         </section>
 
-        {/* Metadata & Technical log panel */}
-        <section className="py-20 px-6 max-w-7xl mx-auto w-full event-panel-trigger">
-          <div className="grid lg:grid-cols-12 gap-12">
-            
-            {/* Left side: specs card */}
-            <div className="lg:col-span-5 flex flex-col gap-6 event-panel-anim">
-              <h3 className="text-lg font-bold uppercase font-display tracking-tight border-b border-border pb-3">
-                Race Log Metadata
-              </h3>
-              
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-4 bg-muted/20 border border-border p-4 rounded-lg">
-                  <MapPin className="h-5 w-5 text-accent shrink-0" />
-                  <div>
-                    <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Location</div>
-                    <div className="text-sm font-bold mt-0.5">{event.location}</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 bg-muted/20 border border-border p-4 rounded-lg">
-                  <Calendar className="h-5 w-5 text-accent shrink-0" />
-                  <div>
-                    <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Event Date</div>
-                    <div className="text-sm font-bold mt-0.5">{event.date}</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 bg-muted/20 border border-border p-4 rounded-lg">
-                  <Users className="h-5 w-5 text-accent shrink-0" />
-                  <div>
-                    <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Registration size</div>
-                    <div className="text-sm font-bold mt-0.5">{event.runners}</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 bg-muted/20 border border-border p-4 rounded-lg">
-                  <CloudSun className="h-5 w-5 text-accent shrink-0" />
-                  <div>
-                    <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Weather Conditions</div>
-                    <div className="text-sm font-bold mt-0.5">{event.weather}</div>
-                  </div>
-                </div>
-              </div>
+        {/* Metadata, Technical log panel, and Gallery */}
+        {event.puck_data && (event.puck_data.content?.length > 0 || event.puck_data.root?.props?.title) ? (
+          <section className="py-20 px-6 max-w-7xl mx-auto w-full">
+            <div className="prose prose-invert max-w-none text-muted-foreground leading-relaxed text-sm md:text-base font-medium prose-p:text-slate-300 prose-headings:text-white prose-strong:text-white prose-a:text-[#ccff00]">
+              <Render config={config} data={event.puck_data} />
             </div>
-
-            {/* Right side: tech logic details */}
-            <div className="lg:col-span-7 flex flex-col gap-6 event-panel-anim">
-              <h3 className="text-lg font-bold uppercase font-display tracking-tight border-b border-border pb-3 flex items-center gap-3">
-                <Info className="h-5 w-5 text-accent" /> Technical Rationale
-              </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed bg-muted/15 border border-border p-6 rounded-lg">
-                {event.technicalLog}
-              </p>
-              <div className="border border-border p-6 rounded-lg bg-zinc-950/60 flex items-center justify-between">
-                <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground">
-                  <Camera className="h-4 w-4 text-accent" />
-                  <span>Configured Gear: <span className="text-foreground font-bold">{event.gearUsed}</span></span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        {/* Narrative Photo Grid */}
-        <section className="py-24 px-6 border-t border-border bg-muted/5">
-          <div className="max-w-7xl mx-auto w-full flex flex-col gap-10">
-            
-            {/* Filter tab header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-bold uppercase font-display tracking-tight">Race Narrative Gallery</h3>
-                <p className="text-xs text-muted-foreground">Filter this race case-study by its timeline checkpoints.</p>
-              </div>
-
-              {/* Tabs */}
-              <div className="relative flex flex-wrap gap-2 bg-muted/40 p-1 rounded-lg border border-border">
-                {/* Sliding indicator pill */}
-                <div 
-                  ref={activeIndicatorRef} 
-                  className="absolute bg-accent rounded pointer-events-none z-0" 
-                  style={{ height: "calc(100% - 8px)", top: "4px", left: 0, width: 0 }}
-                />
+          </section>
+        ) : (
+          <>
+            {/* Metadata & Technical log panel */}
+            <section className="py-20 px-6 max-w-7xl mx-auto w-full event-panel-trigger">
+              <div className="grid lg:grid-cols-12 gap-12">
                 
-                {(["all", "start", "grit", "finish", "details"] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    ref={(el) => { tabRefs.current[tab] = el; }}
-                    onClick={() => setActiveTab(tab)}
-                    className={`relative z-10 px-4 py-2.5 text-[10px] uppercase tracking-wider font-bold rounded transition-colors duration-300 cursor-pointer ${
-                      activeTab === tab
-                        ? "text-accent-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Grid */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {filteredGallery.map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => setSelectedImage(item)}
-                  className="group relative h-80 rounded-lg overflow-hidden border border-border bg-zinc-950 flex flex-col justify-end p-6 cursor-pointer hover:border-accent transition-all hover:-translate-y-1 gallery-card-anim"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-tr ${item.gradient} opacity-30 group-hover:opacity-50 transition-opacity duration-500`} />
+                {/* Left side: specs card */}
+                <div className="lg:col-span-5 flex flex-col gap-6 event-panel-anim">
+                  <h3 className="text-lg font-bold uppercase font-display tracking-tight border-b border-border pb-3">
+                    Race Log Metadata
+                  </h3>
                   
-                  {/* Overlay technical specs */}
-                  <div className="absolute inset-0 flex flex-col justify-between p-5 opacity-0 group-hover:opacity-100 transition-opacity bg-black/75 z-10">
-                    <span className="text-[10px] uppercase font-mono tracking-widest text-accent bg-accent/15 px-2.5 py-1 rounded border border-accent/20 self-start font-bold">
-                      {item.category}
-                    </span>
-                    <div className="flex items-center gap-2 text-xs text-white/95 font-mono mt-auto">
-                      <Camera className="h-4 w-4 text-accent" />
-                      <span>{item.specs}</span>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center gap-4 bg-muted/20 border border-border p-4 rounded-lg">
+                      <MapPin className="h-5 w-5 text-accent shrink-0" />
+                      <div>
+                        <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Location</div>
+                        <div className="text-sm font-bold mt-0.5">{event.location}</div>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Card base info */}
-                  <div className="relative z-10 flex flex-col gap-1.5">
-                    <h3 className="text-lg font-bold tracking-tight text-white group-hover:text-accent transition-colors font-display">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground line-clamp-2">
-                      {item.description}
-                    </p>
-                    <div className="flex items-center gap-1.5 text-[10px] text-accent font-bold uppercase tracking-wider mt-2 group-hover:translate-x-1.5 transition-transform">
-                      <span>View details</span>
-                      <Maximize2 className="h-3 w-3" />
+                    <div className="flex items-center gap-4 bg-muted/20 border border-border p-4 rounded-lg">
+                      <Calendar className="h-5 w-5 text-accent shrink-0" />
+                      <div>
+                        <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Event Date</div>
+                        <div className="text-sm font-bold mt-0.5">{event.date}</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4 bg-muted/20 border border-border p-4 rounded-lg">
+                      <Users className="h-5 w-5 text-accent shrink-0" />
+                      <div>
+                        <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Registration size</div>
+                        <div className="text-sm font-bold mt-0.5">{event.runners}</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4 bg-muted/20 border border-border p-4 rounded-lg">
+                      <CloudSun className="h-5 w-5 text-accent shrink-0" />
+                      <div>
+                        <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Weather Conditions</div>
+                        <div className="text-sm font-bold mt-0.5">{event.weather}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
 
-          </div>
-        </section>
+                {/* Right side: tech logic details */}
+                <div className="lg:col-span-7 flex flex-col gap-6 event-panel-anim">
+                  <h3 className="text-lg font-bold uppercase font-display tracking-tight border-b border-border pb-3 flex items-center gap-3">
+                    <Info className="h-5 w-5 text-accent" /> Technical Rationale
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed bg-muted/15 border border-border p-6 rounded-lg">
+                    {event.technicalLog}
+                  </p>
+                  <div className="border border-border p-6 rounded-lg bg-zinc-950/60 flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground">
+                      <Camera className="h-4 w-4 text-accent" />
+                      <span>Configured Gear: <span className="text-foreground font-bold">{event.gearUsed}</span></span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            {/* Narrative Photo Grid */}
+            <section className="py-24 px-6 border-t border-border bg-muted/5">
+              <div className="max-w-7xl mx-auto w-full flex flex-col gap-10">
+                
+                {/* Filter tab header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-xl font-bold uppercase font-display tracking-tight">Race Narrative Gallery</h3>
+                    <p className="text-xs text-muted-foreground">Filter this race case-study by its timeline checkpoints.</p>
+                  </div>
+
+                  {/* Tabs */}
+                  <div className="relative flex flex-wrap gap-2 bg-muted/40 p-1 rounded-lg border border-border">
+                    {/* Sliding indicator pill */}
+                    <div 
+                      ref={activeIndicatorRef} 
+                      className="absolute bg-accent rounded pointer-events-none z-0" 
+                      style={{ height: "calc(100% - 8px)", top: "4px", left: 0, width: 0 }}
+                    />
+                    
+                    {(["all", "start", "grit", "finish", "details"] as const).map((tab) => (
+                      <button
+                        key={tab}
+                        ref={(el) => { tabRefs.current[tab] = el; }}
+                        onClick={() => setActiveTab(tab)}
+                        className={`relative z-10 px-4 py-2.5 text-[10px] uppercase tracking-wider font-bold rounded transition-colors duration-300 cursor-pointer ${
+                          activeTab === tab
+                            ? "text-accent-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {tab}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Grid */}
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {filteredGallery.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => setSelectedImage(item)}
+                      className="group relative h-80 rounded-lg overflow-hidden border border-border bg-zinc-950 flex flex-col justify-end p-6 cursor-pointer hover:border-accent transition-all hover:-translate-y-1 gallery-card-anim"
+                    >
+                      {/* Photo frame or gradient */}
+                      {item.image_url ? (
+                        <Image
+                          src={item.image_url}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 25vw"
+                          className="absolute inset-0 object-cover opacity-25 group-hover:opacity-45 transition-opacity duration-500"
+                        />
+                      ) : (
+                        <div className={`absolute inset-0 bg-gradient-to-tr ${item.gradient} opacity-30 group-hover:opacity-50 transition-opacity duration-500`} />
+                      )}
+                      
+                      {/* Overlay technical specs */}
+                      <div className="absolute inset-0 flex flex-col justify-between p-5 opacity-0 group-hover:opacity-100 transition-opacity bg-black/75 z-10">
+                        <span className="text-[10px] uppercase font-mono tracking-widest text-accent bg-accent/15 px-2.5 py-1 rounded border border-accent/20 self-start font-bold">
+                          {item.category}
+                        </span>
+                        <div className="flex items-center gap-2 text-xs text-white/95 font-mono mt-auto">
+                          <Camera className="h-4 w-4 text-accent" />
+                          <span>{item.specs}</span>
+                        </div>
+                      </div>
+
+                      {/* Card base info */}
+                      <div className="relative z-10 flex flex-col gap-1.5">
+                        <h3 className="text-lg font-bold tracking-tight text-white group-hover:text-accent transition-colors font-display">
+                          {item.title}
+                        </h3>
+                        <p className="text-xs text-muted-foreground line-clamp-2">
+                          {item.description}
+                        </p>
+                        <div className="flex items-center gap-1.5 text-[10px] text-accent font-bold uppercase tracking-wider mt-2 group-hover:translate-x-1.5 transition-transform">
+                          <span>View details</span>
+                          <Maximize2 className="h-3 w-3" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            </section>
+          </>
+        )}
 
       </main>
 
@@ -379,10 +414,16 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
               <X className="h-5 w-5" />
             </button>
 
-            {/* Simulated Image Box */}
+            {/* Simulated or R2 Image Box */}
             <div className={`h-[50vh] min-h-[320px] w-full bg-gradient-to-tr ${selectedImage.gradient} flex items-center justify-center relative p-8`}>
-              <div className="absolute inset-0 bg-black/20" />
-              <Camera className="h-16 w-16 text-white/10 relative z-10" />
+              {selectedImage.image_url ? (
+                <Image src={selectedImage.image_url} alt={selectedImage.title} fill className="object-cover" />
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-black/20" />
+                  <Camera className="h-16 w-16 text-white/10 relative z-10" />
+                </>
+              )}
             </div>
 
             {/* Modal Body Context */}
@@ -398,7 +439,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
                 </div>
                 
                 {/* Tech Specs */}
-                <div className="flex items-center gap-2 bg-muted border border-border px-3.5 py-2.5 rounded-md font-mono text-xs text-muted-foreground self-start sm:self-center">
+                <div className="flex items-center gap-2 bg-muted border border-border px-3.5 py-2.5 rounded-md font-mono text-xs text-muted-foreground self-start sm:set-center">
                   <Camera className="h-4 w-4 text-accent" />
                   <span>{selectedImage.specs}</span>
                 </div>

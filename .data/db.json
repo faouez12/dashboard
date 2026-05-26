@@ -1,0 +1,528 @@
+{
+  "gallery": [
+    {
+      "id": "gal-1",
+      "title": "Apex Stride",
+      "category": "road",
+      "location": "Berlin Marathon",
+      "specs": "85mm • f/2.0 • 1/2000s • ISO 100",
+      "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779813530134-3qxsbofh586.jpeg",
+      "gradient": "from-blue-900/60 to-slate-900",
+      "description": "An elite runner's foot strike capturing the exact moment of energy release on tarmac.",
+      "year": "2025",
+      "created_at": "2026-05-26T16:38:54.268Z"
+    },
+    {
+      "title": "coming",
+      "category": "road",
+      "location": "monastir",
+      "specs": "85mm • f/2.0 • 1/2000s • ISO 100",
+      "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779813623122-uzbrizngb8j.jpeg",
+      "gradient": "from-blue-900/60 to-slate-900",
+      "description": "im coming stay tuned",
+      "year": "2026",
+      "id": "gal-b3f29612-a885-4d69-aef3-0d2e71ba6167",
+      "created_at": "2026-05-26T16:40:51.572Z"
+    }
+  ],
+  "blogs": [
+    {
+      "id": "blog-1",
+      "slug": "chasing-the-global-shutter-sony-a9-iii",
+      "title": "Chasing the Global Shutter: Sony A9 III Race Review",
+      "excerpt": "Why the global shutter change is a game-changer for track and trail sports. Analyzing stride freeze, zero rolling distortion, and real-world sync speed.",
+      "date": "May 12, 2026",
+      "readTime": "6 min read",
+      "category": "gear",
+      "categoryLabel": "Gear Review",
+      "gradient": "from-teal-900 via-cyan-950 to-zinc-900",
+      "author": "Shahine",
+      "leadParagraph": "The transition from traditional rolling shutters to a global shutter is the most significant technological leap in sports photography in a generation. In race conditions, where runners are moving at high velocities and camera pans are rapid, the global shutter completely changes the game.",
+      "bodyContent": [
+        {
+          "heading": "Eliminating the Rolling Shutter Jello Effect",
+          "paragraphs": [
+            "With traditional focal plane rolling shutters, the sensor reads data line-by-line. This speed differential results in bending or warping when fast-moving objects cross the frame. In marathon sports, rolling shutters can cause runner strides to appear distorted, and background sponsor banners to slant during rapid camera pans.",
+            "The Sony A9 III's global shutter reads all 24.6 megapixels simultaneously. When shooting a leading pack sprinting past a crowded bridge at 1/2000s, every leg angle, shoelace, and background sponsor banner is captured without warping. Every line is straight, and the biomechanics are preserved with anatomical precision."
+          ],
+          "pullQuote": "In elite race photography, precision is not a choice. A warped stride makes an action shot useless for medical analysis or brand publications."
+        },
+        {
+          "heading": "120 Frames-Per-Second Speed & Pre-Capture",
+          "paragraphs": [
+            "Another breakthrough of the global shutter sensor is the raw data throughput. The ability to lock focus and track exposure while blasting 120 RAW files per second ensures that you never miss the exact millisecond of shoe strike or finish-tape impact.",
+            "By utilizing the camera's Pre-Capture buffer, we can half-press the shutter button, and the camera starts recording frames. The moment the runner breaks the ribbon, we press the shutter fully, and the preceding 1 second is already saved, guaranteeing zero-failure delivery on the critical finish line moment."
+          ]
+        }
+      ],
+      "technicalNotes": {
+        "camera": "Sony Alpha 9 III",
+        "lens": "Sony FE 70-200mm f/2.8 GM II",
+        "exposure": "1/2000s • f/2.8 • ISO 160",
+        "settingReason": "Global shutter allows shutter speed sync up to 1/80,000s. We selected 1/2000s to freeze runner strides while maintaining low ISO grain."
+      },
+      "created_at": "2026-05-26T16:19:06.943Z"
+    },
+    {
+      "id": "blog-2",
+      "slug": "capturing-utmb-climbing-10000m-with-lenses",
+      "title": "Capturing UTMB: Climbing 10,000m with 15kg of Lenses",
+      "excerpt": "Behind the scenes of mountain ultra-marathon photography. Managing battery freeze, night tracking on ridges, and lightweight carbon operations.",
+      "date": "April 28, 2026",
+      "readTime": "12 min read",
+      "category": "race-report",
+      "categoryLabel": "Race Report",
+      "gradient": "from-teal-900/40 via-cyan-950 to-slate-900",
+      "author": "Shahine",
+      "leadParagraph": "Covering the Ultra-Trail du Mont-Blanc (UTMB) requires as much physical conditioning as it does technical camera capability. Hicking steep mountain passes in Chamonix to capture the world's most elite ultra runners is a test of weight management and weather endurance.",
+      "bodyContent": [
+        {
+          "heading": "Lightweight Rig Configurations",
+          "paragraphs": [
+            "When you are hiking up to Col du Bonhomme at 2,300 meters, every ounce in your backpack counts. We designed custom carbon-fiber harnesses to carry two bodies safely on the chest while packing lightweight carbon tripods and secondary battery packs.",
+            "Our lenses are carefully selected for maximum focal range flexibility. The Sony 400mm f/2.8 prime is used for compressing trail ridges from distance, while the 24-70mm f/2.8 GM II stays on the body for wide-angle environmental portraits as athletes scale rocky passages."
+          ],
+          "pullQuote": "Mountain photography is a balancing act between pack weight and the creative choices made possible by long telephoto lenses."
+        },
+        {
+          "heading": "Handling the Alpine Cold",
+          "paragraphs": [
+            "As night temperatures drop below freezing, camera batteries lose charge efficiency. We store backup Lithium-ion packs in insulated internal thermal sleeves against our bodies to keep them warm.",
+            "Lens condensation is another major threat. Transitioning from cold mountain summits to humid valley bases requires double-sealed weather protection to prevent optical fogging."
+          ]
+        }
+      ],
+      "technicalNotes": {
+        "camera": "Sony Alpha 1",
+        "lens": "Sony FE 400mm f/2.8 GM OSS",
+        "exposure": "1/1600s • f/2.8 • ISO 200",
+        "settingReason": "Telephoto compression allows framing the runner directly against the massive alpine peaks from a distance of over 300 meters."
+      },
+      "created_at": "2026-05-26T16:19:06.943Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "evt-1",
+      "slug": "boston-marathon",
+      "title": "Boston Marathon",
+      "location": "Boston, USA",
+      "date": "April 2026",
+      "type": "marathon",
+      "runners": "30,000+ Runners",
+      "gradient": "from-orange-950 via-amber-950 to-zinc-900",
+      "desc": "Elite road coverage focusing on key mile marks, historic pacing, and high-tension emotional finishes near Copley Square.",
+      "highlight": "Finish line stagers & heartbreaks",
+      "weather": "Cool, 12°C, Overcast",
+      "gearUsed": "Sony A9 III + 70-200mm f/2.8 GM II",
+      "intro": "The Boston Marathon demands capturing raw energy over a long point-to-point course. From the nervous excitement of Hopkinton to the grueling elevation changes of Heartbreak Hill and the crowded tears near Copley Square.",
+      "technicalLog": "For this race, the high-speed global shutter of the Sony A9 III was crucial to capture runner stride mechanics without rolling shutter distortions. The 70-200mm GM II lens was used for isolating runners against compressed street backgrounds while preserving sponsor banner clarity.",
+      "gallery": [
+        {
+          "id": 101,
+          "title": "The Preamble",
+          "category": "start",
+          "specs": "70mm • f/2.8 • 1/500s",
+          "gradient": "from-amber-900/60 to-zinc-900",
+          "description": "Corral packing in Hopkinton as final gear adjustments are made in the cool morning air.",
+          "image_url": ""
+        },
+        {
+          "id": 102,
+          "title": "Heartbreak Climb",
+          "category": "grit",
+          "specs": "200mm • f/2.8 • 1/1600s",
+          "gradient": "from-orange-900/60 to-zinc-900",
+          "description": "Mid-race grit as runners battle the infamous incline, faces etched with effort.",
+          "image_url": ""
+        },
+        {
+          "id": 103,
+          "title": "Boylston Scream",
+          "category": "finish",
+          "specs": "135mm • f/2.0 • 1/2000s",
+          "gradient": "from-red-900/60 to-zinc-900",
+          "description": "Finisher crossing the line with arms raised in victory, crowd out of focus in the background.",
+          "image_url": ""
+        },
+        {
+          "id": 104,
+          "title": "Medals of honor",
+          "category": "details",
+          "specs": "50mm Macro • f/3.2 • 1/500s",
+          "gradient": "from-stone-900/60 to-zinc-900",
+          "description": "Finisher medals gleaming on the blue ribbons, stacked near the finish line tents.",
+          "image_url": ""
+        }
+      ],
+      "created_at": "2026-05-26T16:19:06.943Z"
+    },
+    {
+      "id": "evt-2",
+      "slug": "utmb-mont-blanc",
+      "title": "UTMB Mont Blanc",
+      "location": "Chamonix, France",
+      "date": "August 2025",
+      "type": "trail",
+      "runners": "10,000+ Runners",
+      "gradient": "from-teal-950 via-zinc-950 to-zinc-900",
+      "desc": "Physically demanding trail documentation covering remote ridges, alpine night stretches, and extreme altitude weather conditions.",
+      "highlight": "Ridge running & sub-zero mountain pass shots",
+      "weather": "Alpine shifts, -2°C to 18°C",
+      "gearUsed": "Sony A1 + 400mm f/2.8 GM + 24-70mm GM II",
+      "intro": "UTMB is the pinnacle of trail running. It is a 170km loop around Mont Blanc with 10,000 meters of elevation change. Capturing this event requires scaling mountains to catch athletes battling night cold, steep peaks, and sunrise crossings.",
+      "technicalLog": "We packed lightweight weatherized carbon rigs to hike to remote alpine passes. The Sony Alpha 1's 50MP sensor allowed cropping into wide mountain panoramas to isolate runners on high ridge paths under variable morning lighting.",
+      "gallery": [
+        {
+          "id": 201,
+          "title": "The Arc Lights",
+          "category": "start",
+          "specs": "24mm • f/2.8 • 1/120s",
+          "gradient": "from-teal-950/60 to-zinc-900",
+          "description": "Chamonix town center glows under floodlights as thousands of headlamps await the UTMB start signal.",
+          "image_url": ""
+        },
+        {
+          "id": 202,
+          "title": "Col du Bonhomme Pass",
+          "category": "grit",
+          "specs": "400mm • f/2.8 • 1/1200s",
+          "gradient": "from-blue-900/60 to-zinc-900",
+          "description": "Runners scale the snowy alpine pass at 2,300m, Materhorn silhouettes visible in distant mist.",
+          "image_url": ""
+        },
+        {
+          "id": 203,
+          "title": "Finisher Cheers",
+          "category": "finish",
+          "specs": "85mm • f/1.4 • 1/800s",
+          "gradient": "from-teal-900/60 to-zinc-900",
+          "description": "Finisher embraced by family in Chamonix plaza, bell towers ringing in background.",
+          "image_url": ""
+        },
+        {
+          "id": 204,
+          "title": "Frozen Hydration",
+          "category": "details",
+          "specs": "90mm Macro • f/4.0 • 1/1000s",
+          "gradient": "from-sky-950/60 to-zinc-900",
+          "description": "Frozen ice particles forming on an athlete's collapsible hydration flask.",
+          "image_url": ""
+        }
+      ],
+      "created_at": "2026-05-26T16:19:06.943Z"
+    }
+  ],
+  "messages": [],
+  "hero_settings": {
+    "background_type": "aurora",
+    "media_urls": [],
+    "badge": "SPORTS PHOTOGRAPHY REDEFINED",
+    "title_line_1": "CAPTURE",
+    "title_line_2": "THE GRIT",
+    "title_line_3": "ON THE COURSE",
+    "description": "Translating the raw victory, sweat, and split-second milestones of marathon and trail running events into high-performance visual assets for race organizers and global athletics brands.",
+    "spec_1_label": "SHUTTER",
+    "spec_1_value": "1/2000S",
+    "spec_2_label": "RESOLUTION",
+    "spec_2_value": "50.1MP",
+    "spec_3_label": "PIPELINE",
+    "spec_3_value": "FTPS LIVE"
+  },
+  "homepage_puck_data": {
+    "root": {
+      "props": {
+        "title": "HERO DEFAULT Blueprint"
+      }
+    },
+    "content": [
+      {
+        "type": "OneBlock",
+        "props": {
+          "layout": "100",
+          "mobileLayout": "stack",
+          "flexRatio": 50,
+          "width": {
+            "d": "100%",
+            "t": "",
+            "m": ""
+          },
+          "height": {
+            "d": "auto",
+            "t": "",
+            "m": ""
+          },
+          "backgroundColor": {
+            "d": "#020617",
+            "t": "",
+            "m": ""
+          },
+          "padding": {
+            "d": "20px",
+            "t": "",
+            "m": ""
+          },
+          "borderRadius": "8px",
+          "gap": {
+            "d": "20px",
+            "t": "",
+            "m": ""
+          },
+          "leftColumnBg": "transparent",
+          "leftColumnPadding": "0px",
+          "leftColumnRadius": "0px",
+          "rightColumnBg": "transparent",
+          "rightColumnPadding": "0px",
+          "rightColumnRadius": "0px",
+          "objectFit": "contain",
+          "display": "block",
+          "justifyContent": "flex-start",
+          "alignment": "left",
+          "borderWidth": "2px",
+          "borderStyle": "solid",
+          "borderColor": "#e2e8f0",
+          "zoneBackgroundColor": "#f8fafc",
+          "zoneBorderWidth": "2px",
+          "zoneBorderStyle": "dashed",
+          "zoneBorderColor": "#cbd5e1",
+          "zoneBorderRadius": "6px",
+          "hideOnDesktop": "false",
+          "marginTop": {
+            "d": "0px",
+            "t": "",
+            "m": ""
+          },
+          "marginBottom": {
+            "d": "0px",
+            "t": "",
+            "m": ""
+          },
+          "marginLeft": {
+            "d": "0px",
+            "t": "",
+            "m": ""
+          },
+          "marginRight": {
+            "d": "0px",
+            "t": "",
+            "m": ""
+          },
+          "id": "OneBlock-bad9c9ac-1f0f-42f9-96de-148f4507666c"
+        }
+      }
+    ],
+    "zones": {
+      "OneBlock-bad9c9ac-1f0f-42f9-96de-148f4507666c:zone": [
+        {
+          "type": "ImageCarousel",
+          "props": {
+            "items": [
+              {
+                "src": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779815006561-42ucik2dh8r.jpeg",
+                "alt": "Image 1"
+              },
+              {
+                "src": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779815014061-pbxh2juy4zn.jpeg",
+                "alt": "Image 2"
+              },
+              {
+                "src": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779815024909-779xwtkr9h.jpeg",
+                "alt": "",
+                "href": "",
+                "sharePlatform": "none",
+                "target": "_self"
+              }
+            ],
+            "width": {
+              "d": "100%",
+              "t": "",
+              "m": "100%"
+            },
+            "height": {
+              "d": "450px",
+              "t": "",
+              "m": "320px"
+            },
+            "autoPlay": "true",
+            "interval": 3000,
+            "aspectRatio": {
+              "d": "16/9",
+              "t": "",
+              "m": "1/1"
+            },
+            "borderRadius": "24px",
+            "borderWidth": "1px",
+            "borderStyle": "solid",
+            "borderColor": "rgba(255,255,255,0.1)",
+            "boxShadow": "0 20px 50px rgba(0,0,0,0.5)",
+            "objectFit": "cover",
+            "display": "block",
+            "textAlign": "left",
+            "hideOnDesktop": "false",
+            "marginTop": {
+              "d": "0px",
+              "t": "",
+              "m": ""
+            },
+            "marginBottom": {
+              "d": "0px",
+              "t": "",
+              "m": ""
+            },
+            "fullWidthMobile": "false",
+            "id": "ImageCarousel-9afcfda8-4c6f-47e3-b300-9a249bc62352"
+          }
+        }
+      ]
+    }
+  },
+  "templates": {
+    "hero-default": {
+      "root": {
+        "props": {
+          "title": "HERO DEFAULT Blueprint"
+        }
+      },
+      "content": [
+        {
+          "type": "OneBlock",
+          "props": {
+            "layout": "100",
+            "mobileLayout": "stack",
+            "flexRatio": 50,
+            "width": {
+              "d": "100%",
+              "t": "",
+              "m": ""
+            },
+            "height": {
+              "d": "auto",
+              "t": "",
+              "m": ""
+            },
+            "backgroundColor": {
+              "d": "#f8fafc",
+              "t": "",
+              "m": ""
+            },
+            "padding": {
+              "d": "20px",
+              "t": "",
+              "m": ""
+            },
+            "borderRadius": "8px",
+            "gap": {
+              "d": "20px",
+              "t": "",
+              "m": ""
+            },
+            "leftColumnBg": "transparent",
+            "leftColumnPadding": "0px",
+            "leftColumnRadius": "0px",
+            "rightColumnBg": "transparent",
+            "rightColumnPadding": "0px",
+            "rightColumnRadius": "0px",
+            "objectFit": "contain",
+            "display": "block",
+            "justifyContent": "flex-start",
+            "alignment": "left",
+            "borderWidth": "2px",
+            "borderStyle": "solid",
+            "borderColor": "#e2e8f0",
+            "zoneBackgroundColor": "#f8fafc",
+            "zoneBorderWidth": "2px",
+            "zoneBorderStyle": "dashed",
+            "zoneBorderColor": "#cbd5e1",
+            "zoneBorderRadius": "6px",
+            "hideOnDesktop": "false",
+            "marginTop": {
+              "d": "0px",
+              "t": "",
+              "m": ""
+            },
+            "marginBottom": {
+              "d": "0px",
+              "t": "",
+              "m": ""
+            },
+            "marginLeft": {
+              "d": "0px",
+              "t": "",
+              "m": ""
+            },
+            "marginRight": {
+              "d": "0px",
+              "t": "",
+              "m": ""
+            },
+            "id": "OneBlock-bad9c9ac-1f0f-42f9-96de-148f4507666c"
+          }
+        }
+      ],
+      "zones": {
+        "OneBlock-bad9c9ac-1f0f-42f9-96de-148f4507666c:zone": [
+          {
+            "type": "ImageCarousel",
+            "props": {
+              "items": [
+                {
+                  "src": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779815006561-42ucik2dh8r.jpeg",
+                  "alt": "Image 1"
+                },
+                {
+                  "src": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779815014061-pbxh2juy4zn.jpeg",
+                  "alt": "Image 2"
+                },
+                {
+                  "src": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779815024909-779xwtkr9h.jpeg",
+                  "alt": "",
+                  "href": "",
+                  "sharePlatform": "none",
+                  "target": "_self"
+                }
+              ],
+              "width": {
+                "d": "100%",
+                "t": "",
+                "m": "100%"
+              },
+              "height": {
+                "d": "450px",
+                "t": "",
+                "m": "320px"
+              },
+              "autoPlay": "false",
+              "interval": 3000,
+              "aspectRatio": {
+                "d": "16/9",
+                "t": "",
+                "m": "1/1"
+              },
+              "borderRadius": "24px",
+              "borderWidth": "1px",
+              "borderStyle": "solid",
+              "borderColor": "rgba(255,255,255,0.1)",
+              "boxShadow": "0 20px 50px rgba(0,0,0,0.5)",
+              "objectFit": "cover",
+              "display": "block",
+              "textAlign": "left",
+              "hideOnDesktop": "false",
+              "marginTop": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "marginBottom": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "fullWidthMobile": "false",
+              "id": "ImageCarousel-9afcfda8-4c6f-47e3-b300-9a249bc62352"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

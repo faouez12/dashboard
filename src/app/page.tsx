@@ -21,6 +21,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import AuroraBackground from "@/components/AuroraBackground";
 import { EvervaultCard } from "@/components/ui/EvervaultCard";
+import { fetchHeroSettings, fetchEvents, fetchHomepagePuckData } from "@/app/admin/actions";
+import { Render } from "@measured/puck";
+import { config as puckConfig } from "@/app/admin/dashboard/components/puck-config";
 
 // Register ScrollTrigger client-side
 if (typeof window !== "undefined") {
@@ -162,6 +165,40 @@ export default function Home() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Dynamic Settings and Database State
+  const [hero, setHero] = useState<any>(null);
+  const [dbEvents, setDbEvents] = useState<any[]>([]);
+  const [currentMediaIdx, setCurrentMediaIdx] = useState(0);
+  const [puckData, setPuckData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const h = await fetchHeroSettings();
+        setHero(h);
+        const evts = await fetchEvents();
+        setDbEvents(evts);
+        const pData = await fetchHomepagePuckData();
+        setPuckData(pData);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
+  // Carousel Interval
+  useEffect(() => {
+    if (!hero || hero.background_type === 'aurora' || !hero.media_urls || hero.media_urls.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentMediaIdx(prev => (prev + 1) % hero.media_urls.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [hero]);
+
   // Handle Form Change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -169,22 +206,44 @@ export default function Home() {
   };
 
   // Handle Form Submit
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setFormSubmitted(true);
-      setFormData({
-        name: "",
-        email: "",
-        eventDetails: "",
-        date: "",
-        runners: "",
-        message: ""
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          topic: 'Booking Inquiry',
+          type: 'booking',
+          eventDetails: formData.eventDetails,
+          date: formData.date,
+          runners: formData.runners
+        })
       });
-    }, 1500);
+      if (res.ok) {
+        setFormSubmitted(true);
+        setFormData({
+          name: "",
+          email: "",
+          eventDetails: "",
+          date: "",
+          runners: "",
+          message: ""
+        });
+      } else {
+        alert('Failed to submit booking inquiry. Please try again.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error submitting inquiry.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // 3D Perspective Card Tilt handler (desktop only)
@@ -222,15 +281,21 @@ export default function Home() {
     });
   };
 
+  const hasPuckData = puckData && puckData.content && puckData.content.length > 0;
+
   // GSAP 2026 Overhaul Animations
   useGSAP(() => {
+    if (loading) return;
+    
     // 1. Initial Page Load Clip-Path Reveal (Header titles)
-    gsap.from(".hero-text-reveal", {
-      y: "115%",
-      duration: 1.4,
-      ease: "power4.out",
-      stagger: 0.15
-    });
+    if (!hasPuckData) {
+      gsap.from(".hero-text-reveal", {
+        y: "115%",
+        duration: 1.4,
+        ease: "power4.out",
+        stagger: 0.15
+      });
+    }
 
     // 2. Horizontal Scroll Pinning (Desktop only)
     const mm = gsap.matchMedia();
@@ -317,33 +382,73 @@ export default function Home() {
       duration: 1,
       ease: "power3.out"
     });
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [loading, hasPuckData] });
+
+  if (loading) {
+    return (
+      <div className="h-screen w-screen bg-[#070708] flex items-center justify-center font-mono text-[10px] uppercase tracking-widest text-[#ccff00] italic animate-pulse">
+        Decrypting_Matrix_Stream...
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="bg-background text-foreground flex-1 flex flex-col font-sans">
       
       {/* Main Content */}
       <main className="flex-1 flex flex-col pt-20">
-
-        {/* Cinematic Minimal Hero Section */}
-        <section className="relative min-h-[90vh] border-b border-border overflow-hidden">
-          <AuroraBackground className="min-h-[90vh] flex flex-col justify-center px-6 md:px-16">
-            <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col justify-between py-12">
+        {hasPuckData ? 
+          <Render config={puckConfig} data={puckData} />
+         : 
+          <section className="relative min-h-[90vh] border-b border-border overflow-hidden bg-zinc-950">
+          {/* Background render selector */}
+          {hero?.background_type === 'video_carousel' && hero.media_urls && hero.media_urls.length > 0 ? (
+            <div className="absolute inset-0 z-0 bg-black pointer-events-none">
+              <video
+                key={hero.media_urls[currentMediaIdx]}
+                src={hero.media_urls[currentMediaIdx]}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover opacity-35 transition-opacity duration-1000"
+              />
+            </div>
+          ) : hero?.background_type === 'image_carousel' && hero.media_urls && hero.media_urls.length > 0 ? (
+            <div className="absolute inset-0 z-0 bg-black pointer-events-none">
+              {hero.media_urls.map((url: string, idx: number) => (
+                <div
+                  key={url}
+                  style={{ backgroundImage: `url(${url})` }}
+                  className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+                    idx === currentMediaIdx ? 'opacity-35' : 'opacity-0'
+                  }`}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
+              <AuroraBackground className="min-h-[90vh]" />
+            </div>
+          )}
+          
+          <div className="relative z-10 min-h-[90vh] flex flex-col justify-center px-6 md:px-16">
+            <div className="max-w-7xl mx-auto w-full flex flex-col justify-between py-12">
               
               <div className="flex flex-col gap-6 max-w-4xl">
                 <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono border border-accent/20 bg-accent/5 px-4 py-1.5 rounded-full self-start">
-                  SPORTS PHOTOGRAPHY REDEFINED
+                  {hero?.badge || "SPORTS PHOTOGRAPHY REDEFINED"}
                 </span>
                 
                 {/* Masked Clip-Path Typography */}
                 <h1 className="text-5xl md:text-8xl font-black uppercase font-display leading-[0.9] tracking-tighter">
-                  <div className="overflow-hidden inline-block"><span className="hero-text-reveal block">CAPTURE</span></div><br/>
-                  <div className="overflow-hidden inline-block"><span className="hero-text-reveal block text-accent">THE GRIT</span></div><br/>
-                  <div className="overflow-hidden inline-block"><span className="hero-text-reveal block">ON THE COURSE</span></div>
+                  <div className="overflow-hidden inline-block"><span className="hero-text-reveal block">{hero?.title_line_1 || "CAPTURE"}</span></div><br/>
+                  <div className="overflow-hidden inline-block"><span className="hero-text-reveal block text-accent">{hero?.title_line_2 || "THE GRIT"}</span></div><br/>
+                  <div className="overflow-hidden inline-block"><span className="hero-text-reveal block">{hero?.title_line_3 || "ON THE COURSE"}</span></div>
                 </h1>
 
                 <p className="text-base md:text-xl text-muted-foreground max-w-xl font-medium mt-4 leading-relaxed">
-                  Translating the raw victory, sweat, and split-second milestones of marathon and trail running events into high-performance visual assets for race organizers and global athletics brands.
+                  {hero?.description || "Translating the raw victory, sweat, and split-second milestones of marathon and trail running events into high-performance visual assets for race organizers and global athletics brands."}
                 </p>
               </div>
 
@@ -367,25 +472,26 @@ export default function Home() {
                 {/* Specs Overlay */}
                 <div className="flex gap-8 text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
                   <div>
-                    <div className="text-accent font-bold">SHUTTER</div>
-                    <div className="text-foreground font-extrabold mt-0.5">1/2000S</div>
+                    <div className="text-accent font-bold">{hero?.spec_1_label || "SHUTTER"}</div>
+                    <div className="text-foreground font-extrabold mt-0.5">{hero?.spec_1_value || "1/2000S"}</div>
                   </div>
                   <div className="w-[1px] bg-border/40 h-8 self-center" />
                   <div>
-                    <div className="text-accent font-bold">RESOLUTION</div>
-                    <div className="text-foreground font-extrabold mt-0.5">50.1MP</div>
+                    <div className="text-accent font-bold">{hero?.spec_2_label || "RESOLUTION"}</div>
+                    <div className="text-foreground font-extrabold mt-0.5">{hero?.spec_2_value || "50.1MP"}</div>
                   </div>
                   <div className="w-[1px] bg-border/40 h-8 self-center" />
                   <div>
-                    <div className="text-accent font-bold">PIPELINE</div>
-                    <div className="text-foreground font-extrabold mt-0.5">FTPS LIVE</div>
+                    <div className="text-accent font-bold">{hero?.spec_3_label || "PIPELINE"}</div>
+                    <div className="text-foreground font-extrabold mt-0.5">{hero?.spec_3_value || "FTPS LIVE"}</div>
                   </div>
                 </div>
               </div>
 
             </div>
-          </AuroraBackground>
+          </div>
         </section>
+      }
 
         {/* Infinite Typography Marquee Ticker */}
         <div className="w-full overflow-hidden bg-accent py-5 border-y border-border flex whitespace-nowrap text-accent-foreground font-display font-black uppercase text-xl md:text-3xl tracking-widest pointer-events-none z-10 relative">
@@ -533,7 +639,7 @@ export default function Home() {
               {/* Horizontal Scroll sliding panel on Right */}
               <div className="md:col-span-8 overflow-hidden py-10" style={{ perspective: "1000px" }}>
                 <div className="horizontal-container flex flex-row gap-6 md:gap-10 pl-0 md:pl-8 pr-0 md:pr-24 overflow-x-auto md:overflow-x-visible w-full scroll-smooth snap-x snap-mandatory md:snap-none pb-6 md:pb-0">
-                  {EVENTS_DATA.map((event) => (
+                  {(dbEvents.length > 0 ? dbEvents : EVENTS_DATA).map((event) => (
                     <div
                       key={event.id}
                       onMouseMove={handleCardMouseMove}

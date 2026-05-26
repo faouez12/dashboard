@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { 
   Camera, 
@@ -13,14 +13,14 @@ import {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { fetchEvents } from "@/app/admin/actions";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Event items list
 interface EventItem {
-  id: number;
+  id: string;
   slug: string;
   title: string;
   location: string;
@@ -34,7 +34,7 @@ interface EventItem {
 
 const EVENTS_DATA: EventItem[] = [
   {
-    id: 1,
+    id: "evt-1",
     slug: "boston-marathon",
     title: "Boston Marathon",
     location: "Boston, USA",
@@ -46,7 +46,7 @@ const EVENTS_DATA: EventItem[] = [
     highlight: "Finish line stagers & heartbreaks"
   },
   {
-    id: 2,
+    id: "evt-2",
     slug: "utmb-mont-blanc",
     title: "UTMB Mont Blanc",
     location: "Chamonix, France",
@@ -56,53 +56,32 @@ const EVENTS_DATA: EventItem[] = [
     gradient: "from-teal-950/40 via-zinc-950 to-zinc-900",
     desc: "Physically demanding trail documentation covering remote ridges, alpine night stretches, and extreme altitude weather conditions.",
     highlight: "Ridge running & sub-zero mountain pass shots"
-  },
-  {
-    id: 3,
-    slug: "london-marathon",
-    title: "London Marathon",
-    location: "London, UK",
-    date: "April 2026",
-    type: "marathon",
-    runners: "40,000+ Runners",
-    gradient: "from-teal-950/40 via-zinc-950 to-zinc-900",
-    desc: "Wide crowds and landmark framing. Highlighting brand sponsor placements along the River Thames and historic bridges.",
-    highlight: "Tower Bridge pack dynamics & sponsor branding"
-  },
-  {
-    id: 4,
-    slug: "zermatt-mountain-marathon",
-    title: "Zermatt Mountain Marathon",
-    location: "Zermatt, Switzerland",
-    date: "July 2025",
-    type: "trail",
-    runners: "3,000+ Runners",
-    gradient: "from-sky-950/40 via-zinc-950 to-zinc-900",
-    desc: "Sublime mountain backdrops framing high-intensity trail effort, shot on narrow paths with lightweight weatherized rigs.",
-    highlight: "Matterhorn background compression portraits"
-  },
-  {
-    id: 5,
-    slug: "berlin-marathon",
-    title: "Berlin Marathon",
-    location: "Berlin, Germany",
-    date: "September 2025",
-    type: "marathon",
-    runners: "45,000+ Runners",
-    gradient: "from-neutral-900 via-zinc-950 to-neutral-900",
-    desc: "Speed-focused documentation of the world's fastest course. Catching shoe strikes, stride mechanics, and historic gate crossings.",
-    highlight: "Elite shoe macros & Brandenburg Gate finish"
   }
 ];
 
 export default function EventsArchivePage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeFilter, setActiveFilter] = useState<"all" | "marathon" | "trail" | "cycling">("all");
+  const [dbEvents, setDbEvents] = useState<EventItem[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await fetchEvents();
+        setDbEvents(data as any as EventItem[]);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    load();
+  }, []);
+
+  const eventsSource = dbEvents.length > 0 ? dbEvents : EVENTS_DATA;
 
   // Filtering logic
   const filteredEvents = activeFilter === "all"
-    ? EVENTS_DATA
-    : EVENTS_DATA.filter(ev => ev.type === activeFilter);
+    ? eventsSource
+    : eventsSource.filter(ev => ev.type === activeFilter);
 
   useGSAP(() => {
     // Header anims
@@ -176,7 +155,7 @@ export default function EventsArchivePage() {
               >
                 {/* Simulated Thumbnail */}
                 <div className={`h-48 w-full bg-gradient-to-tr ${event.gradient} flex items-center justify-center p-6 relative overflow-hidden`}>
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-300" />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300" />
                   <Camera className="h-10 w-10 text-white/10 group-hover:scale-110 transition-transform duration-500 relative z-10" />
                   
                   <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded border border-white/10 text-[10px] font-mono text-white/90">

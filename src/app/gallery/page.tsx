@@ -5,99 +5,66 @@ import { Camera, MapPin, Calendar, Layers, Maximize2, X, Sparkles, Filter } from
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import AuroraBackground from "@/components/AuroraBackground";
-import { EvervaultCard } from "@/components/ui/EvervaultCard";
+import { fetchGalleryItems } from "@/app/admin/actions";
+import Image from "next/image";
 
 interface GalleryItem {
-  id: number;
+  id: string;
   title: string;
   category: "road" | "trail" | "brand" | "action";
   location: string;
   specs: string;
+  image_url: string;
   gradient: string;
   description: string;
   year: string;
+  created_at?: string;
 }
 
 const GALLERY_DATA: GalleryItem[] = [
   {
-    id: 1,
+    id: "gal-1",
     title: "Apex Stride",
     category: "road",
     location: "Berlin Marathon",
     specs: "85mm • f/2.0 • 1/2000s • ISO 100",
+    image_url: "",
     gradient: "from-blue-900/60 to-slate-900",
     description: "An elite runner's foot strike capturing the exact moment of energy release on tarmac.",
     year: "2025"
   },
   {
-    id: 2,
+    id: "gal-2",
     title: "Summit Ridge Line",
     category: "trail",
     location: "UTMB Chamonix",
     specs: "400mm • f/2.8 • 1/1600s • ISO 200",
+    image_url: "",
     gradient: "from-teal-900/60 to-slate-900",
     description: "Endurance athletes dwarfed by the massive granite spikes of the French Alps under high-contrast noon light.",
     year: "2025"
   },
   {
-    id: 3,
+    id: "gal-3",
     title: "Velocity Branding",
     category: "brand",
     location: "Zenith Footwear Campaign",
     specs: "50mm • f/1.4 • 1/4000s • ISO 50",
+    image_url: "",
     gradient: "from-teal-900/60 to-slate-900",
     description: "Commercial campaign detailing shoe mechanics, mud sprays, and brand logo placement in active trail conditions.",
     year: "2026"
   },
   {
-    id: 4,
+    id: "gal-4",
     title: "Heartbreak Peak",
     category: "action",
     location: "Boston Marathon",
     specs: "135mm • f/1.8 • 1/1600s • ISO 100",
+    image_url: "",
     gradient: "from-rose-900/60 to-slate-900",
     description: "Close-up portrait of extreme grit and sweat during the final incline pushes near Mile 21.",
     year: "2026"
-  },
-  {
-    id: 5,
-    title: "The Chamonix Glow",
-    category: "trail",
-    location: "Zermatt Ultra",
-    specs: "24mm • f/4.0 • 1/80s • ISO 800",
-    gradient: "from-amber-900/60 to-slate-900",
-    description: "Headlamp trails of ultra runners winding up alpine switchbacks during the pre-dawn freezing hours.",
-    year: "2025"
-  },
-  {
-    id: 6,
-    title: "Tower Pack Flow",
-    category: "road",
-    location: "London Marathon",
-    specs: "70mm • f/2.8 • 1/1200s • ISO 100",
-    gradient: "from-sky-900/60 to-slate-900",
-    description: "Compressed perspective showing thousands of runners crossing the historic Tower Bridge.",
-    year: "2026"
-  },
-  {
-    id: 7,
-    title: "Fluid Hydration",
-    category: "brand",
-    location: "HydraGel Commercial",
-    specs: "90mm Macro • f/3.2 • 1/1000s • ISO 160",
-    gradient: "from-blue-950/60 to-slate-900",
-    description: "Micro details of ice and sweat droplets forming on an athlete's specialized hydration flask.",
-    year: "2026"
-  },
-  {
-    id: 8,
-    title: "The Finish Leap",
-    category: "action",
-    location: "Berlin Finish Arch",
-    specs: "50mm • f/1.8 • 1/2500s • ISO 200",
-    gradient: "from-teal-900/60 to-slate-900",
-    description: "Capturing the final, victorious step of an amateur marathoner leaping over the timer mat.",
-    year: "2025"
   }
 ];
 
@@ -105,10 +72,25 @@ export default function GalleryPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeFilter, setActiveFilter] = useState<"all" | "road" | "trail" | "brand" | "action">("all");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const [dbItems, setDbItems] = useState<GalleryItem[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await fetchGalleryItems();
+        setDbItems(data as GalleryItem[]);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    load();
+  }, []);
+
+  const gallerySource = dbItems.length > 0 ? dbItems : GALLERY_DATA;
 
   const filteredItems = activeFilter === "all"
-    ? GALLERY_DATA
-    : GALLERY_DATA.filter(item => item.category === activeFilter);
+    ? gallerySource
+    : gallerySource.filter(item => item.category === activeFilter);
 
   useGSAP(() => {
     // Header text entrance
@@ -197,12 +179,22 @@ export default function GalleryPage() {
                 onClick={() => setSelectedItem(item)}
                 className="group relative h-96 rounded-[2rem] overflow-hidden border border-border bg-muted/10 flex flex-col justify-end p-8 cursor-pointer hover:border-accent/40 transition-all duration-300 hover:-translate-y-1 grid-item-anim"
               >
-                {/* Visual Block Gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-tr ${item.gradient} opacity-25 group-hover:opacity-40 transition-opacity duration-500 z-0`} />
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors pointer-events-none z-0" />
+                {/* Visual Block Gradient or R2 Image */}
+                {item.image_url ? (
+                  <Image
+                    src={item.image_url}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 30vw"
+                    className="absolute inset-0 object-cover opacity-55 group-hover:opacity-75 transition-opacity duration-500 z-0"
+                  />
+                ) : (
+                  <div className={`absolute inset-0 bg-gradient-to-tr ${item.gradient} opacity-25 group-hover:opacity-40 transition-opacity duration-500 z-0`} />
+                )}
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors pointer-events-none z-0" />
 
                 {/* Tech Specs Overlay */}
-                <div className="absolute inset-0 flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/80 z-10 rounded-[2rem]">
+                <div className="absolute inset-0 flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/85 z-10 rounded-[2rem]">
                   <span className="text-[10px] uppercase font-mono tracking-widest text-accent bg-accent/10 px-3 py-1 rounded border border-accent/20 self-start font-bold">
                     {item.category}
                   </span>
@@ -256,10 +248,16 @@ export default function GalleryPage() {
               <X className="h-5 w-5" />
             </button>
 
-            {/* Image Placeholder Block */}
+            {/* Image Block */}
             <div className={`h-[50vh] min-h-[350px] w-full bg-gradient-to-tr ${selectedItem.gradient} flex items-center justify-center relative p-8`}>
-              <div className="absolute inset-0 bg-black/25" />
-              <Camera className="h-16 w-16 text-white/15 relative z-10 animate-pulse" />
+              {selectedItem.image_url ? (
+                <Image src={selectedItem.image_url} alt={selectedItem.title} fill className="object-cover" />
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-black/25" />
+                  <Camera className="h-16 w-16 text-white/15 relative z-10 animate-pulse" />
+                </>
+              )}
               
               <div className="absolute bottom-6 left-6 z-10 flex items-center gap-2 bg-black/70 px-4 py-2 rounded-lg border border-white/10 text-[10px] font-mono text-white/95 uppercase tracking-wider">
                 <Sparkles className="h-4 w-4 text-accent animate-pulse" />
@@ -296,7 +294,7 @@ export default function GalleryPage() {
                 <div className="flex flex-col gap-2">
                   <span className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold font-mono">Artistic & Technical Direction</span>
                   <p className="text-sm text-muted-foreground leading-relaxed mt-0.5">
-                    {selectedItem.description} Focus is locked dynamic on runners center point, emphasizing biomechanical motion against blurred natural environment backgrounds.
+                    {selectedItem.description} Composition is oriented dynamically, emphasizing athletic kinetics against blurred natural backgrounds.
                   </p>
                 </div>
               </div>
