@@ -23,7 +23,7 @@ export default function Footer() {
           <span>•</span>
           <span>Resolution: 50.1MP</span>
           <span>•</span>
-          <span>Volt-Mode Active</span>
+          <span>Cobalt-Obsidian Active</span>
         </div>
       </div>
     </footer>

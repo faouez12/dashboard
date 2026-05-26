@@ -89,6 +89,8 @@ export default function Header() {
   const navLinks = [
     { label: "Specialization", href: "/#about" },
     { label: "Race Events", href: "/events" },
+    { label: "Gallery", href: "/gallery" },
+    { label: "Journal", href: "/blog" },
     { label: "About & Gear", href: "/about" }
   ];
 

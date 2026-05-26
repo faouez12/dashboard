@@ -41,7 +41,7 @@ const EVENTS_DATA: EventItem[] = [
     date: "April 2026",
     type: "marathon",
     runners: "30,000+ Runners",
-    gradient: "from-lime-950/40 via-zinc-950 to-zinc-900",
+    gradient: "from-blue-950/40 via-zinc-950 to-zinc-900",
     desc: "Elite road coverage focusing on key mile marks, historic pacing, and high-tension emotional finishes near Copley Square.",
     highlight: "Finish line stagers & heartbreaks"
   },
@@ -53,7 +53,7 @@ const EVENTS_DATA: EventItem[] = [
     date: "August 2025",
     type: "trail",
     runners: "10,000+ Runners",
-    gradient: "from-teal-950/40 via-zinc-950 to-zinc-900",
+    gradient: "from-indigo-950/40 via-zinc-950 to-zinc-900",
     desc: "Physically demanding trail documentation covering remote ridges, alpine night stretches, and extreme altitude weather conditions.",
     highlight: "Ridge running & sub-zero mountain pass shots"
   },
@@ -65,7 +65,7 @@ const EVENTS_DATA: EventItem[] = [
     date: "April 2026",
     type: "marathon",
     runners: "40,000+ Runners",
-    gradient: "from-cyan-950/40 via-zinc-950 to-zinc-900",
+    gradient: "from-violet-950/40 via-zinc-950 to-zinc-900",
     desc: "Wide crowds and landmark framing. Highlighting brand sponsor placements along the River Thames and historic bridges.",
     highlight: "Tower Bridge pack dynamics & sponsor branding"
   },
@@ -77,7 +77,7 @@ const EVENTS_DATA: EventItem[] = [
     date: "July 2025",
     type: "trail",
     runners: "3,000+ Runners",
-    gradient: "from-teal-950/40 via-zinc-950 to-zinc-900",
+    gradient: "from-sky-950/40 via-zinc-950 to-zinc-900",
     desc: "Sublime mountain backdrops framing high-intensity trail effort, shot on narrow paths with lightweight weatherized rigs.",
     highlight: "Matterhorn background compression portraits"
   },

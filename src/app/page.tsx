@@ -19,6 +19,8 @@ import {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import AuroraBackground from "@/components/AuroraBackground";
+import { EvervaultCard } from "@/components/ui/EvervaultCard";
 
 // Register ScrollTrigger client-side
 if (typeof window !== "undefined") {
@@ -324,65 +326,65 @@ export default function Home() {
       <main className="flex-1 flex flex-col pt-20">
 
         {/* Cinematic Minimal Hero Section */}
-        <section className="relative min-h-[90vh] flex flex-col justify-center px-6 md:px-16 border-b border-border overflow-hidden bg-gradient-to-b from-background via-[#0c0d21]/20 to-background">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-accent/5 via-transparent to-transparent opacity-75" />
-          
-          <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col justify-between py-12">
-            
-            <div className="flex flex-col gap-6 max-w-4xl">
-              <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono border border-accent/20 bg-accent/5 px-4 py-1.5 rounded-full self-start">
-                SPORTS PHOTOGRAPHY REDEFINED
-              </span>
+        <section className="relative min-h-[90vh] border-b border-border overflow-hidden">
+          <AuroraBackground className="min-h-[90vh] flex flex-col justify-center px-6 md:px-16">
+            <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col justify-between py-12">
               
-              {/* Masked Clip-Path Typography */}
-              <h1 className="text-5xl md:text-8xl font-black uppercase font-display leading-[0.9] tracking-tighter">
-                <div className="overflow-hidden inline-block"><span className="hero-text-reveal block">CAPTURE</span></div><br/>
-                <div className="overflow-hidden inline-block"><span className="hero-text-reveal block text-accent">THE GRIT</span></div><br/>
-                <div className="overflow-hidden inline-block"><span className="hero-text-reveal block">ON THE COURSE</span></div>
-              </h1>
+              <div className="flex flex-col gap-6 max-w-4xl">
+                <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono border border-accent/20 bg-accent/5 px-4 py-1.5 rounded-full self-start">
+                  SPORTS PHOTOGRAPHY REDEFINED
+                </span>
+                
+                {/* Masked Clip-Path Typography */}
+                <h1 className="text-5xl md:text-8xl font-black uppercase font-display leading-[0.9] tracking-tighter">
+                  <div className="overflow-hidden inline-block"><span className="hero-text-reveal block">CAPTURE</span></div><br/>
+                  <div className="overflow-hidden inline-block"><span className="hero-text-reveal block text-accent">THE GRIT</span></div><br/>
+                  <div className="overflow-hidden inline-block"><span className="hero-text-reveal block">ON THE COURSE</span></div>
+                </h1>
 
-              <p className="text-base md:text-xl text-muted-foreground max-w-xl font-medium mt-4 leading-relaxed">
-                Translating the raw victory, sweat, and split-second milestones of marathon and trail running events into high-performance visual assets for race organizers and global athletics brands.
-              </p>
-            </div>
-
-            {/* Micro Specs and CTAs */}
-            <div className="mt-16 flex flex-col md:flex-row md:items-center justify-between gap-8 border-t border-border/30 pt-10">
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href="#book"
-                  className="flex items-center gap-2.5 px-8 py-4 bg-accent text-accent-foreground font-black uppercase tracking-wide rounded-md transition-transform hover:scale-102 shadow-lg shadow-accent/15 text-xs cursor-pointer"
-                >
-                  Book Race Coverage <ArrowRight className="h-4 w-4 text-accent-foreground" />
-                </a>
-                <a
-                  href="#gallery"
-                  className="px-8 py-4 border border-border hover:bg-muted text-foreground font-bold uppercase tracking-wide rounded-md transition-colors text-xs"
-                >
-                  Explore Chronicles
-                </a>
+                <p className="text-base md:text-xl text-muted-foreground max-w-xl font-medium mt-4 leading-relaxed">
+                  Translating the raw victory, sweat, and split-second milestones of marathon and trail running events into high-performance visual assets for race organizers and global athletics brands.
+                </p>
               </div>
 
-              {/* Specs Overlay */}
-              <div className="flex gap-8 text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
-                <div>
-                  <div className="text-accent font-bold">SHUTTER</div>
-                  <div className="text-foreground font-extrabold mt-0.5">1/2000S</div>
+              {/* Micro Specs and CTAs */}
+              <div className="mt-16 flex flex-col md:flex-row md:items-center justify-between gap-8 border-t border-border/30 pt-10">
+                <div className="flex flex-wrap gap-4">
+                  <a
+                    href="#book"
+                    className="flex items-center gap-2.5 px-8 py-4 bg-accent text-accent-foreground font-black uppercase tracking-wide rounded-md transition-transform hover:scale-102 shadow-lg shadow-accent/15 text-xs cursor-pointer"
+                  >
+                    Book Race Coverage <ArrowRight className="h-4 w-4 text-accent-foreground" />
+                  </a>
+                  <a
+                    href="#gallery"
+                    className="px-8 py-4 border border-border hover:bg-muted text-foreground font-bold uppercase tracking-wide rounded-md transition-colors text-xs"
+                  >
+                    Explore Chronicles
+                  </a>
                 </div>
-                <div className="w-[1px] bg-border/40 h-8 self-center" />
-                <div>
-                  <div className="text-accent font-bold">RESOLUTION</div>
-                  <div className="text-foreground font-extrabold mt-0.5">50.1MP</div>
-                </div>
-                <div className="w-[1px] bg-border/40 h-8 self-center" />
-                <div>
-                  <div className="text-accent font-bold">PIPELINE</div>
-                  <div className="text-foreground font-extrabold mt-0.5">FTPS LIVE</div>
+
+                {/* Specs Overlay */}
+                <div className="flex gap-8 text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
+                  <div>
+                    <div className="text-accent font-bold">SHUTTER</div>
+                    <div className="text-foreground font-extrabold mt-0.5">1/2000S</div>
+                  </div>
+                  <div className="w-[1px] bg-border/40 h-8 self-center" />
+                  <div>
+                    <div className="text-accent font-bold">RESOLUTION</div>
+                    <div className="text-foreground font-extrabold mt-0.5">50.1MP</div>
+                  </div>
+                  <div className="w-[1px] bg-border/40 h-8 self-center" />
+                  <div>
+                    <div className="text-accent font-bold">PIPELINE</div>
+                    <div className="text-foreground font-extrabold mt-0.5">FTPS LIVE</div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-          </div>
+            </div>
+          </AuroraBackground>
         </section>
 
         {/* Infinite Typography Marquee Ticker */}
@@ -436,28 +438,24 @@ export default function Home() {
               {/* Left staggered cards */}
               <div className="flex flex-col gap-8 md:translate-y-0">
                 {SPECIALTIES.slice(0, 2).map((spec, idx) => (
-                  <div 
-                    key={idx} 
-                    onMouseMove={handleCardMouseMove}
-                    onMouseLeave={handleCardMouseLeave}
-                    className="border border-border p-8 rounded-[2rem] bg-muted/10 flex flex-col gap-6 spec-card-anim transition-all duration-300"
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    <div className="flex justify-between items-start" style={{ transform: "translateZ(30px)" }}>
-                      <div className="p-3 bg-muted border border-border rounded-xl text-accent">
-                        {spec.icon}
+                  <div key={idx} className="spec-card-anim h-[280px]">
+                    <EvervaultCard>
+                      <div className="flex justify-between items-start w-full">
+                        <div className="p-3 bg-muted border border-border rounded-xl text-accent">
+                          {spec.icon}
+                        </div>
+                        <span 
+                          className="text-4xl font-black font-display text-transparent"
+                          style={{ WebkitTextStroke: "1px var(--border)" }}
+                        >
+                          {spec.num}
+                        </span>
                       </div>
-                      <span 
-                        className="text-4xl font-black font-display text-transparent"
-                        style={{ WebkitTextStroke: "1px var(--border)" }}
-                      >
-                        {spec.num}
-                      </span>
-                    </div>
-                    <div style={{ transform: "translateZ(20px)" }}>
-                      <h3 className="text-lg font-bold uppercase tracking-tight font-display text-white">{spec.title}</h3>
-                      <p className="text-muted-foreground text-xs leading-relaxed mt-2">{spec.desc}</p>
-                    </div>
+                      <div className="mt-auto">
+                        <h3 className="text-lg font-bold uppercase tracking-tight font-display text-white">{spec.title}</h3>
+                        <p className="text-muted-foreground text-xs leading-relaxed mt-2">{spec.desc}</p>
+                      </div>
+                    </EvervaultCard>
                   </div>
                 ))}
               </div>
@@ -465,44 +463,40 @@ export default function Home() {
               {/* Right staggered cards with offset */}
               <div className="flex flex-col gap-8 md:translate-y-16">
                 {SPECIALTIES.slice(2).map((spec, idx) => (
-                  <div 
-                    key={idx} 
-                    onMouseMove={handleCardMouseMove}
-                    onMouseLeave={handleCardMouseLeave}
-                    className="border border-border p-8 rounded-[2rem] bg-muted/10 flex flex-col gap-6 spec-card-anim transition-all duration-300"
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    <div className="flex justify-between items-start" style={{ transform: "translateZ(30px)" }}>
-                      <div className="p-3 bg-muted border border-border rounded-xl text-accent">
-                        {spec.icon}
+                  <div key={idx} className="spec-card-anim h-[280px]">
+                    <EvervaultCard>
+                      <div className="flex justify-between items-start w-full">
+                        <div className="p-3 bg-muted border border-border rounded-xl text-accent">
+                          {spec.icon}
+                        </div>
+                        <span 
+                          className="text-4xl font-black font-display text-transparent"
+                          style={{ WebkitTextStroke: "1px var(--border)" }}
+                        >
+                          {spec.num}
+                        </span>
                       </div>
-                      <span 
-                        className="text-4xl font-black font-display text-transparent"
-                        style={{ WebkitTextStroke: "1px var(--border)" }}
-                      >
-                        {spec.num}
-                      </span>
-                    </div>
-                    <div style={{ transform: "translateZ(20px)" }}>
-                      <h3 className="text-lg font-bold uppercase tracking-tight font-display text-white">{spec.title}</h3>
-                      <p className="text-muted-foreground text-xs leading-relaxed mt-2">{spec.desc}</p>
-                    </div>
+                      <div className="mt-auto">
+                        <h3 className="text-lg font-bold uppercase tracking-tight font-display text-white">{spec.title}</h3>
+                        <p className="text-muted-foreground text-xs leading-relaxed mt-2">{spec.desc}</p>
+                      </div>
+                    </EvervaultCard>
                   </div>
                 ))}
                 
                 {/* Visual Accent Box */}
-                <div 
-                  onMouseMove={handleCardMouseMove}
-                  onMouseLeave={handleCardMouseLeave}
-                  className="border border-accent/20 p-8 rounded-[2rem] bg-accent/5 flex flex-col justify-between h-56 relative overflow-hidden transition-all duration-300"
-                  style={{ transformStyle: "preserve-3d" }}
-                >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 blur-3xl pointer-events-none" />
-                  <Sparkles className="h-8 w-8 text-accent animate-pulse" style={{ transform: "translateZ(30px)" }} />
-                  <div style={{ transform: "translateZ(20px)" }}>
-                    <h4 className="text-sm font-extrabold uppercase text-white tracking-wide">Looking for Custom Rates?</h4>
-                    <p className="text-[10px] text-muted-foreground mt-1.5">Custom media structures configured specifically to client runner counts and commercial logo deliveries.</p>
-                  </div>
+                <div className="spec-card-anim h-[240px]">
+                  <EvervaultCard className="border border-accent/20 bg-accent/5">
+                    <div className="w-full">
+                      <Sparkles className="h-8 w-8 text-accent animate-pulse" />
+                    </div>
+                    <div className="mt-auto">
+                      <h4 className="text-sm font-extrabold uppercase text-white tracking-wide">Looking for Custom Rates?</h4>
+                      <p className="text-[10px] text-muted-foreground mt-1.5 leading-relaxed">
+                        Custom media structures configured specifically to client runner counts and commercial logo deliveries.
+                      </p>
+                    </div>
+                  </EvervaultCard>
                 </div>
               </div>
 

@@ -25,20 +25,24 @@ export default function CustomCursor() {
       const { clientX: x, clientY: y } = e;
 
       // Animate dot instantly
-      gsap.to(cursorDotRef.current, {
-        x: x,
-        y: y,
-        duration: 0.05,
-        ease: "power2.out",
-      });
+      if (cursorDotRef.current) {
+        gsap.to(cursorDotRef.current, {
+          x: x,
+          y: y,
+          duration: 0.05,
+          ease: "power2.out",
+        });
+      }
 
       // Lag animation for the ring
-      gsap.to(cursorRingRef.current, {
-        x: x - 16, // Center ring (32px width / 2)
-        y: y - 16,
-        duration: 0.35,
-        ease: "power3.out",
-      });
+      if (cursorRingRef.current) {
+        gsap.to(cursorRingRef.current, {
+          x: x - 16, // Center ring (32px width / 2)
+          y: y - 16,
+          duration: 0.35,
+          ease: "power3.out",
+        });
+      }
     };
 
     const onMouseEnter = () => setIsVisible(true);
@@ -57,28 +61,36 @@ export default function CustomCursor() {
 
       if (isInteractive) {
         setIsHovered(true);
-        gsap.to(cursorRingRef.current, {
-          scale: 1.8,
-          borderColor: "#5865f2",
-          backgroundColor: "rgba(88, 101, 242, 0.1)",
-          duration: 0.3,
-        });
-        gsap.to(cursorDotRef.current, {
-          scale: 0.5,
-          duration: 0.3,
-        });
+        if (cursorRingRef.current) {
+          gsap.to(cursorRingRef.current, {
+            scale: 1.8,
+            borderColor: "#5865f2",
+            backgroundColor: "rgba(88, 101, 242, 0.1)",
+            duration: 0.3,
+          });
+        }
+        if (cursorDotRef.current) {
+          gsap.to(cursorDotRef.current, {
+            scale: 0.5,
+            duration: 0.3,
+          });
+        }
       } else {
         setIsHovered(false);
-        gsap.to(cursorRingRef.current, {
-          scale: 1,
-          borderColor: "#5865f2",
-          backgroundColor: "transparent",
-          duration: 0.3,
-        });
-        gsap.to(cursorDotRef.current, {
-          scale: 1,
-          duration: 0.3,
-        });
+        if (cursorRingRef.current) {
+          gsap.to(cursorRingRef.current, {
+            scale: 1,
+            borderColor: "#5865f2",
+            backgroundColor: "transparent",
+            duration: 0.3,
+          });
+        }
+        if (cursorDotRef.current) {
+          gsap.to(cursorDotRef.current, {
+            scale: 1,
+            duration: 0.3,
+          });
+        }
       }
     };
 

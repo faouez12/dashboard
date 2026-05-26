@@ -72,13 +72,13 @@ const EVENTS_DETAILS: Record<string, EventDetail> = {
     runners: "10,000+ Athletes",
     weather: "Alpine shifts, -2°C to 18°C",
     gearUsed: "Sony A1 + 400mm f/2.8 GM + 24-70mm GM II",
-    gradient: "from-cyan-950 via-zinc-950 to-zinc-900",
+    gradient: "from-indigo-950 via-zinc-950 to-zinc-900",
     intro: "UTMB is the pinnacle of trail running. It is a 170km loop around Mont Blanc with 10,000 meters of elevation change. Capturing this event requires scaling mountains to catch athletes battling night cold, steep peaks, and sunrise crossings.",
     technicalLog: "We packed lightweight weatherized carbon rigs to hike to remote alpine passes. The Sony Alpha 1's 50MP sensor allowed cropping into wide mountain panoramas to isolate runners on high ridge paths under variable morning lighting.",
     gallery: [
       { id: 201, title: "The Arc Lights", category: "start", specs: "24mm • f/2.8 • 1/120s", gradient: "from-indigo-950/60 to-zinc-900", description: "Chamonix town center glows under floodlights as thousands of headlamps await the UTMB start signal." },
-      { id: 202, title: "Col du Bonhomme Pass", category: "grit", specs: "400mm • f/2.8 • 1/1200s", gradient: "from-cyan-900/60 to-zinc-900", description: "Runners scale the snowy alpine pass at 2,300m, Materhorn silhouettes visible in distant mist." },
-      { id: 203, title: "Finisher Cheers", category: "finish", specs: "85mm • f/1.4 • 1/800s", gradient: "from-teal-900/60 to-zinc-900", description: "Finisher embraced by family in Chamonix plaza, bell towers ringing in background." },
+      { id: 202, title: "Col du Bonhomme Pass", category: "grit", specs: "400mm • f/2.8 • 1/1200s", gradient: "from-blue-900/60 to-zinc-900", description: "Runners scale the snowy alpine pass at 2,300m, Materhorn silhouettes visible in distant mist." },
+      { id: 203, title: "Finisher Cheers", category: "finish", specs: "85mm • f/1.4 • 1/800s", gradient: "from-violet-900/60 to-zinc-900", description: "Finisher embraced by family in Chamonix plaza, bell towers ringing in background." },
       { id: 204, title: "Frozen Hydration", category: "details", specs: "90mm Macro • f/4.0 • 1/1000s", gradient: "from-sky-950/60 to-zinc-900", description: "Frozen ice particles forming on an athlete's collapsible hydration flask." }
     ]
   },
