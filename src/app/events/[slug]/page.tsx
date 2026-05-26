@@ -72,13 +72,13 @@ const EVENTS_DETAILS: Record<string, EventDetail> = {
     runners: "10,000+ Athletes",
     weather: "Alpine shifts, -2°C to 18°C",
     gearUsed: "Sony A1 + 400mm f/2.8 GM + 24-70mm GM II",
-    gradient: "from-indigo-950 via-zinc-950 to-zinc-900",
+    gradient: "from-teal-950 via-zinc-950 to-zinc-900",
     intro: "UTMB is the pinnacle of trail running. It is a 170km loop around Mont Blanc with 10,000 meters of elevation change. Capturing this event requires scaling mountains to catch athletes battling night cold, steep peaks, and sunrise crossings.",
     technicalLog: "We packed lightweight weatherized carbon rigs to hike to remote alpine passes. The Sony Alpha 1's 50MP sensor allowed cropping into wide mountain panoramas to isolate runners on high ridge paths under variable morning lighting.",
     gallery: [
-      { id: 201, title: "The Arc Lights", category: "start", specs: "24mm • f/2.8 • 1/120s", gradient: "from-indigo-950/60 to-zinc-900", description: "Chamonix town center glows under floodlights as thousands of headlamps await the UTMB start signal." },
+      { id: 201, title: "The Arc Lights", category: "start", specs: "24mm • f/2.8 • 1/120s", gradient: "from-teal-950/60 to-zinc-900", description: "Chamonix town center glows under floodlights as thousands of headlamps await the UTMB start signal." },
       { id: 202, title: "Col du Bonhomme Pass", category: "grit", specs: "400mm • f/2.8 • 1/1200s", gradient: "from-blue-900/60 to-zinc-900", description: "Runners scale the snowy alpine pass at 2,300m, Materhorn silhouettes visible in distant mist." },
-      { id: 203, title: "Finisher Cheers", category: "finish", specs: "85mm • f/1.4 • 1/800s", gradient: "from-violet-900/60 to-zinc-900", description: "Finisher embraced by family in Chamonix plaza, bell towers ringing in background." },
+      { id: 203, title: "Finisher Cheers", category: "finish", specs: "85mm • f/1.4 • 1/800s", gradient: "from-teal-900/60 to-zinc-900", description: "Finisher embraced by family in Chamonix plaza, bell towers ringing in background." },
       { id: 204, title: "Frozen Hydration", category: "details", specs: "90mm Macro • f/4.0 • 1/1000s", gradient: "from-sky-950/60 to-zinc-900", description: "Frozen ice particles forming on an athlete's collapsible hydration flask." }
     ]
   },
@@ -90,11 +90,11 @@ const EVENTS_DETAILS: Record<string, EventDetail> = {
     runners: "40,000+ Athletes",
     weather: "Mist clearing, 14°C",
     gearUsed: "Sony A9 III + 24-70mm f/2.8 GM II",
-    gradient: "from-violet-950 via-sky-950 to-zinc-900",
+    gradient: "from-cyan-950 via-sky-950 to-zinc-900",
     intro: "The London Marathon features massive crowds and historic cityscapes. Our coverage prioritized capturing the dense packing of runners crossing Tower Bridge, side-by-side with brand integration and public celebration.",
     technicalLog: "Used high-contrast wide framing to emphasize sponsor branding visibility. The fast burst rates on the Sony A9 III allowed capturing clean action loops of the leading pack with zero shutter lag under changing bridge shadows.",
     gallery: [
-      { id: 301, title: "The Morning Corrals", category: "start", specs: "35mm • f/4.0 • 1/250s", gradient: "from-violet-900/60 to-zinc-900", description: "Greenwich park corrals fill as thousands of runners stretch under early morning fog." },
+      { id: 301, title: "The Morning Corrals", category: "start", specs: "35mm • f/4.0 • 1/250s", gradient: "from-teal-900/60 to-zinc-900", description: "Greenwich park corrals fill as thousands of runners stretch under early morning fog." },
       { id: 302, title: "Tower Bridge Crowd", category: "grit", specs: "24mm • f/5.6 • 1/500s", gradient: "from-sky-900/60 to-zinc-900", description: "A wall of runners crossing Tower Bridge, framed by historical towers and roaring spectators." },
       { id: 303, title: "Mall Finish", category: "finish", specs: "135mm • f/2.0 • 1/1600s", gradient: "from-rose-900/60 to-zinc-900", description: "Crossing the line under Buckingham Palace arches, arms pointing to the sky." },
       { id: 304, title: "The Foil Capes", category: "details", specs: "50mm • f/1.8 • 1/800s", gradient: "from-zinc-800/60 to-zinc-900", description: "Finisher capes catching morning light as volunteers wrap shivering runners." }

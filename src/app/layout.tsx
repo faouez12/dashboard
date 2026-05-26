@@ -5,6 +5,7 @@ import CustomCursor from "@/components/CustomCursor";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import LenisProvider from "@/components/LenisProvider";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -17,7 +18,7 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
-  title: "Shahine Portfolio | Premium Marathon & Endurance Sports Photography",
+  title: "Shahine Photography | Premium Marathon & Endurance Sports Photography",
   description: "Capturing the grit, sweat, and raw victory of live marathons, trail runs, cycling, and outdoor endurance events worldwide. Professional race coverage for organizers and athletic brands.",
 };
 
@@ -29,15 +30,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${archivo.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground overflow-x-hidden">
-        <LenisProvider>
-          <CustomCursor />
-          <Header />
-          {children}
-          <Footer />
-        </LenisProvider>
+        <ThemeProvider>
+          <LenisProvider>
+            <CustomCursor />
+            <Header />
+            {children}
+            <Footer />
+          </LenisProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

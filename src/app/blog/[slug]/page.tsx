@@ -37,7 +37,7 @@ const ARTICLES_DETAILS: Record<string, ArticleDetail> = {
     date: "May 12, 2026",
     readTime: "6 min read",
     author: "Shahine",
-    gradient: "from-blue-900 via-indigo-950 to-zinc-900",
+    gradient: "from-blue-900 via-teal-950 to-zinc-900",
     leadParagraph: "The transition from traditional rolling shutters to a global shutter is the most significant technological leap in sports photography in a generation. In race conditions, where runners are moving at high velocities and camera pans are rapid, the global shutter completely changes the game.",
     bodyContent: [
       {
@@ -70,7 +70,7 @@ const ARTICLES_DETAILS: Record<string, ArticleDetail> = {
     date: "April 28, 2026",
     readTime: "12 min read",
     author: "Shahine",
-    gradient: "from-indigo-900 via-violet-950 to-zinc-900",
+    gradient: "from-teal-900 via-cyan-950 to-zinc-900",
     leadParagraph: "Covering the Ultra-Trail du Mont-Blanc (UTMB) requires as much physical conditioning as it does technical camera capability. Hicking steep mountain passes in Chamonix to capture the world's most elite ultra runners is a test of weight management and weather endurance.",
     bodyContent: [
       {

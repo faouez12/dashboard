@@ -58,8 +58,8 @@ export function CardPattern({ mouseX, mouseY, randomString }: any) {
     <div className="pointer-events-none absolute inset-0 z-0">
       <div className="absolute inset-0 rounded-[2rem] [mask-image:radial-gradient(350px_at_50%_50%,white,transparent)]" />
       <motion.div
-        className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-accent/20 to-violet-500/20 opacity-0 group-hover/card:opacity-100 transition duration-300"
-        style={style}
+        className="absolute inset-0 rounded-[2rem] opacity-0 group-hover/card:opacity-100 transition duration-300"
+        style={{ ...style, background: "linear-gradient(to right, rgba(0,245,255,0.15), rgba(0,245,255,0.08))" }}
       />
       <motion.div
         className="absolute inset-0 rounded-[2rem] opacity-0 group-hover/card:opacity-40 mix-blend-overlay font-mono text-[9px] text-accent select-none overflow-hidden p-6 break-all leading-none font-bold"

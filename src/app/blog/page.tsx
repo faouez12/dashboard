@@ -27,7 +27,7 @@ const BLOG_POSTS: BlogPost[] = [
     readTime: "6 min read",
     category: "gear",
     categoryLabel: "Gear Review",
-    gradient: "from-blue-900/40 via-indigo-950 to-slate-900"
+    gradient: "from-teal-900 via-cyan-950 to-zinc-900",
   },
   {
     slug: "capturing-utmb-climbing-10000m-with-lenses",
@@ -37,7 +37,7 @@ const BLOG_POSTS: BlogPost[] = [
     readTime: "12 min read",
     category: "race-report",
     categoryLabel: "Race Report",
-    gradient: "from-violet-900/40 via-indigo-950 to-slate-900"
+    gradient: "from-teal-900/40 via-cyan-950 to-slate-900"
   },
   {
     slug: "sponsor-alignment-in-sports-photography",
@@ -47,7 +47,7 @@ const BLOG_POSTS: BlogPost[] = [
     readTime: "8 min read",
     category: "behind-the-lens",
     categoryLabel: "Behind the Lens",
-    gradient: "from-rose-900/40 via-indigo-950 to-slate-900"
+    gradient: "from-rose-900/40 via-teal-950 to-slate-900"
   },
   {
     slug: "chicago-marathon-speed-framing",
@@ -57,7 +57,7 @@ const BLOG_POSTS: BlogPost[] = [
     readTime: "5 min read",
     category: "race-report",
     categoryLabel: "Race Report",
-    gradient: "from-sky-900/40 via-indigo-950 to-slate-900"
+    gradient: "from-sky-900/40 via-teal-950 to-slate-900"
   }
 ];
 

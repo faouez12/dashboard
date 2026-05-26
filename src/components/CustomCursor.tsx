@@ -3,42 +3,57 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
+// SVG Camera icon matching the Lucide "Camera" shape used in the logo
+const CameraIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width="20"
+    height="20"
+    style={{ display: "block" }}
+  >
+    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+    <circle cx="12" cy="13" r="3" />
+  </svg>
+);
+
 export default function CustomCursor() {
-  const cursorDotRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // Check if the device has a pointer/mouse (not just touch)
-    const isTouchDevice = 
-      "ontouchstart" in window || 
-      navigator.maxTouchPoints > 0;
-    
-    if (isTouchDevice) {
-      return; // Do not initialize custom cursor on touch devices
-    }
+    // Only show on non-touch devices
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
 
     setIsVisible(true);
 
     const onMouseMove = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
 
-      // Animate dot instantly
-      if (cursorDotRef.current) {
-        gsap.to(cursorDotRef.current, {
-          x: x,
-          y: y,
+      // Camera icon follows cursor instantly (offset so icon centre is at pointer)
+      if (cursorRef.current) {
+        gsap.to(cursorRef.current, {
+          x: x - 10, // half of 20px icon
+          y: y - 10,
           duration: 0.05,
           ease: "power2.out",
         });
       }
 
-      // Lag animation for the ring
+      // Outer ring lags slightly behind
       if (cursorRingRef.current) {
         gsap.to(cursorRingRef.current, {
-          x: x - 16, // Center ring (32px width / 2)
-          y: y - 16,
+          x: x - 22, // half of 44px ring
+          y: y - 22,
           duration: 0.35,
           ease: "power3.out",
         });
@@ -48,14 +63,13 @@ export default function CustomCursor() {
     const onMouseEnter = () => setIsVisible(true);
     const onMouseLeave = () => setIsVisible(false);
 
-    // Expand cursor on hovering links/buttons
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const isInteractive = 
-        target.tagName === "A" || 
-        target.tagName === "BUTTON" || 
-        target.closest("a") || 
-        target.closest("button") || 
+      const isInteractive =
+        target.tagName === "A" ||
+        target.tagName === "BUTTON" ||
+        target.closest("a") ||
+        target.closest("button") ||
         target.closest(".interactive") ||
         target.classList.contains("cursor-pointer");
 
@@ -63,33 +77,27 @@ export default function CustomCursor() {
         setIsHovered(true);
         if (cursorRingRef.current) {
           gsap.to(cursorRingRef.current, {
-            scale: 1.8,
-            borderColor: "#5865f2",
-            backgroundColor: "rgba(88, 101, 242, 0.1)",
+            scale: 1.6,
+            borderColor: "#00f5ff",
+            backgroundColor: "rgba(0, 245, 255, 0.08)",
             duration: 0.3,
           });
         }
-        if (cursorDotRef.current) {
-          gsap.to(cursorDotRef.current, {
-            scale: 0.5,
-            duration: 0.3,
-          });
+        if (cursorRef.current) {
+          gsap.to(cursorRef.current, { scale: 1.3, duration: 0.3 });
         }
       } else {
         setIsHovered(false);
         if (cursorRingRef.current) {
           gsap.to(cursorRingRef.current, {
             scale: 1,
-            borderColor: "#5865f2",
+            borderColor: "#00f5ff",
             backgroundColor: "transparent",
             duration: 0.3,
           });
         }
-        if (cursorDotRef.current) {
-          gsap.to(cursorDotRef.current, {
-            scale: 1,
-            duration: 0.3,
-          });
+        if (cursorRef.current) {
+          gsap.to(cursorRef.current, { scale: 1, duration: 0.3 });
         }
       }
     };
@@ -111,24 +119,28 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Outer Ring */}
+      {/* Outer ring — lagging */}
       <div
         ref={cursorRingRef}
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-accent pointer-events-none z-[9999] transition-opacity duration-300 mix-blend-screen"
+        className="fixed top-0 left-0 w-11 h-11 rounded-full border border-accent pointer-events-none z-[9999] mix-blend-screen"
         style={{
-          transform: "translate3d(0, 0, 0)",
+          transform: "translate3d(0,0,0)",
           willChange: "transform",
         }}
       />
-      {/* Inner Dot */}
+
+      {/* Camera icon — precise position */}
       <div
-        ref={cursorDotRef}
-        className="fixed top-0 left-0 w-2 h-2 -ml-1 -mt-1 rounded-full bg-accent pointer-events-none z-[9999] transition-opacity duration-300"
+        ref={cursorRef}
+        className="fixed top-0 left-0 pointer-events-none z-[9999] text-accent mix-blend-screen"
         style={{
-          transform: "translate3d(0, 0, 0)",
+          transform: "translate3d(0,0,0)",
           willChange: "transform",
+          filter: "drop-shadow(0 0 6px rgba(0,245,255,0.8))",
         }}
-      />
+      >
+        <CameraIcon />
+      </div>
     </>
   );
 }

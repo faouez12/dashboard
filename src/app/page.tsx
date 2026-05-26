@@ -92,7 +92,7 @@ const EVENTS_DATA: EventItem[] = [
     date: "August 2025",
     type: "trail",
     runners: "10,000+ Runners",
-    gradient: "from-indigo-950 via-zinc-950 to-zinc-900",
+    gradient: "from-teal-950 via-zinc-950 to-zinc-900",
     desc: "Physically demanding trail documentation covering remote ridges, alpine night stretches, and extreme altitude weather conditions.",
     highlight: "Ridge running & sub-zero mountain pass shots"
   },
@@ -104,7 +104,7 @@ const EVENTS_DATA: EventItem[] = [
     date: "April 2026",
     type: "marathon",
     runners: "40,000+ Runners",
-    gradient: "from-violet-950 via-zinc-950 to-zinc-900",
+    gradient: "from-cyan-950 via-zinc-950 to-zinc-900",
     desc: "Wide crowds and landmark framing. Highlighting brand sponsor placements along the River Thames and historic bridges.",
     highlight: "Tower Bridge pack dynamics & sponsor branding"
   },
@@ -452,7 +452,7 @@ export default function Home() {
                         </span>
                       </div>
                       <div className="mt-auto">
-                        <h3 className="text-lg font-bold uppercase tracking-tight font-display text-white">{spec.title}</h3>
+                        <h3 className="text-lg font-bold uppercase tracking-tight font-display text-foreground">{spec.title}</h3>
                         <p className="text-muted-foreground text-xs leading-relaxed mt-2">{spec.desc}</p>
                       </div>
                     </EvervaultCard>
@@ -477,7 +477,7 @@ export default function Home() {
                         </span>
                       </div>
                       <div className="mt-auto">
-                        <h3 className="text-lg font-bold uppercase tracking-tight font-display text-white">{spec.title}</h3>
+                        <h3 className="text-lg font-bold uppercase tracking-tight font-display text-foreground">{spec.title}</h3>
                         <p className="text-muted-foreground text-xs leading-relaxed mt-2">{spec.desc}</p>
                       </div>
                     </EvervaultCard>
@@ -491,7 +491,7 @@ export default function Home() {
                       <Sparkles className="h-8 w-8 text-accent animate-pulse" />
                     </div>
                     <div className="mt-auto">
-                      <h4 className="text-sm font-extrabold uppercase text-white tracking-wide">Looking for Custom Rates?</h4>
+                      <h4 className="text-sm font-extrabold uppercase text-foreground tracking-wide">Looking for Custom Rates?</h4>
                       <p className="text-[10px] text-muted-foreground mt-1.5 leading-relaxed">
                         Custom media structures configured specifically to client runner counts and commercial logo deliveries.
                       </p>

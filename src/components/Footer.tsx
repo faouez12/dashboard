@@ -13,7 +13,7 @@ export default function Footer() {
         <Link href="/" className="flex items-center gap-3 group">
           <Camera className="h-5 w-5 text-accent group-hover:rotate-12 transition-transform duration-300" />
           <span className="text-sm font-bold tracking-tight uppercase font-display text-foreground group-hover:text-accent transition-colors">
-            Shahine<span className="text-accent">.</span>Sports © 2026
+            Shahine<span className="text-accent"> Photography</span> © 2026
           </span>
         </Link>
         
@@ -23,7 +23,7 @@ export default function Footer() {
           <span>•</span>
           <span>Resolution: 50.1MP</span>
           <span>•</span>
-          <span>Cobalt-Obsidian Active</span>
+          <span>Neon Cyan Active</span>
         </div>
       </div>
     </footer>

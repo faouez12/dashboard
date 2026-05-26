@@ -35,7 +35,7 @@ const GALLERY_DATA: GalleryItem[] = [
     category: "trail",
     location: "UTMB Chamonix",
     specs: "400mm • f/2.8 • 1/1600s • ISO 200",
-    gradient: "from-indigo-900/60 to-slate-900",
+    gradient: "from-teal-900/60 to-slate-900",
     description: "Endurance athletes dwarfed by the massive granite spikes of the French Alps under high-contrast noon light.",
     year: "2025"
   },
@@ -45,7 +45,7 @@ const GALLERY_DATA: GalleryItem[] = [
     category: "brand",
     location: "Zenith Footwear Campaign",
     specs: "50mm • f/1.4 • 1/4000s • ISO 50",
-    gradient: "from-violet-900/60 to-slate-900",
+    gradient: "from-teal-900/60 to-slate-900",
     description: "Commercial campaign detailing shoe mechanics, mud sprays, and brand logo placement in active trail conditions.",
     year: "2026"
   },
@@ -95,7 +95,7 @@ const GALLERY_DATA: GalleryItem[] = [
     category: "action",
     location: "Berlin Finish Arch",
     specs: "50mm • f/1.8 • 1/2500s • ISO 200",
-    gradient: "from-purple-900/60 to-slate-900",
+    gradient: "from-teal-900/60 to-slate-900",
     description: "Capturing the final, victorious step of an amateur marathoner leaping over the timer mat.",
     year: "2025"
   }
