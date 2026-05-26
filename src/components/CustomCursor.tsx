@@ -59,8 +59,8 @@ export default function CustomCursor() {
         setIsHovered(true);
         gsap.to(cursorRingRef.current, {
           scale: 1.8,
-          borderColor: "#ccff00",
-          backgroundColor: "rgba(204, 255, 0, 0.1)",
+          borderColor: "#5865f2",
+          backgroundColor: "rgba(88, 101, 242, 0.1)",
           duration: 0.3,
         });
         gsap.to(cursorDotRef.current, {
@@ -71,7 +71,7 @@ export default function CustomCursor() {
         setIsHovered(false);
         gsap.to(cursorRingRef.current, {
           scale: 1,
-          borderColor: "#ccff00",
+          borderColor: "#5865f2",
           backgroundColor: "transparent",
           duration: 0.3,
         });

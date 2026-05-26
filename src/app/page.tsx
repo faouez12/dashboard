@@ -4,20 +4,17 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { 
   Camera, 
-  ChevronLeft, 
-  ChevronRight, 
-  Check, 
-  Flame, 
-  Sliders, 
   MapPin, 
   Calendar, 
-  Users, 
+  Flame, 
+  Sliders, 
   TrendingUp, 
   MessageSquare,
   Sparkles,
   ArrowRight,
   Maximize2,
-  X
+  X,
+  Check
 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -81,7 +78,7 @@ const EVENTS_DATA: EventItem[] = [
     date: "April 2026",
     type: "marathon",
     runners: "30,000+ Runners",
-    gradient: "from-lime-950/40 via-zinc-950 to-zinc-900",
+    gradient: "from-blue-950 via-zinc-950 to-zinc-900",
     desc: "Elite road coverage focusing on key mile marks, historic pacing, and high-tension emotional finishes near Copley Square.",
     highlight: "Finish line stagers & heartbreaks"
   },
@@ -93,7 +90,7 @@ const EVENTS_DATA: EventItem[] = [
     date: "August 2025",
     type: "trail",
     runners: "10,000+ Runners",
-    gradient: "from-teal-950/40 via-zinc-950 to-zinc-900",
+    gradient: "from-indigo-950 via-zinc-950 to-zinc-900",
     desc: "Physically demanding trail documentation covering remote ridges, alpine night stretches, and extreme altitude weather conditions.",
     highlight: "Ridge running & sub-zero mountain pass shots"
   },
@@ -105,7 +102,7 @@ const EVENTS_DATA: EventItem[] = [
     date: "April 2026",
     type: "marathon",
     runners: "40,000+ Runners",
-    gradient: "from-cyan-950/40 via-zinc-950 to-zinc-900",
+    gradient: "from-violet-950 via-zinc-950 to-zinc-900",
     desc: "Wide crowds and landmark framing. Highlighting brand sponsor placements along the River Thames and historic bridges.",
     highlight: "Tower Bridge pack dynamics & sponsor branding"
   },
@@ -117,7 +114,7 @@ const EVENTS_DATA: EventItem[] = [
     date: "July 2025",
     type: "trail",
     runners: "3,000+ Runners",
-    gradient: "from-teal-950/40 via-zinc-950 to-zinc-900",
+    gradient: "from-blue-950 via-zinc-950 to-zinc-900",
     desc: "Sublime mountain backdrops framing high-intensity trail effort, shot on narrow paths with lightweight weatherized rigs.",
     highlight: "Matterhorn background compression portraits"
   },
@@ -188,11 +185,46 @@ export default function Home() {
     }, 1500);
   };
 
-  // GSAP Overhaul Animations
+  // 3D Perspective Card Tilt handler (desktop only)
+  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left; // cursor inside card bounding box
+    const y = e.clientY - rect.top;
+    const xc = rect.width / 2;
+    const yc = rect.height / 2;
+    
+    // Tilt calculations (-12 to 12 degrees limit)
+    const rotateX = -((y - yc) / yc) * 12;
+    const rotateY = ((x - xc) / xc) * 12;
+    
+    gsap.to(card, {
+      rotateX: rotateX,
+      rotateY: rotateY,
+      scale: 1.03,
+      boxShadow: "0 25px 50px -12px rgba(0,0,0,0.6), 0 0 25px rgba(88, 101, 242, 0.25)",
+      duration: 0.35,
+      ease: "power2.out"
+    });
+  };
+
+  const handleCardMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    gsap.to(card, {
+      rotateX: 0,
+      rotateY: 0,
+      scale: 1,
+      boxShadow: "0 0 0px rgba(0,0,0,0), 0 0 0px rgba(0,0,0,0)",
+      duration: 0.6,
+      ease: "power3.out"
+    });
+  };
+
+  // GSAP 2026 Overhaul Animations
   useGSAP(() => {
-    // 1. Initial Page Load Clip-Path Reveal
+    // 1. Initial Page Load Clip-Path Reveal (Header titles)
     gsap.from(".hero-text-reveal", {
-      y: "110%",
+      y: "115%",
       duration: 1.4,
       ease: "power4.out",
       stagger: 0.15
@@ -218,19 +250,20 @@ export default function Home() {
       }
     });
 
-    // 3. ScrollTrigger reveals for Specialty Section
-    gsap.from(".spec-title-anim", {
+    // 3. Word-by-Word Reveals for specialties section title
+    gsap.from(".spec-word-reveal", {
       scrollTrigger: {
-        trigger: "#about",
-        start: "top 80%",
-        toggleActions: "play none none none"
+        trigger: ".spec-title-trigger",
+        start: "top 85%",
       },
+      y: "100%",
       opacity: 0,
-      y: 40,
       duration: 1,
-      ease: "power3.out"
+      ease: "power4.out",
+      stagger: 0.08
     });
 
+    // 4. Specialties cards stagger entry
     gsap.from(".spec-card-anim", {
       scrollTrigger: {
         trigger: "#about",
@@ -244,7 +277,20 @@ export default function Home() {
       ease: "power2.out"
     });
 
-    // 4. Testimonials ScrollTrigger
+    // 5. Word-by-Word reveals for testimonials section title
+    gsap.from(".testimonial-word-reveal", {
+      scrollTrigger: {
+        trigger: ".testimonial-title-trigger",
+        start: "top 85%",
+      },
+      y: "100%",
+      opacity: 0,
+      duration: 1,
+      ease: "power4.out",
+      stagger: 0.08
+    });
+
+    // 6. Testimonials ScrollTrigger stagger
     gsap.from(".testimonial-card-anim", {
       scrollTrigger: {
         trigger: "#testimonials",
@@ -258,7 +304,7 @@ export default function Home() {
       ease: "power2.out"
     });
 
-    // 5. Booking Form ScrollTrigger
+    // 7. Booking Form ScrollTrigger entrance
     gsap.from(".form-card-anim", {
       scrollTrigger: {
         trigger: "#book",
@@ -278,13 +324,13 @@ export default function Home() {
       <main className="flex-1 flex flex-col pt-20">
 
         {/* Cinematic Minimal Hero Section */}
-        <section className="relative min-h-[90vh] flex flex-col justify-center px-6 md:px-16 border-b border-border overflow-hidden bg-gradient-to-b from-background via-[#050711]/40 to-background">
+        <section className="relative min-h-[90vh] flex flex-col justify-center px-6 md:px-16 border-b border-border overflow-hidden bg-gradient-to-b from-background via-[#0c0d21]/20 to-background">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-accent/5 via-transparent to-transparent opacity-75" />
           
           <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col justify-between py-12">
             
             <div className="flex flex-col gap-6 max-w-4xl">
-              <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono border border-accent/30 bg-accent/5 px-4 py-1.5 rounded-full self-start">
+              <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono border border-accent/20 bg-accent/5 px-4 py-1.5 rounded-full self-start">
                 SPORTS PHOTOGRAPHY REDEFINED
               </span>
               
@@ -305,7 +351,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-4">
                 <a
                   href="#book"
-                  className="flex items-center gap-2.5 px-8 py-4 bg-accent text-accent-foreground font-black uppercase tracking-wide rounded-md transition-transform hover:scale-102 shadow-lg shadow-accent/10 text-xs"
+                  className="flex items-center gap-2.5 px-8 py-4 bg-accent text-accent-foreground font-black uppercase tracking-wide rounded-md transition-transform hover:scale-102 shadow-lg shadow-accent/15 text-xs cursor-pointer"
                 >
                   Book Race Coverage <ArrowRight className="h-4 w-4 text-accent-foreground" />
                 </a>
@@ -348,7 +394,7 @@ export default function Home() {
         </div>
 
         {/* Specialty Asymmetrical Section */}
-        <section id="about" className="py-32 px-6 max-w-7xl mx-auto w-full relative">
+        <section id="about" className="py-32 px-6 max-w-7xl mx-auto w-full relative spec-title-trigger">
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             
             {/* Sticky Left Column Context */}
@@ -356,9 +402,16 @@ export default function Home() {
               <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono">
                 CORE CAPABILITY
               </span>
-              <h2 className="text-3xl md:text-6xl font-extrabold tracking-tight uppercase leading-[0.95] font-display">
-                Engineered for zero-failure delivery.
+              
+              {/* Word-by-Word Reveal */}
+              <h2 className="text-3xl md:text-6xl font-extrabold tracking-tight uppercase leading-[0.95] font-display flex flex-wrap gap-x-3 gap-y-1">
+                {"Engineered for zero-failure delivery.".split(" ").map((word, idx) => (
+                  <div key={idx} className="overflow-hidden inline-block">
+                    <span className="spec-word-reveal block">{word}</span>
+                  </div>
+                ))}
               </h2>
+              
               <p className="text-muted-foreground leading-relaxed text-sm md:text-base mt-2">
                 In elite endurance events, missed frames are not an option. Our field setups carry weatherproof enclosures, carbon-fiber rigs, and secondary cellular nodes to guarantee instantaneous PR deliveries.
               </p>
@@ -374,17 +427,23 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Asymmetrical Staggered Columns on Right */}
-            <div className="lg:col-span-7 grid sm:grid-cols-2 gap-8 pt-0 md:pt-16">
+            {/* Asymmetrical Staggered Columns on Right (with 3D perspective enabled) */}
+            <div 
+              className="lg:col-span-7 grid sm:grid-cols-2 gap-8 pt-0 md:pt-16" 
+              style={{ perspective: "1000px" }}
+            >
               
               {/* Left staggered cards */}
               <div className="flex flex-col gap-8 md:translate-y-0">
                 {SPECIALTIES.slice(0, 2).map((spec, idx) => (
                   <div 
                     key={idx} 
-                    className="border border-border p-8 rounded-[2rem] bg-muted/10 hover:bg-muted/25 transition-all hover:border-accent/40 flex flex-col gap-6 spec-card-anim"
+                    onMouseMove={handleCardMouseMove}
+                    onMouseLeave={handleCardMouseLeave}
+                    className="border border-border p-8 rounded-[2rem] bg-muted/10 flex flex-col gap-6 spec-card-anim transition-all duration-300"
+                    style={{ transformStyle: "preserve-3d" }}
                   >
-                    <div className="flex justify-between items-start">
+                    <div className="flex justify-between items-start" style={{ transform: "translateZ(30px)" }}>
                       <div className="p-3 bg-muted border border-border rounded-xl text-accent">
                         {spec.icon}
                       </div>
@@ -395,8 +454,8 @@ export default function Home() {
                         {spec.num}
                       </span>
                     </div>
-                    <div>
-                      <h3 className="text-lg font-bold uppercase tracking-tight font-display">{spec.title}</h3>
+                    <div style={{ transform: "translateZ(20px)" }}>
+                      <h3 className="text-lg font-bold uppercase tracking-tight font-display text-white">{spec.title}</h3>
                       <p className="text-muted-foreground text-xs leading-relaxed mt-2">{spec.desc}</p>
                     </div>
                   </div>
@@ -408,9 +467,12 @@ export default function Home() {
                 {SPECIALTIES.slice(2).map((spec, idx) => (
                   <div 
                     key={idx} 
-                    className="border border-border p-8 rounded-[2rem] bg-muted/10 hover:bg-muted/25 transition-all hover:border-accent/40 flex flex-col gap-6 spec-card-anim"
+                    onMouseMove={handleCardMouseMove}
+                    onMouseLeave={handleCardMouseLeave}
+                    className="border border-border p-8 rounded-[2rem] bg-muted/10 flex flex-col gap-6 spec-card-anim transition-all duration-300"
+                    style={{ transformStyle: "preserve-3d" }}
                   >
-                    <div className="flex justify-between items-start">
+                    <div className="flex justify-between items-start" style={{ transform: "translateZ(30px)" }}>
                       <div className="p-3 bg-muted border border-border rounded-xl text-accent">
                         {spec.icon}
                       </div>
@@ -421,18 +483,23 @@ export default function Home() {
                         {spec.num}
                       </span>
                     </div>
-                    <div>
-                      <h3 className="text-lg font-bold uppercase tracking-tight font-display">{spec.title}</h3>
+                    <div style={{ transform: "translateZ(20px)" }}>
+                      <h3 className="text-lg font-bold uppercase tracking-tight font-display text-white">{spec.title}</h3>
                       <p className="text-muted-foreground text-xs leading-relaxed mt-2">{spec.desc}</p>
                     </div>
                   </div>
                 ))}
                 
                 {/* Visual Accent Box */}
-                <div className="border border-accent/20 p-8 rounded-[2rem] bg-accent/5 flex flex-col justify-between h-56 relative overflow-hidden group">
+                <div 
+                  onMouseMove={handleCardMouseMove}
+                  onMouseLeave={handleCardMouseLeave}
+                  className="border border-accent/20 p-8 rounded-[2rem] bg-accent/5 flex flex-col justify-between h-56 relative overflow-hidden transition-all duration-300"
+                  style={{ transformStyle: "preserve-3d" }}
+                >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 blur-3xl pointer-events-none" />
-                  <Sparkles className="h-8 w-8 text-accent animate-pulse" />
-                  <div>
+                  <Sparkles className="h-8 w-8 text-accent animate-pulse" style={{ transform: "translateZ(30px)" }} />
+                  <div style={{ transform: "translateZ(20px)" }}>
                     <h4 className="text-sm font-extrabold uppercase text-white tracking-wide">Looking for Custom Rates?</h4>
                     <p className="text-[10px] text-muted-foreground mt-1.5">Custom media structures configured specifically to client runner counts and commercial logo deliveries.</p>
                   </div>
@@ -470,15 +537,18 @@ export default function Home() {
               </div>
 
               {/* Horizontal Scroll sliding panel on Right */}
-              <div className="md:col-span-8 overflow-hidden py-10">
+              <div className="md:col-span-8 overflow-hidden py-10" style={{ perspective: "1000px" }}>
                 <div className="horizontal-container flex flex-row gap-6 md:gap-10 pl-0 md:pl-8 pr-0 md:pr-24 overflow-x-auto md:overflow-x-visible w-full scroll-smooth snap-x snap-mandatory md:snap-none pb-6 md:pb-0">
                   {EVENTS_DATA.map((event) => (
                     <div
                       key={event.id}
-                      className="w-[280px] md:w-[380px] h-[400px] shrink-0 border border-border bg-background rounded-[2rem] flex flex-col justify-between overflow-hidden relative group hover:border-accent hover:shadow-[0_0_30px_rgba(204,255,0,0.1)] transition-all duration-500 snap-start"
+                      onMouseMove={handleCardMouseMove}
+                      onMouseLeave={handleCardMouseLeave}
+                      className="w-[280px] md:w-[380px] h-[400px] shrink-0 border border-border bg-background rounded-[2rem] flex flex-col justify-between overflow-hidden relative transition-all duration-300 snap-start"
+                      style={{ transformStyle: "preserve-3d" }}
                     >
                       {/* Gradient preview */}
-                      <div className={`h-40 w-full bg-gradient-to-tr ${event.gradient} flex items-center justify-center p-6 relative overflow-hidden`}>
+                      <div className={`h-40 w-full bg-gradient-to-tr ${event.gradient} flex items-center justify-center p-6 relative overflow-hidden`} style={{ transform: "translateZ(10px)" }}>
                         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300" />
                         <Camera className="h-8 w-8 text-white/10 group-hover:scale-110 transition-transform duration-500 relative z-10" />
                         
@@ -489,7 +559,7 @@ export default function Home() {
                       </div>
 
                       {/* Detail metadata block */}
-                      <div className="p-6 flex flex-col justify-between flex-grow gap-4">
+                      <div className="p-6 flex flex-col justify-between flex-grow gap-4" style={{ transform: "translateZ(20px)" }}>
                         <div className="flex flex-col gap-1.5">
                           <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-wider text-accent">
                             <span>{event.type}</span>
@@ -526,14 +596,20 @@ export default function Home() {
         </section>
 
         {/* Bold Quote Testimonials */}
-        <section id="testimonials" className="py-32 px-6 max-w-7xl mx-auto w-full border-t border-border">
+        <section id="testimonials" className="py-32 px-6 max-w-7xl mx-auto w-full border-t border-border testimonial-title-trigger">
           <div className="flex flex-col gap-16">
             <div className="max-w-2xl flex flex-col gap-3">
               <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono">
                 CLIENT CONVERSATIONS
               </span>
-              <h2 className="text-3xl md:text-6xl font-extrabold tracking-tight uppercase font-display leading-[0.95]">
-                What directors report.
+              
+              {/* Word-by-Word Reveal */}
+              <h2 className="text-3xl md:text-6xl font-extrabold tracking-tight uppercase font-display leading-[0.95] flex flex-wrap gap-x-3 gap-y-1">
+                {"What directors report.".split(" ").map((word, idx) => (
+                  <div key={idx} className="overflow-hidden inline-block">
+                    <span className="testimonial-word-reveal block">{word}</span>
+                  </div>
+                ))}
               </h2>
             </div>
 
