@@ -150,7 +150,7 @@ export default function Header() {
             </div>
 
             {/* Menu Content Body */}
-            <div className="flex-1 overflow-y-auto px-6 py-14 max-w-7xl mx-auto w-full flex flex-col justify-center">
+            <div className="flex-1 overflow-y-auto px-6 pt-6 pb-16 lg:py-14 max-w-7xl mx-auto w-full flex flex-col justify-start lg:justify-center">
               <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
                 
                 {/* Column CHRONICLES & ART */}

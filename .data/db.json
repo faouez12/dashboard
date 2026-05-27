@@ -73,7 +73,7 @@
         "exposure": "1/2000s • f/2.8 • ISO 160",
         "settingReason": "Global shutter allows shutter speed sync up to 1/80,000s. We selected 1/2000s to freeze runner strides while maintaining low ISO grain."
       },
-      "created_at": "2026-05-27T17:57:22.434Z",
+      "created_at": "2026-05-27T18:08:04.199Z",
       "puck_data": {
         "root": {
           "props": {
@@ -304,7 +304,7 @@
           ]
         }
       },
-      "image_url": "blob:http://localhost:3000/293887c4-84c7-4c8d-b0aa-55684263d2c0"
+      "image_url": "blob:http://localhost:3000/6cfcb256-151e-473a-82fb-90bf10360649"
     },
     {
       "id": "blog-2",
@@ -341,7 +341,7 @@
         "exposure": "1/1600s • f/2.8 • ISO 200",
         "settingReason": "Telephoto compression allows framing the runner directly against the massive alpine peaks from a distance of over 300 meters."
       },
-      "created_at": "2026-05-27T17:57:34.433Z",
+      "created_at": "2026-05-27T18:08:18.318Z",
       "puck_data": {
         "root": {
           "props": {
@@ -572,7 +572,7 @@
           ]
         }
       },
-      "image_url": "blob:http://localhost:3000/e8fb1fcc-2d84-49a8-b2ca-343342257565"
+      "image_url": "blob:http://localhost:3000/35e3dc24-4325-4edd-810b-63972df48907"
     }
   ],
   "events": [

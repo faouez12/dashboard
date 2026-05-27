@@ -664,8 +664,8 @@ export default function Home() {
         </section>
 
         {/* Sticky Split-Screen Horizontal Event Showcase */}
-        <section id="gallery" className="relative horizontal-sec border-t border-border bg-muted/5 min-h-screen">
-          <div className="w-full h-screen overflow-hidden flex items-center">
+        <section id="gallery" className="relative horizontal-sec border-t border-border bg-muted/5 min-h-screen md:min-h-0">
+          <div className="w-full h-auto py-20 md:py-0 md:h-screen md:overflow-hidden flex items-center overflow-visible">
             <div className="max-w-7xl mx-auto w-full px-6 grid md:grid-cols-12 gap-8 items-center">
               
               {/* Sticky Column details (locked left side) */}

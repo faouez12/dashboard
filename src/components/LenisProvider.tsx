@@ -3,6 +3,13 @@
 import React, { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register ScrollTrigger on client-side
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
@@ -16,6 +23,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       }
       return;
     }
+
     // Initialize Lenis with smooth deceleration physics
     const lenis = new Lenis({
       duration: 1.2,
@@ -29,29 +37,23 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
     lenisRef.current = lenis;
 
-    // Connect Lenis to the requestAnimationFrame loop
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    // Connect Lenis scroll updates to ScrollTrigger
+    lenis.on("scroll", ScrollTrigger.update);
 
-    requestAnimationFrame(raf);
-
-    // Synchronize ScrollTrigger calculations with Lenis updates
-    lenis.on("scroll", () => {
-      import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-        ScrollTrigger.update();
-      });
-    });
+    // Connect Lenis to GSAP requestAnimationFrame ticker
+    const updateRaf = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(updateRaf);
+    gsap.ticker.lagSmoothing(0);
 
     // Refresh GSAP ScrollTrigger after Lenis initializes
-    import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-      ScrollTrigger.refresh();
-    });
+    ScrollTrigger.refresh();
 
     return () => {
       lenis.destroy();
       lenisRef.current = null;
+      gsap.ticker.remove(updateRaf);
     };
   }, [pathname]);
 
