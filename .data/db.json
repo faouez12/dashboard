@@ -73,7 +73,7 @@
         "exposure": "1/2000s • f/2.8 • ISO 160",
         "settingReason": "Global shutter allows shutter speed sync up to 1/80,000s. We selected 1/2000s to freeze runner strides while maintaining low ISO grain."
       },
-      "created_at": "2026-05-27T18:08:04.199Z",
+      "created_at": "2026-05-27T18:53:24.120Z",
       "puck_data": {
         "root": {
           "props": {
@@ -304,7 +304,7 @@
           ]
         }
       },
-      "image_url": "blob:http://localhost:3000/6cfcb256-151e-473a-82fb-90bf10360649"
+      "image_url": "blob:http://localhost:3000/b3cd5216-b85e-4f99-a2e6-9517f72b41ed"
     },
     {
       "id": "blog-2",
@@ -341,7 +341,7 @@
         "exposure": "1/1600s • f/2.8 • ISO 200",
         "settingReason": "Telephoto compression allows framing the runner directly against the massive alpine peaks from a distance of over 300 meters."
       },
-      "created_at": "2026-05-27T18:08:18.318Z",
+      "created_at": "2026-05-27T18:53:44.257Z",
       "puck_data": {
         "root": {
           "props": {
@@ -572,7 +572,7 @@
           ]
         }
       },
-      "image_url": "blob:http://localhost:3000/35e3dc24-4325-4edd-810b-63972df48907"
+      "image_url": "blob:http://localhost:3000/4ff53a31-d0ce-4ef4-b5e7-7d3c97d196f2"
     }
   ],
   "events": [
@@ -1093,18 +1093,6 @@
       "date": "2026-05-26",
       "runners": "500-2000",
       "created_at": "2026-05-27T18:32:24.226Z"
-    },
-    {
-      "id": "msg-bd0400ad-4692-4028-80e9-e56fe959b872",
-      "name": "faouez heni",
-      "email": "henifawez19@gmail.com",
-      "message": "fuck you ",
-      "topic": "Booking Inquiry",
-      "type": "booking",
-      "eventDetails": "Germik",
-      "date": "2026-05-26",
-      "runners": "500-2000",
-      "created_at": "2026-05-27T18:36:44.032Z"
     }
   ],
   "hero_settings": {
@@ -1145,11 +1133,7 @@
             "t": "",
             "m": ""
           },
-          "backgroundColor": {
-            "d": "#020617",
-            "t": "",
-            "m": ""
-          },
+          "backgroundColor": "transparent",
           "padding": {
             "d": "20px",
             "t": "",
@@ -1172,12 +1156,12 @@
           "justifyContent": "flex-start",
           "alignment": "left",
           "borderWidth": "2px",
-          "borderStyle": "solid",
-          "borderColor": "#e2e8f0",
+          "borderStyle": "none",
+          "borderColor": "transparent",
           "zoneBackgroundColor": "#f8fafc",
           "zoneBorderWidth": "2px",
-          "zoneBorderStyle": "dashed",
-          "zoneBorderColor": "#cbd5e1",
+          "zoneBorderStyle": "none",
+          "zoneBorderColor": "transparent",
           "zoneBorderRadius": "6px",
           "hideOnDesktop": "false",
           "marginTop": {
@@ -1234,19 +1218,19 @@
             "height": {
               "d": "450px",
               "t": "",
-              "m": "760px"
+              "m": "320px"
             },
-            "autoPlay": "true",
+            "autoPlay": "false",
             "interval": 3000,
             "aspectRatio": {
               "d": "16/9",
               "t": "",
-              "m": "auto"
+              "m": "1/1"
             },
             "borderRadius": "24px",
             "borderWidth": "1px",
             "borderStyle": "solid",
-            "borderColor": "transparent",
+            "borderColor": "rgba(255,255,255,0.1)",
             "boxShadow": "0 20px 50px rgba(0,0,0,0.5)",
             "objectFit": "cover",
             "display": "block",
@@ -1263,8 +1247,7 @@
               "m": ""
             },
             "fullWidthMobile": "false",
-            "id": "ImageCarousel-9afcfda8-4c6f-47e3-b300-9a249bc62352",
-            "backgroundColor": "transparent"
+            "id": "ImageCarousel-9afcfda8-4c6f-47e3-b300-9a249bc62352"
           }
         }
       ]

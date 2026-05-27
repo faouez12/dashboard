@@ -638,7 +638,7 @@ export const VideoCarousel = {
                                             </div>
                                         ) : (
                                             <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-                                                <video src={src || ''} controls style={{ width: '100%', height: '100%', objectFit: objectFit as any }} />
+                                                <video src={src || undefined} controls style={{ width: '100%', height: '100%', objectFit: objectFit as any }} />
                                                 {!isAbove && caption}
                                             </div>
                                         )}
@@ -796,7 +796,7 @@ export const MediaCarousel = {
                     <div style={{ display: 'flex', height: '100%', transform: `translateX(-${safeIndex * 100}%)`, transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)' }}>
                         {items.map((item: any, i: number) => {
                             const isAction = (item.sharePlatform && item.sharePlatform !== 'none') || !!item.href;
-                            const media = item.type === 'video' ? <video src={item.uploadedVideo || item.videoUrl} controls style={{ width: '100%', height: '100%', objectFit: objectFit as any }} /> : <img src={item.src || ''} alt={item.alt} style={{ width: '100%', height: '100%', objectFit: objectFit as any }} />
+                            const media = item.type === 'video' ? <video src={item.uploadedVideo || item.videoUrl || undefined} controls style={{ width: '100%', height: '100%', objectFit: objectFit as any }} /> : <img src={item.src || undefined} alt={item.alt} style={{ width: '100%', height: '100%', objectFit: objectFit as any }} />
                             
                             const isAbove = captionPosition === 'above' || !captionPosition;
                             const isTopOverlay = captionPosition === 'top-overlay';
