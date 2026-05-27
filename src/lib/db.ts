@@ -39,6 +39,7 @@ export interface BlogPost {
   }
   created_at: string
   puck_data?: any
+  image_url?: string
 }
 
 export interface RaceEventGalleryItem {

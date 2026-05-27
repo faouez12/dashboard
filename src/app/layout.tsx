@@ -18,8 +18,13 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
-  title: "Shahine Photography | Premium Marathon & Endurance Sports Photography",
-  description: "Capturing the grit, sweat, and raw victory of live marathons, trail runs, cycling, and outdoor endurance events worldwide. Professional race coverage for organizers and athletic brands.",
+  title: "Shahine Photography | Marathon & Endurance Sports Photographer",
+  description: "Tunisia's premier marathon & endurance sports photographer, capturing elite runner action worldwide. High-speed athletic narratives, gear logs, and race events.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

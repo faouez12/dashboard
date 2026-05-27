@@ -424,6 +424,16 @@ export default function Home() {
       duration: 1,
       ease: "power3.out"
     });
+
+    // Force ScrollTrigger to calculate offsets correctly after DOM loads and layout is painted
+    ScrollTrigger.refresh();
+
+    // Fallback refresh for any late-loading image elements or layout shifts
+    const refreshTimeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 450);
+
+    return () => clearTimeout(refreshTimeout);
   }, { scope: containerRef, dependencies: [loading, hasPuckData] });
 
   if (loading) {

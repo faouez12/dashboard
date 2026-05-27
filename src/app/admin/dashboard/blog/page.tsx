@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Plus, Trash2, Edit2, FileText, Sparkles, X, BookOpen, Camera } from 'lucide-react'
 import { fetchBlogPosts, addOrUpdateBlogPost, deleteBlogPost } from '@/app/admin/actions'
 import { useToast } from '../components/ToastProvider'
+import ImageUpload from '../components/ImageUpload'
 
 interface BlogPost {
   id: string
@@ -30,6 +31,7 @@ interface BlogPost {
     settingReason: string
   }
   created_at: string
+  image_url?: string
 }
 
 export default function BlogDashboardPage() {
@@ -51,6 +53,7 @@ export default function BlogDashboardPage() {
   const [leadParagraph, setLeadParagraph] = useState('')
   const [author, setAuthor] = useState('Shahine')
   const [gradient, setGradient] = useState('from-teal-900 via-cyan-950 to-zinc-900')
+  const [imageUrl, setImageUrl] = useState('')
 
   // Block 1 content
   const [block1Heading, setBlock1Heading] = useState('')
@@ -98,6 +101,7 @@ export default function BlogDashboardPage() {
     setLeadParagraph('')
     setAuthor('Shahine')
     setGradient('from-teal-900 via-cyan-950 to-zinc-900')
+    setImageUrl('')
 
     // Block 1
     setBlock1Heading('Eliminating Rolling Shutter Jello')
@@ -133,6 +137,7 @@ export default function BlogDashboardPage() {
     setLeadParagraph(post.leadParagraph)
     setAuthor(post.author)
     setGradient(post.gradient)
+    setImageUrl(post.image_url || '')
 
     // Load body content sections
     const block1 = post.bodyContent?.[0]
@@ -200,6 +205,7 @@ export default function BlogDashboardPage() {
         leadParagraph,
         author,
         gradient,
+        image_url: imageUrl,
         bodyContent,
         technicalNotes: {
           camera: techCamera,
@@ -293,19 +299,30 @@ export default function BlogDashboardPage() {
           {posts.map(post => (
             <div
               key={post.id}
-              className="group bg-[#1A1A1A] border border-white/5 rounded-2xl overflow-hidden hover:border-[#ccff00]/30 transition-all flex flex-col justify-between p-6 h-[18rem]"
+              className="group bg-[#1A1A1A] border border-white/5 rounded-2xl overflow-hidden hover:border-[#ccff00]/30 transition-all flex flex-col justify-between p-6 h-[19rem]"
             >
               <div>
                 <div className="flex items-center justify-between text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest">
                   <span className="text-[#ccff00]">{post.categoryLabel}</span>
                   <span>{post.date} • {post.readTime}</span>
                 </div>
-                <h3 className="text-lg font-black text-white uppercase tracking-tight truncate mt-3 group-hover:text-[#ccff00] transition-colors">
-                  {post.title}
-                </h3>
-                <p className="text-xs text-slate-500 mt-2 line-clamp-3 leading-relaxed">
-                  {post.excerpt}
-                </p>
+                <div className="flex gap-4 mt-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-black text-white uppercase tracking-tight truncate group-hover:text-[#ccff00] transition-colors">
+                      {post.title}
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-2 line-clamp-3 leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                  {post.image_url && (
+                    <img
+                      src={post.image_url}
+                      alt={post.title}
+                      className="w-20 h-20 rounded-xl object-cover border border-white/5 shrink-0 self-start"
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center justify-between border-t border-white/5 pt-4 mt-4">
@@ -445,6 +462,14 @@ export default function BlogDashboardPage() {
                     placeholder="Provide a 2-sentence summary of what this article targets..."
                     rows={2}
                     className="w-full px-3 py-2.5 bg-zinc-900 border border-white/5 text-white rounded-lg text-xs outline-none resize-none leading-relaxed"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Article Cover Image</label>
+                  <ImageUpload
+                    onImageUploaded={url => setImageUrl(url)}
+                    currentImage={imageUrl}
                   />
                 </div>
 

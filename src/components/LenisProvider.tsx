@@ -10,6 +10,10 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     if (pathname?.startsWith("/admin")) {
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+      }
       return;
     }
     // Initialize Lenis with smooth deceleration physics
@@ -40,10 +44,16 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       });
     });
 
+    // Refresh GSAP ScrollTrigger after Lenis initializes
+    import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+      ScrollTrigger.refresh();
+    });
+
     return () => {
       lenis.destroy();
+      lenisRef.current = null;
     };
-  }, []);
+  }, [pathname]);
 
   return <>{children}</>;
 }

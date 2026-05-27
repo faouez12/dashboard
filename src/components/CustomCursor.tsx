@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { usePathname } from "next/navigation";
 
 // SVG Camera icon matching the Lucide "Camera" shape used in the logo
 const CameraIcon = () => (
@@ -27,6 +28,8 @@ export default function CustomCursor() {
   const cursorRingRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const pathname = usePathname();
+  const isDashboard = pathname?.startsWith("/admin");
 
   useEffect(() => {
     // Only show on non-touch devices
@@ -115,7 +118,7 @@ export default function CustomCursor() {
     };
   }, []);
 
-  if (!isVisible) return null;
+  if (!isVisible || isDashboard) return null;
 
   return (
     <>
@@ -129,17 +132,21 @@ export default function CustomCursor() {
         }}
       />
 
-      {/* Camera icon — precise position */}
+      {/* Logo — precise position */}
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 pointer-events-none z-[9999] text-accent mix-blend-screen"
+        className="fixed top-0 left-0 pointer-events-none z-[9999]"
         style={{
           transform: "translate3d(0,0,0)",
           willChange: "transform",
           filter: "drop-shadow(0 0 6px rgba(0,245,255,0.8))",
         }}
       >
-        <CameraIcon />
+        <img
+          src="/logo.png"
+          alt="Logo"
+          className="w-5 h-5 object-contain"
+        />
       </div>
     </>
   );

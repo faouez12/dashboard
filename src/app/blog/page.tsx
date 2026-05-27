@@ -17,6 +17,7 @@ interface BlogPost {
   category: "race-report" | "gear" | "behind-the-lens";
   categoryLabel: string;
   gradient: string;
+  image_url?: string;
 }
 
 const BLOG_POSTS: BlogPost[] = [
@@ -135,17 +136,35 @@ export default function BlogIndexPage() {
               <Link
                 href={`/blog/${post.slug}`}
                 key={post.slug}
-                className="group border border-border rounded-[2.5rem] bg-muted/10 hover:bg-muted/20 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between p-8 md:p-10 h-[380px] blog-card-anim relative overflow-hidden"
+                className="group border border-border rounded-[2.5rem] bg-muted/10 hover:bg-muted/20 hover:border-accent/40 transition-all duration-300 flex flex-col p-8 md:p-10 min-h-[480px] blog-card-anim relative overflow-hidden"
               >
+                {/* Thumbnail Image */}
+                <div className="h-48 w-full relative overflow-hidden rounded-[1.8rem] bg-zinc-950 flex items-center justify-center mb-6 border border-border/40">
+                  {post.image_url ? (
+                    <img
+                      src={post.image_url}
+                      alt={post.title}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  ) : (
+                    <div className={`absolute inset-0 bg-gradient-to-tr ${post.gradient} flex items-center justify-center p-6`}>
+                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300" />
+                      <Camera className="h-10 w-10 text-white/10 group-hover:scale-110 transition-transform duration-500 relative z-10" />
+                    </div>
+                  )}
+                </div>
+
                 {/* Accent Background mesh */}
-                <div className={`absolute inset-0 bg-gradient-to-tr ${post.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-500 z-0`} />
+                {!post.image_url && (
+                  <div className={`absolute inset-0 bg-gradient-to-tr ${post.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-500 z-0`} />
+                )}
                 
                 {/* Meta details */}
                 <div className="relative z-10 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-accent">
                   <span className="bg-accent/10 border border-accent/20 px-3 py-1 rounded-md">
                     {post.categoryLabel}
                   </span>
-                  <div className="flex items-center gap-4 text-muted-foreground">
+                  <div className="flex items-center gap-4 text-muted-foreground font-mono">
                     <span className="flex items-center gap-1">
                       <Calendar className="h-3.5 w-3.5" /> {post.date}
                     </span>
@@ -156,17 +175,17 @@ export default function BlogIndexPage() {
                 </div>
 
                 {/* Title & Excerpt */}
-                <div className="relative z-10 flex flex-col gap-3 mt-6">
+                <div className="relative z-10 flex flex-col gap-3 mt-4">
                   <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight text-white group-hover:text-accent transition-colors font-display line-clamp-2 leading-snug">
                     {post.title}
                   </h3>
-                  <p className="text-xs md:text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                  <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                     {post.excerpt}
                   </p>
                 </div>
 
                 {/* Read Button */}
-                <div className="relative z-10 flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-widest mt-6 border-t border-border/40 pt-5 group-hover:text-white transition-colors">
+                <div className="relative z-10 flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-widest mt-auto border-t border-border/40 pt-5 group-hover:text-white transition-colors">
                   <BookOpen className="h-4.5 w-4.5" />
                   <span>Read Article</span>
                   <ArrowRight className="h-4 w-4 ml-auto group-hover:translate-x-1 transition-transform" />

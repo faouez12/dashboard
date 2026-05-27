@@ -68,7 +68,7 @@ export default function Header() {
 
           {/* Logo — Left */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <Camera className="h-5 w-5 text-accent group-hover:rotate-12 transition-transform duration-300" />
+            <img src="/logo.png" alt="Logo" className="h-5 w-5 object-contain group-hover:rotate-12 transition-transform duration-300" />
             <span className="text-lg font-bold tracking-tight uppercase font-display text-foreground group-hover:text-accent transition-colors">
               Shahine<span className="text-accent"> Photography</span>
             </span>
@@ -133,7 +133,7 @@ export default function Header() {
             <div className="h-20 border-b border-border w-full px-6 flex items-center justify-between max-w-7xl mx-auto shrink-0">
               {/* Logo Left */}
               <Link href="/" className="flex items-center gap-2.5 group">
-                <Camera className="h-5 w-5 text-accent group-hover:rotate-12 transition-transform duration-300" />
+                <img src="/logo.png" alt="Logo" className="h-5 w-5 object-contain group-hover:rotate-12 transition-transform duration-300" />
                 <span className="text-lg font-bold tracking-tight uppercase font-display text-foreground group-hover:text-accent transition-colors">
                   Shahine<span className="text-accent"> Photography</span>
                 </span>
