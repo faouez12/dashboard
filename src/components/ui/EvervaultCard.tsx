@@ -6,9 +6,11 @@ import { cn } from "@/lib/utils";
 export const EvervaultCard = ({
   className,
   children,
+  bgImage,
 }: {
   className?: string;
   children?: React.ReactNode;
+  bgImage?: string;
 }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -38,6 +40,15 @@ export const EvervaultCard = ({
       )}
       style={{ transformStyle: "preserve-3d" }}
     >
+      {bgImage && (
+        <>
+          <div 
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 scale-100 group-hover/card:scale-105 z-0" 
+            style={{ backgroundImage: `url(${bgImage})` }}
+          />
+          <div className="absolute inset-0 bg-zinc-950/75 group-hover/card:bg-zinc-950/65 transition-colors duration-500 z-0" />
+        </>
+      )}
       <CardPattern
         mouseX={mouseX}
         mouseY={mouseY}

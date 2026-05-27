@@ -21,7 +21,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import AuroraBackground from "@/components/AuroraBackground";
 import { EvervaultCard } from "@/components/ui/EvervaultCard";
-import { fetchHeroSettings, fetchEvents, fetchHomepagePuckData } from "@/app/admin/actions";
+import { fetchHeroSettings, fetchEvents, fetchHomepagePuckData, fetchCapabilitiesSettings } from "@/app/admin/actions";
 import { Render } from "@measured/puck";
 import { config as puckConfig } from "@/app/admin/dashboard/components/puck-config";
 
@@ -60,9 +60,16 @@ const STATS = [
   { value: "12h", label: "Media Delivery Time" }
 ];
 
+const CAPABILITY_ICONS = [
+  <Flame className="h-6 w-6 text-accent" key="flame" />,
+  <Sliders className="h-6 w-6 text-accent" key="sliders" />,
+  <TrendingUp className="h-6 w-6 text-accent" key="trending" />,
+  <Sparkles className="h-8 w-8 text-accent animate-pulse" key="sparkles" />,
+];
+
 // Gallery / Case studies
 interface EventItem {
-  id: number;
+  id: number | string;
   slug: string;
   title: string;
   location: string;
@@ -72,6 +79,7 @@ interface EventItem {
   gradient: string;
   desc: string;
   highlight: string;
+  image_url?: string;
 }
 
 const EVENTS_DATA: EventItem[] = [
@@ -167,6 +175,7 @@ export default function Home() {
 
   // Dynamic Settings and Database State
   const [hero, setHero] = useState<any>(null);
+  const [capabilities, setCapabilities] = useState<any>(null);
   const [dbEvents, setDbEvents] = useState<any[]>([]);
   const [currentMediaIdx, setCurrentMediaIdx] = useState(0);
   const [puckData, setPuckData] = useState<any>(null);
@@ -177,6 +186,8 @@ export default function Home() {
       try {
         const h = await fetchHeroSettings();
         setHero(h);
+        const caps = await fetchCapabilitiesSettings();
+        setCapabilities(caps);
         const evts = await fetchEvents();
         setDbEvents(evts);
         const pData = await fetchHomepagePuckData();
@@ -188,6 +199,27 @@ export default function Home() {
       }
     }
     loadData();
+  }, []);
+
+  // GSAP ScrollTrigger ResizeObserver / refresh fix to prevent scroll freezing
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const observer = new ResizeObserver(() => {
+      ScrollTrigger.refresh();
+    });
+    
+    observer.observe(document.body);
+    
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Carousel Interval
@@ -307,7 +339,6 @@ export default function Home() {
             start: "top top",
             end: "bottom bottom",
             scrub: 1.2,
-            pin: true,
           },
           x: () => -(container.scrollWidth - container.clientWidth),
           ease: "none"
@@ -515,12 +546,12 @@ export default function Home() {
             {/* Sticky Left Column Context */}
             <div className="lg:col-span-5 flex flex-col gap-6 spec-title-anim lg:sticky lg:top-32">
               <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono">
-                CORE CAPABILITY
+                {capabilities?.badge || "CORE CAPABILITY"}
               </span>
               
               {/* Word-by-Word Reveal */}
               <h2 className="text-3xl md:text-6xl font-extrabold tracking-tight uppercase leading-[0.95] font-display flex flex-wrap gap-x-3 gap-y-1">
-                {"Engineered for zero-failure delivery.".split(" ").map((word, idx) => (
+                {(capabilities?.title || "Engineered for zero-failure delivery.").split(" ").map((word: string, idx: number) => (
                   <div key={idx} className="overflow-hidden inline-block">
                     <span className="spec-word-reveal block">{word}</span>
                   </div>
@@ -528,11 +559,11 @@ export default function Home() {
               </h2>
               
               <p className="text-muted-foreground leading-relaxed text-sm md:text-base mt-2">
-                In elite endurance events, missed frames are not an option. Our field setups carry weatherproof enclosures, carbon-fiber rigs, and secondary cellular nodes to guarantee instantaneous PR deliveries.
+                {capabilities?.description || "In elite endurance events, missed frames are not an option. Our field setups carry weatherproof enclosures, carbon-fiber rigs, and secondary cellular nodes to guarantee instantaneous PR deliveries."}
               </p>
               
               <div className="grid grid-cols-2 gap-4 mt-6">
-                {STATS.map((stat, idx) => (
+                {(capabilities?.stats && capabilities.stats.length === 4 ? capabilities.stats : STATS).map((stat: any, idx: number) => (
                   <div key={idx} className="border border-border p-5 rounded-xl bg-muted/15 relative overflow-hidden group">
                     <div className="absolute top-0 left-0 w-[2px] h-full bg-accent/40 group-hover:bg-accent transition-colors" />
                     <div className="text-3xl font-extrabold text-accent tracking-tight font-display">{stat.value}</div>
@@ -550,12 +581,15 @@ export default function Home() {
               
               {/* Left staggered cards */}
               <div className="flex flex-col gap-8 md:translate-y-0">
-                {SPECIALTIES.slice(0, 2).map((spec, idx) => (
+                {(capabilities?.items && capabilities.items.length === 4 ? capabilities.items : [
+                  { num: "01", title: "Marathons & Road Races", desc: "Start lines, pack dynamics...", bg_image_url: "" },
+                  { num: "02", title: "Trail & Ultra Running", desc: "Backcountry endurance...", bg_image_url: "" }
+                ]).slice(0, 2).map((spec: any, idx: number) => (
                   <div key={idx} className="spec-card-anim h-[280px]">
-                    <EvervaultCard>
+                    <EvervaultCard bgImage={spec.bg_image_url}>
                       <div className="flex justify-between items-start w-full">
                         <div className="p-3 bg-muted border border-border rounded-xl text-accent">
-                          {spec.icon}
+                          {CAPABILITY_ICONS[idx]}
                         </div>
                         <span 
                           className="text-4xl font-black font-display text-transparent"
@@ -575,12 +609,15 @@ export default function Home() {
 
               {/* Right staggered cards with offset */}
               <div className="flex flex-col gap-8 md:translate-y-16">
-                {SPECIALTIES.slice(2).map((spec, idx) => (
-                  <div key={idx} className="spec-card-anim h-[280px]">
-                    <EvervaultCard>
+                {(capabilities?.items && capabilities.items.length === 4 ? capabilities.items : [
+                  { num: "03", title: "Athletic Brand Campaigns", desc: "Commercial-grade shots...", bg_image_url: "" },
+                  { num: "04", title: "Looking for Custom Rates?", desc: "Custom media structures...", bg_image_url: "" }
+                ]).slice(2, 4).map((spec: any, idx: number) => (
+                  <div key={idx} className={`spec-card-anim ${idx === 1 ? 'h-[240px]' : 'h-[280px]'}`}>
+                    <EvervaultCard bgImage={spec.bg_image_url}>
                       <div className="flex justify-between items-start w-full">
                         <div className="p-3 bg-muted border border-border rounded-xl text-accent">
-                          {spec.icon}
+                          {CAPABILITY_ICONS[idx + 2]}
                         </div>
                         <span 
                           className="text-4xl font-black font-display text-transparent"
@@ -596,21 +633,6 @@ export default function Home() {
                     </EvervaultCard>
                   </div>
                 ))}
-                
-                {/* Visual Accent Box */}
-                <div className="spec-card-anim h-[240px]">
-                  <EvervaultCard className="border border-accent/20 bg-accent/5">
-                    <div className="w-full">
-                      <Sparkles className="h-8 w-8 text-accent animate-pulse" />
-                    </div>
-                    <div className="mt-auto">
-                      <h4 className="text-sm font-extrabold uppercase text-foreground tracking-wide">Looking for Custom Rates?</h4>
-                      <p className="text-[10px] text-muted-foreground mt-1.5 leading-relaxed">
-                        Custom media structures configured specifically to client runner counts and commercial logo deliveries.
-                      </p>
-                    </div>
-                  </EvervaultCard>
-                </div>
               </div>
 
             </div>
@@ -619,7 +641,7 @@ export default function Home() {
         </section>
 
         {/* Sticky Split-Screen Horizontal Event Showcase */}
-        <section id="gallery" className="relative horizontal-sec border-t border-border bg-muted/5 min-h-screen">
+        <section id="gallery" className="relative horizontal-sec border-t border-border bg-muted/5 min-h-screen md:h-[250vh]">
           <div className="w-full h-screen sticky top-0 overflow-hidden flex items-center">
             <div className="max-w-7xl mx-auto w-full px-6 grid md:grid-cols-12 gap-8 items-center">
               
@@ -654,10 +676,20 @@ export default function Home() {
                       className="w-[280px] md:w-[380px] h-[400px] shrink-0 border border-border bg-background rounded-[2rem] flex flex-col justify-between overflow-hidden relative transition-all duration-300 snap-start"
                       style={{ transformStyle: "preserve-3d" }}
                     >
-                      {/* Gradient preview */}
-                      <div className={`h-40 w-full bg-gradient-to-tr ${event.gradient} flex items-center justify-center p-6 relative overflow-hidden`} style={{ transform: "translateZ(10px)" }}>
-                        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300" />
-                        <Camera className="h-8 w-8 text-white/10 group-hover:scale-110 transition-transform duration-500 relative z-10" />
+                      {/* Image or Gradient preview */}
+                      <div className="h-40 w-full relative overflow-hidden bg-zinc-950 flex items-center justify-center" style={{ transform: "translateZ(10px)" }}>
+                        {event.image_url ? (
+                          <img
+                            src={event.image_url}
+                            alt={event.title}
+                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          />
+                        ) : (
+                          <div className={`absolute inset-0 bg-gradient-to-tr ${event.gradient} flex items-center justify-center p-6 w-full h-full`}>
+                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300" />
+                            <Camera className="h-8 w-8 text-white/10 group-hover:scale-110 transition-transform duration-500 relative z-10" />
+                          </div>
+                        )}
                         
                         <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded border border-white/10 text-[9px] font-mono text-white/95">
                           <Sparkles className="h-3.5 w-3.5 text-accent animate-pulse" />

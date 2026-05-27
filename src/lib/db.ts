@@ -69,6 +69,7 @@ export interface RaceEvent {
   gallery: RaceEventGalleryItem[]
   created_at: string
   puck_data?: any
+  image_url?: string
 }
 
 export interface ContactMessage {
@@ -108,12 +109,33 @@ export interface SavedDesign {
   created_at: string
 }
 
+export interface CapabilityStat {
+  value: string
+  label: string
+}
+
+export interface CapabilityItem {
+  num: string
+  title: string
+  desc: string
+  bg_image_url?: string
+}
+
+export interface CapabilitiesSettings {
+  badge: string
+  title: string
+  description: string
+  stats: CapabilityStat[]
+  items: CapabilityItem[]
+}
+
 export interface DbSchema {
   gallery: GalleryItem[]
   blogs: BlogPost[]
   events: RaceEvent[]
   messages: ContactMessage[]
   hero_settings: HeroSettings
+  capabilities_settings?: CapabilitiesSettings
   homepage_puck_data?: any
   templates?: Record<string, any>
   saved_designs?: SavedDesign[]
@@ -273,7 +295,8 @@ const defaultEvents: RaceEvent[] = [
       { id: 103, title: "Boylston Scream", category: "finish", specs: "135mm • f/2.0 • 1/2000s", gradient: "from-red-900/60 to-zinc-900", description: "Finisher crossing the line with arms raised in victory, crowd out of focus in the background.", image_url: "" },
       { id: 104, title: "Medals of honor", category: "details", specs: "50mm Macro • f/3.2 • 1/500s", gradient: "from-stone-900/60 to-zinc-900", description: "Finisher medals gleaming on the blue ribbons, stacked near the finish line tents.", image_url: "" }
     ],
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
+    image_url: ""
   },
   {
     id: "evt-2",
@@ -296,7 +319,8 @@ const defaultEvents: RaceEvent[] = [
       { id: 203, title: "Finisher Cheers", category: "finish", specs: "85mm • f/1.4 • 1/800s", gradient: "from-teal-900/60 to-zinc-900", description: "Finisher embraced by family in Chamonix plaza, bell towers ringing in background.", image_url: "" },
       { id: 204, title: "Frozen Hydration", category: "details", specs: "90mm Macro • f/4.0 • 1/1000s", gradient: "from-sky-950/60 to-zinc-900", description: "Frozen ice particles forming on an athlete's collapsible hydration flask.", image_url: "" }
     ],
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
+    image_url: ""
   }
 ]
 
@@ -316,12 +340,51 @@ const defaultHeroSettings: HeroSettings = {
   spec_3_value: "FTPS LIVE"
 }
 
+const defaultCapabilitiesSettings: CapabilitiesSettings = {
+  badge: "CORE CAPABILITY",
+  title: "Engineered for zero-failure delivery.",
+  description: "In elite endurance events, missed frames are not an option. Our field setups carry weatherproof enclosures, carbon-fiber rigs, and secondary cellular nodes to guarantee instantaneous PR deliveries.",
+  stats: [
+    { value: "120+", label: "Races Covered" },
+    { value: "80,000+", label: "Runners Captured" },
+    { value: "15+", label: "International Brands" },
+    { value: "12h", label: "Media Delivery Time" }
+  ],
+  items: [
+    {
+      num: "01",
+      title: "Marathons & Road Races",
+      desc: "Start lines, pack dynamics, elite pacing, and high-emotion finish arches. Engineered for race organizers needing quick media turnarounds.",
+      bg_image_url: ""
+    },
+    {
+      num: "02",
+      title: "Trail & Ultra Running",
+      desc: "Backcountry endurance events, steep vertical accents, and remote aid stations. Physically capable of covering remote trail points.",
+      bg_image_url: ""
+    },
+    {
+      num: "03",
+      title: "Athletic Brand Campaigns",
+      desc: "Commercial-grade shots focused on footwear, apparel, and sponsor placements. Highlighting brand logos in live, unscripted race contexts.",
+      bg_image_url: ""
+    },
+    {
+      num: "04",
+      title: "Looking for Custom Rates?",
+      desc: "Custom media structures configured specifically to client runner counts and commercial logo deliveries.",
+      bg_image_url: ""
+    }
+  ]
+}
+
 const defaultDb: DbSchema = {
   gallery: defaultGallery,
   blogs: defaultBlogs,
   events: defaultEvents,
   messages: [],
   hero_settings: defaultHeroSettings,
+  capabilities_settings: defaultCapabilitiesSettings,
   saved_designs: []
 }
 
@@ -517,5 +580,19 @@ export async function deleteSavedDesign(id: string): Promise<void> {
   const db = await readDb()
   if (!db.saved_designs) return
   db.saved_designs = db.saved_designs.filter(d => d.id !== id)
+  await writeDb(db)
+}
+
+// ============================================
+// CAPABILITIES SETTINGS METHODS
+// ============================================
+export async function getCapabilitiesSettings(): Promise<CapabilitiesSettings> {
+  const db = await readDb()
+  return db.capabilities_settings || defaultCapabilitiesSettings
+}
+
+export async function saveCapabilitiesSettings(settings: CapabilitiesSettings): Promise<void> {
+  const db = await readDb()
+  db.capabilities_settings = settings
   await writeDb(db)
 }

@@ -30,6 +30,7 @@ interface EventItem {
   gradient: string;
   desc: string;
   highlight: string;
+  image_url?: string;
 }
 
 const EVENTS_DATA: EventItem[] = [
@@ -154,9 +155,19 @@ export default function EventsArchivePage() {
                 className="group border border-border rounded-xl overflow-hidden bg-muted/10 hover:bg-muted/20 hover:border-accent transition-all flex flex-col justify-between h-96 event-card-anim opacity-0"
               >
                 {/* Simulated Thumbnail */}
-                <div className={`h-48 w-full bg-gradient-to-tr ${event.gradient} flex items-center justify-center p-6 relative overflow-hidden`}>
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300" />
-                  <Camera className="h-10 w-10 text-white/10 group-hover:scale-110 transition-transform duration-500 relative z-10" />
+                <div className="h-48 w-full relative overflow-hidden bg-zinc-950 flex items-center justify-center">
+                  {event.image_url ? (
+                    <img
+                      src={event.image_url}
+                      alt={event.title}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  ) : (
+                    <div className={`absolute inset-0 bg-gradient-to-tr ${event.gradient} flex items-center justify-center p-6`}>
+                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300" />
+                      <Camera className="h-10 w-10 text-white/10 group-hover:scale-110 transition-transform duration-500 relative z-10" />
+                    </div>
+                  )}
                   
                   <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded border border-white/10 text-[10px] font-mono text-white/90">
                     <Sparkles className="h-3.5 w-3.5 text-accent animate-pulse" />

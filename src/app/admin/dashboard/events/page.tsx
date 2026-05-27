@@ -55,6 +55,7 @@ export default function EventsDashboardPage() {
   const [gradient, setGradient] = useState('from-blue-950 via-zinc-950 to-zinc-900')
   const [desc, setDesc] = useState('')
   const [highlight, setHighlight] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
   
   // Detail Form States
   const [weather, setWeather] = useState('')
@@ -117,6 +118,7 @@ export default function EventsDashboardPage() {
     setGearUsed('Sony A9 III + 70-200mm f/2.8 GM II')
     setIntro('')
     setTechnicalLog('')
+    setImageUrl('')
 
     // Reset timeline items
     setTimelineStartTitle('The Preamble')
@@ -160,6 +162,7 @@ export default function EventsDashboardPage() {
     setGearUsed(evt.gearUsed)
     setIntro(evt.intro)
     setTechnicalLog(evt.technicalLog)
+    setImageUrl(evt.image_url || '')
 
     // Load timeline (with fallbacks if empty)
     const tStart = evt.gallery?.find(g => g.category === 'start')
@@ -258,7 +261,8 @@ export default function EventsDashboardPage() {
         gearUsed,
         intro,
         technicalLog,
-        gallery: timelineGallery
+        gallery: timelineGallery,
+        image_url: imageUrl
       }, editingId || undefined)
 
       toast.success(
@@ -307,6 +311,7 @@ export default function EventsDashboardPage() {
         else if (field === 'grit') setTimelineGritImg(data.url)
         else if (field === 'finish') setTimelineFinishImg(data.url)
         else if (field === 'details') setTimelineDetailsImg(data.url)
+        else if (field === 'cover') setImageUrl(data.url)
         toast.success('Uploaded successfully', 'Timeline frame saved.')
       } else {
         toast.error('Upload failed', data.error || 'Server error.')
@@ -552,6 +557,55 @@ export default function EventsDashboardPage() {
                     rows={2}
                     className="w-full px-3 py-2.5 bg-zinc-900 border border-white/5 text-white rounded-lg text-xs outline-none resize-none leading-relaxed"
                   />
+                </div>
+
+                {/* Event Cover Image Upload */}
+                <div className="space-y-3 bg-zinc-950/45 p-4 rounded-xl border border-white/5">
+                  <label className="text-[9px] font-bold uppercase tracking-widest text-[#ccff00] font-mono block">
+                    Event Cover Image
+                  </label>
+                  <div className="flex flex-col sm:flex-row items-center gap-4">
+                    {imageUrl ? (
+                      <div className="w-16 h-16 relative bg-zinc-900 border border-white/10 rounded-xl overflow-hidden flex-shrink-0">
+                        <img src={imageUrl} alt="Event Cover" className="object-cover w-full h-full" />
+                      </div>
+                    ) : (
+                      <div className="w-16 h-16 bg-white/5 border border-dashed border-white/10 rounded-xl flex items-center justify-center text-slate-600 flex-shrink-0">
+                        <Plus size={18} />
+                      </div>
+                    )}
+
+                    <div className="flex-1 w-full space-y-2">
+                      <input
+                        type="text"
+                        value={imageUrl}
+                        onChange={e => setImageUrl(e.target.value)}
+                        placeholder="https://pub-xxxxxx.r2.dev/visuals/event.jpg"
+                        className="w-full px-3 py-2 bg-zinc-900 border border-white/5 text-white rounded-lg text-[10px] outline-none"
+                      />
+                      <div className="flex items-center gap-2">
+                        <label className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold uppercase tracking-wider text-[9px] rounded-lg cursor-pointer transition-colors relative flex items-center gap-1">
+                          {uploadingField === 'cover' ? 'Streaming...' : 'Upload Cover'}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={e => handleUploadField(e, 'cover')}
+                            disabled={uploadingField === 'cover'}
+                            className="hidden"
+                          />
+                        </label>
+                        {imageUrl && (
+                          <button
+                            type="button"
+                            onClick={() => setImageUrl('')}
+                            className="px-3 py-1.5 bg-red-950/10 hover:bg-red-950/30 border border-red-500/10 text-red-400 font-bold uppercase tracking-wider text-[9px] rounded-lg transition-colors cursor-pointer"
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 

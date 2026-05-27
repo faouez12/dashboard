@@ -33,6 +33,7 @@ export default function DashboardContainer({ children, userName, avatarUrl }: Da
     const navItems = [
         { name: 'Overview', href: '/admin/dashboard', icon: Layout },
         { name: 'Hero Settings', href: '/admin/dashboard/settings/hero', icon: Sparkles },
+        { name: 'Capabilities Settings', href: '/admin/dashboard/settings/capabilities', icon: Settings },
         { name: 'Templates', href: '/admin/dashboard/settings/templates', icon: Layout },
         { name: 'Gallery', href: '/admin/dashboard/gallery', icon: ImageIcon },
         { name: 'Events', href: '/admin/dashboard/events', icon: ClipboardList },
@@ -173,7 +174,7 @@ export default function DashboardContainer({ children, userName, avatarUrl }: Da
 
                 {/* Page Canvas */}
                 <main className={`flex-1 min-h-0 bg-[#0F0F0F] ${isBuilder ? 'overflow-hidden' : 'overflow-auto p-8'}`}>
-                    <div className={isBuilder ? 'h-full' : 'max-w-[1600px] mx-auto h-full'}>
+                    <div className={isBuilder ? 'h-full' : 'max-w-[1600px] mx-auto min-h-full'}>
                         {children}
                     </div>
                 </main>

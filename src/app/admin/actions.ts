@@ -204,3 +204,16 @@ export async function addSavedDesign(type: string, name: string, content: any) {
 export async function deleteSavedDesign(id: string) {
   await db.deleteSavedDesign(id)
 }
+
+// ============================================
+// CAPABILITIES SETTINGS ACTIONS
+// ============================================
+export async function fetchCapabilitiesSettings() {
+  return await db.getCapabilitiesSettings()
+}
+
+export async function updateCapabilitiesSettings(data: db.CapabilitiesSettings) {
+  await db.saveCapabilitiesSettings(data)
+  revalidatePath('/')
+  revalidatePath('/admin/dashboard/settings/capabilities')
+}
