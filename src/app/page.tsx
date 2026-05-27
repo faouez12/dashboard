@@ -201,26 +201,29 @@ export default function Home() {
     loadData();
   }, []);
 
-  // GSAP ScrollTrigger ResizeObserver / refresh fix to prevent scroll freezing
+  // GSAP ScrollTrigger Refresh when page load settles to prevent stale coordinates
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (loading) return;
     
-    const observer = new ResizeObserver(() => {
+    const timer = setTimeout(() => {
       ScrollTrigger.refresh();
-    });
-    
-    observer.observe(document.body);
-    
+    }, 500);
+
+    let resizeTimer: NodeJS.Timeout;
     const handleResize = () => {
-      ScrollTrigger.refresh();
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 200);
     };
     window.addEventListener('resize', handleResize);
-    
+
     return () => {
-      observer.disconnect();
+      clearTimeout(timer);
+      clearTimeout(resizeTimer);
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [loading]);
 
   // Carousel Interval
   useEffect(() => {
@@ -337,8 +340,11 @@ export default function Home() {
           scrollTrigger: {
             trigger: ".horizontal-sec",
             start: "top top",
-            end: "bottom bottom",
+            end: () => `+=${container.scrollWidth - container.clientWidth}`,
             scrub: 1.2,
+            pin: true,
+            pinType: "transform",
+            invalidateOnRefresh: true,
           },
           x: () => -(container.scrollWidth - container.clientWidth),
           ease: "none"
@@ -641,8 +647,8 @@ export default function Home() {
         </section>
 
         {/* Sticky Split-Screen Horizontal Event Showcase */}
-        <section id="gallery" className="relative horizontal-sec border-t border-border bg-muted/5 min-h-screen md:h-[250vh]">
-          <div className="w-full h-screen sticky top-0 overflow-hidden flex items-center">
+        <section id="gallery" className="relative horizontal-sec border-t border-border bg-muted/5 min-h-screen">
+          <div className="w-full h-screen overflow-hidden flex items-center">
             <div className="max-w-7xl mx-auto w-full px-6 grid md:grid-cols-12 gap-8 items-center">
               
               {/* Sticky Column details (locked left side) */}
@@ -656,6 +662,13 @@ export default function Home() {
                 <p className="text-xs text-muted-foreground leading-relaxed max-w-xs">
                   Scroll down to navigate horizontally through our complete race archives. Look inside for detailed weather notes and camera configurations.
                 </p>
+
+                <Link
+                  href="/events"
+                  className="mt-2 flex items-center gap-2 px-5 py-3 border border-accent/30 hover:border-accent bg-accent/5 hover:bg-accent/10 text-accent font-black uppercase tracking-wider text-[10px] rounded-lg transition-all cursor-pointer"
+                >
+                  View All Events <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
                 
                 {/* Indicator dots mapping scroll progress */}
                 <div className="hidden md:flex gap-1.5 mt-4">

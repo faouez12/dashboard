@@ -94,14 +94,14 @@ export default function EventsArchivePage() {
     });
   }, { scope: containerRef });
 
-  // Stagger reveal cards when filter changes
+  // Stagger reveal cards when filter changes or when events load
   useGSAP(() => {
     gsap.fromTo(
       ".event-card-anim",
       { opacity: 0, scale: 0.96, y: 24 },
       { opacity: 1, scale: 1, y: 0, duration: 0.5, stagger: 0.1, ease: "power2.out" }
     );
-  }, { dependencies: [activeFilter], scope: containerRef });
+  }, { dependencies: [activeFilter, dbEvents], scope: containerRef });
 
   return (
     <div ref={containerRef} className="bg-background text-foreground flex-1 flex flex-col font-sans">

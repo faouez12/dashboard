@@ -415,9 +415,9 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
             </button>
 
             {/* Simulated or R2 Image Box */}
-            <div className={`h-[50vh] min-h-[320px] w-full bg-gradient-to-tr ${selectedImage.gradient} flex items-center justify-center relative p-8`}>
+            <div className={`h-[50vh] min-h-[320px] w-full flex items-center justify-center relative p-8 ${selectedImage.image_url ? 'bg-transparent' : `bg-gradient-to-tr ${selectedImage.gradient}`}`}>
               {selectedImage.image_url ? (
-                <Image src={selectedImage.image_url} alt={selectedImage.title} fill className="object-cover" />
+                <Image src={selectedImage.image_url} alt={selectedImage.title} fill className="object-contain" />
               ) : (
                 <>
                   <div className="absolute inset-0 bg-black/20" />

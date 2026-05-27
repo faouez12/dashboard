@@ -557,6 +557,62 @@
         }
       },
       "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779883026379-5fzc9x8mqa4.jpeg"
+    },
+    {
+      "title": "Monastir",
+      "slug": "monastir",
+      "location": "Monastir",
+      "date": "",
+      "type": "marathon",
+      "runners": "30,000+ Runners",
+      "gradient": "from-blue-950 via-zinc-950 to-zinc-900",
+      "desc": "",
+      "highlight": "",
+      "weather": "Cool, 12°C, Overcast",
+      "gearUsed": "Sony A9 III + 70-200mm f/2.8 GM II",
+      "intro": "",
+      "technicalLog": "",
+      "gallery": [
+        {
+          "id": 101,
+          "title": "The Preamble",
+          "category": "start",
+          "specs": "70mm • f/2.8 • 1/500s",
+          "gradient": "from-amber-900/60 to-zinc-900",
+          "description": "Corral packing in Hopkinton as final gear adjustments are made in the cool morning air.",
+          "image_url": ""
+        },
+        {
+          "id": 102,
+          "title": "Heartbreak Climb",
+          "category": "grit",
+          "specs": "200mm • f/2.8 • 1/1600s",
+          "gradient": "from-orange-900/60 to-zinc-900",
+          "description": "Mid-race grit as runners battle the infamous incline, faces etched with effort.",
+          "image_url": ""
+        },
+        {
+          "id": 103,
+          "title": "Boylston Scream",
+          "category": "finish",
+          "specs": "135mm • f/2.0 • 1/2000s",
+          "gradient": "from-red-900/60 to-zinc-900",
+          "description": "Finisher crossing the line with arms raised in victory, crowd out of focus in the background.",
+          "image_url": ""
+        },
+        {
+          "id": 104,
+          "title": "Medals of honor",
+          "category": "details",
+          "specs": "50mm Macro • f/3.2 • 1/500s",
+          "gradient": "from-stone-900/60 to-zinc-900",
+          "description": "Finisher medals gleaming on the blue ribbons, stacked near the finish line tents.",
+          "image_url": ""
+        }
+      ],
+      "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779883751941-tdk3bpe15vn.jpeg",
+      "id": "evt-61011b13-247e-4abc-9f2a-e09dc17c5c88",
+      "created_at": "2026-05-27T12:09:24.079Z"
     }
   ],
   "messages": [],
@@ -687,14 +743,14 @@
             "height": {
               "d": "450px",
               "t": "",
-              "m": "320px"
+              "m": "760px"
             },
             "autoPlay": "true",
             "interval": 3000,
             "aspectRatio": {
               "d": "16/9",
               "t": "",
-              "m": "1/1"
+              "m": "auto"
             },
             "borderRadius": "24px",
             "borderWidth": "1px",

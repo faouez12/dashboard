@@ -249,9 +249,9 @@ export default function GalleryPage() {
             </button>
 
             {/* Image Block */}
-            <div className={`h-[50vh] min-h-[350px] w-full bg-gradient-to-tr ${selectedItem.gradient} flex items-center justify-center relative p-8`}>
+            <div className={`h-[50vh] min-h-[350px] w-full flex items-center justify-center relative p-8 ${selectedItem.image_url ? 'bg-transparent' : `bg-gradient-to-tr ${selectedItem.gradient}`}`}>
               {selectedItem.image_url ? (
-                <Image src={selectedItem.image_url} alt={selectedItem.title} fill className="object-cover" />
+                <Image src={selectedItem.image_url} alt={selectedItem.title} fill className="object-contain" />
               ) : (
                 <>
                   <div className="absolute inset-0 bg-black/25" />
