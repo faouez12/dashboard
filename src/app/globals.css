@@ -154,3 +154,32 @@ body {
   opacity: 0;
 }
 .card-hover-glow:hover::before { opacity: 1; }
+
+/* ── Puck Carousel Container Overrides ── */
+div:has(> [id^="icar-"]),
+div:has(> div > [id^="icar-"]),
+div:has(> div > div > [id^="icar-"]),
+div:has(> div > div > div > [id^="icar-"]),
+div:has(> [id^="vcar-"]),
+div:has(> div > [id^="vcar-"]),
+div:has(> div > div > [id^="vcar-"]),
+div:has(> div > div > div > [id^="vcar-"]),
+div:has(> [id^="mcar-"]),
+div:has(> div > [id^="mcar-"]),
+div:has(> div > div > [id^="mcar-"]),
+div:has(> div > div > div > [id^="mcar-"]),
+[data-puck-dropzone]:has([id^="icar-"]),
+[data-puck-dropzone]:has([id^="vcar-"]),
+[data-puck-dropzone]:has([id^="mcar-"]),
+.puck-dropzone:has([id^="icar-"]),
+.puck-dropzone:has([id^="vcar-"]),
+.puck-dropzone:has([id^="mcar-"]) {
+  background-color: transparent !important;
+  background: transparent !important;
+  border: none !important;
+  border-width: 0 !important;
+  box-shadow: none !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+}
+

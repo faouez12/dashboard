@@ -283,6 +283,20 @@ export const ImageCarousel = {
                         --aspect-ratio: ${normalizeResponsive(aspectRatio).d !== 'auto' ? normalizeResponsive(aspectRatio).d : 'initial'};
                         --final-height: ${normalizeResponsive(aspectRatio).d === 'auto' ? 'var(--height)' : 'auto'};
                     }
+                    div:has(> #${carouselId}),
+                    div:has(> div > #${carouselId}),
+                    div:has(> div > div > #${carouselId}),
+                    div:has(> div > div > div > #${carouselId}),
+                    [data-puck-dropzone]:has(#${carouselId}),
+                    .puck-dropzone:has(#${carouselId}) {
+                        background-color: transparent !important;
+                        background: transparent !important;
+                        border: none !important;
+                        border-width: 0 !important;
+                        box-shadow: none !important;
+                        min-height: 0 !important;
+                        padding: 0 !important;
+                    }
                     @media (max-width: 1024px) {
                         #${carouselId} {
                             --aspect-ratio: ${(normalizeResponsive(aspectRatio).t || normalizeResponsive(aspectRatio).d) !== 'auto' ? (normalizeResponsive(aspectRatio).t || normalizeResponsive(aspectRatio).d) : 'initial'};
@@ -508,6 +522,20 @@ export const VideoCarousel = {
                         --aspect-ratio: ${normalizeResponsive(aspectRatio).d !== 'auto' ? normalizeResponsive(aspectRatio).d : 'initial'};
                         --final-height: ${normalizeResponsive(aspectRatio).d === 'auto' ? 'var(--height)' : 'auto'};
                     }
+                    div:has(> #${carouselId}),
+                    div:has(> div > #${carouselId}),
+                    div:has(> div > div > #${carouselId}),
+                    div:has(> div > div > div > #${carouselId}),
+                    [data-puck-dropzone]:has(#${carouselId}),
+                    .puck-dropzone:has(#${carouselId}) {
+                        background-color: transparent !important;
+                        background: transparent !important;
+                        border: none !important;
+                        border-width: 0 !important;
+                        box-shadow: none !important;
+                        min-height: 0 !important;
+                        padding: 0 !important;
+                    }
                     @media (max-width: 1024px) {
                         #${carouselId} {
                             --aspect-ratio: ${(normalizeResponsive(aspectRatio).t || normalizeResponsive(aspectRatio).d) !== 'auto' ? (normalizeResponsive(aspectRatio).t || normalizeResponsive(aspectRatio).d) : 'initial'};
@@ -727,6 +755,20 @@ export const MediaCarousel = {
                     #${carouselId} {
                         --aspect-ratio: ${normalizeResponsive(aspectRatio).d !== 'auto' ? normalizeResponsive(aspectRatio).d : 'initial'};
                         --final-height: ${normalizeResponsive(aspectRatio).d === 'auto' ? 'var(--height)' : 'auto'};
+                    }
+                    div:has(> #${carouselId}),
+                    div:has(> div > #${carouselId}),
+                    div:has(> div > div > #${carouselId}),
+                    div:has(> div > div > div > #${carouselId}),
+                    [data-puck-dropzone]:has(#${carouselId}),
+                    .puck-dropzone:has(#${carouselId}) {
+                        background-color: transparent !important;
+                        background: transparent !important;
+                        border: none !important;
+                        border-width: 0 !important;
+                        box-shadow: none !important;
+                        min-height: 0 !important;
+                        padding: 0 !important;
                     }
                     @media (max-width: 1024px) {
                         #${carouselId} {
