@@ -505,7 +505,6 @@ export default function EventsDashboardPage() {
                     <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Location</label>
                     <input
                       type="text"
-                      required
                       value={location}
                       onChange={e => setLocation(e.target.value)}
                       placeholder="e.g. Boston, USA"
@@ -516,7 +515,6 @@ export default function EventsDashboardPage() {
                     <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Date Text</label>
                     <input
                       type="text"
-                      required
                       value={date}
                       onChange={e => setDate(e.target.value)}
                       placeholder="e.g. April 2026"
@@ -527,7 +525,6 @@ export default function EventsDashboardPage() {
                     <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Runners Size</label>
                     <input
                       type="text"
-                      required
                       value={runners}
                       onChange={e => setRunners(e.target.value)}
                       placeholder="e.g. 30,000+ Runners"
@@ -538,7 +535,6 @@ export default function EventsDashboardPage() {
                     <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Hero Highlight</label>
                     <input
                       type="text"
-                      required
                       value={highlight}
                       onChange={e => setHighlight(e.target.value)}
                       placeholder="e.g. Finish line stagers"
@@ -550,7 +546,6 @@ export default function EventsDashboardPage() {
                 <div className="space-y-2">
                   <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Brief Summary</label>
                   <textarea
-                    required
                     value={desc}
                     onChange={e => setDesc(e.target.value)}
                     placeholder="Short summary for the index bento grid..."
@@ -568,7 +563,6 @@ export default function EventsDashboardPage() {
                     <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Weather Specs</label>
                     <input
                       type="text"
-                      required
                       value={weather}
                       onChange={e => setWeather(e.target.value)}
                       placeholder="Cool, 12°C, Overcast"
@@ -579,7 +573,6 @@ export default function EventsDashboardPage() {
                     <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Gear Configured</label>
                     <input
                       type="text"
-                      required
                       value={gearUsed}
                       onChange={e => setGearUsed(e.target.value)}
                       placeholder="Sony A9 III + 70-200mm f/2.8"
@@ -591,7 +584,6 @@ export default function EventsDashboardPage() {
                 <div className="space-y-2">
                   <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Introduction Paragraph</label>
                   <textarea
-                    required
                     value={intro}
                     onChange={e => setIntro(e.target.value)}
                     placeholder="First text element rendering in the header details..."
@@ -603,7 +595,6 @@ export default function EventsDashboardPage() {
                 <div className="space-y-2">
                   <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Technical Rationale Log</label>
                   <textarea
-                    required
                     value={technicalLog}
                     onChange={e => setTechnicalLog(e.target.value)}
                     placeholder="Describe lens choices, autofocus modes, shutter speed synchronization sync logic, and R2 pipeline logistics..."

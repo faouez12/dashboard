@@ -9,108 +9,112 @@ import {
     ChevronRight
 } from 'lucide-react'
 
-export const ColorPicker = ({ value, onChange, label }: { value: string; onChange: (v: string) => void; label?: string }) => (
-    <div style={{ marginBottom: '12px', width: '100%' }}>
-        {label && (
-            <div style={{
-                fontSize: '11px',
-                fontWeight: '700',
-                color: '#475569',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                marginBottom: '6px',
-                display: 'block'
-            }}>
-                {label}
-            </div>
-        )}
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-            <div style={{
-                position: 'relative',
-                width: '36px',
-                height: '36px',
-                borderRadius: '10px',
-                border: '2px solid #e2e8f0',
-                backgroundColor: value === 'transparent' ? 'transparent' : (value || '#ffffff'),
-                backgroundImage: value === 'transparent' ? 'linear-gradient(45deg, #cbd5e1 25%, transparent 25%), linear-gradient(-45deg, #cbd5e1 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #cbd5e1 75%), linear-gradient(-45deg, transparent 75%, #cbd5e1 75%)' : 'none',
-                backgroundSize: value === 'transparent' ? '8px 8px' : 'auto',
-                backgroundPosition: value === 'transparent' ? '0 0, 0 4px, 4px -4px, -4px 0px' : 'auto',
-                cursor: 'pointer',
-                overflow: 'hidden',
-                flexShrink: 0,
-                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)'
-            }}>
-                <input
-                    type="color"
-                    value={value?.startsWith('#') && value.length === 7 ? value : '#ffffff'}
-                    onChange={(e) => onChange(e.target.value)}
-                    style={{
-                        position: 'absolute',
-                        top: '-10px',
-                        left: '-10px',
-                        width: '80px',
-                        height: '80px',
-                        cursor: 'pointer',
-                        opacity: 0
-                    }}
-                />
-            </div>
-            <input
-                type="text"
-                value={value || ''}
-                onChange={(e) => onChange(e.target.value)}
-                placeholder="#HEXCODE or transparent"
-                style={{
-                    flex: 1,
-                    padding: '8px 12px',
+export const ColorPicker = ({ value, onChange, label }: { value: any; onChange: (v: string) => void; label?: string }) => {
+    const strValue = typeof value === 'object' && value !== null ? (value.d || '') : (typeof value === 'string' ? value : '');
+
+    return (
+        <div style={{ marginBottom: '12px', width: '100%' }}>
+            {label && (
+                <div style={{
+                    fontSize: '11px',
+                    fontWeight: '700',
+                    color: '#475569',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    marginBottom: '6px',
+                    display: 'block'
+                }}>
+                    {label}
+                </div>
+            )}
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <div style={{
+                    position: 'relative',
+                    width: '36px',
+                    height: '36px',
                     borderRadius: '10px',
                     border: '2px solid #e2e8f0',
-                    fontSize: '14px',
-                    fontFamily: 'monospace',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                    color: '#1e293b'
-                }}
-            />
-        </div>
-        <div style={{ display: 'flex', gap: '6px', marginTop: '6px', flexWrap: 'wrap', alignItems: 'center' }}>
-            <button 
-                type="button" 
-                onClick={() => onChange('transparent')}
-                style={{
-                    padding: '4px 8px',
-                    borderRadius: '6px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '11px',
+                    backgroundColor: strValue === 'transparent' ? 'transparent' : (strValue || '#ffffff'),
+                    backgroundImage: strValue === 'transparent' ? 'linear-gradient(45deg, #cbd5e1 25%, transparent 25%), linear-gradient(-45deg, #cbd5e1 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #cbd5e1 75%), linear-gradient(-45deg, transparent 75%, #cbd5e1 75%)' : 'none',
+                    backgroundSize: strValue === 'transparent' ? '8px 8px' : 'auto',
+                    backgroundPosition: strValue === 'transparent' ? '0 0, 0 4px, 4px -4px, -4px 0px' : 'auto',
                     cursor: 'pointer',
-                    backgroundColor: value === 'transparent' ? '#cbd5e1' : '#ffffff',
-                    color: '#1e293b',
-                    fontWeight: 700,
-                    transition: 'all 0.2s'
-                }}
-            >
-                Transparent
-            </button>
-            {['#020617', '#0f172a', '#1e293b', '#f8fafc', '#ffffff'].map(c => (
-                <button
-                    key={c}
-                    type="button"
-                    onClick={() => onChange(c)}
+                    overflow: 'hidden',
+                    flexShrink: 0,
+                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)'
+                }}>
+                    <input
+                        type="color"
+                        value={strValue?.startsWith('#') && strValue.length === 7 ? strValue : '#ffffff'}
+                        onChange={(e) => onChange(e.target.value)}
+                        style={{
+                            position: 'absolute',
+                            top: '-10px',
+                            left: '-10px',
+                            width: '80px',
+                            height: '80px',
+                            cursor: 'pointer',
+                            opacity: 0
+                        }}
+                    />
+                </div>
+                <input
+                    type="text"
+                    value={strValue || ''}
+                    onChange={(e) => onChange(e.target.value)}
+                    placeholder="#HEXCODE or transparent"
                     style={{
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '50%',
-                        backgroundColor: c,
-                        border: value === c ? '2px solid #3b82f6' : '1px solid #cbd5e1',
-                        cursor: 'pointer',
-                        padding: 0
+                        flex: 1,
+                        padding: '8px 12px',
+                        borderRadius: '10px',
+                        border: '2px solid #e2e8f0',
+                        fontSize: '14px',
+                        fontFamily: 'monospace',
+                        outline: 'none',
+                        backgroundColor: '#ffffff',
+                        color: '#1e293b'
                     }}
-                    title={c}
                 />
-            ))}
+            </div>
+            <div style={{ display: 'flex', gap: '6px', marginTop: '6px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <button 
+                    type="button" 
+                    onClick={() => onChange('transparent')}
+                    style={{
+                        padding: '4px 8px',
+                        borderRadius: '6px',
+                        border: '1px solid #cbd5e1',
+                        fontSize: '11px',
+                        cursor: 'pointer',
+                        backgroundColor: strValue === 'transparent' ? '#cbd5e1' : '#ffffff',
+                        color: '#1e293b',
+                        fontWeight: 700,
+                        transition: 'all 0.2s'
+                    }}
+                >
+                    Transparent
+                </button>
+                {['#020617', '#0f172a', '#1e293b', '#f8fafc', '#ffffff'].map(c => (
+                    <button
+                        key={c}
+                        type="button"
+                        onClick={() => onChange(c)}
+                        style={{
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '50%',
+                            backgroundColor: c,
+                            border: strValue === c ? '2px solid #3b82f6' : '1px solid #cbd5e1',
+                            cursor: 'pointer',
+                            padding: 0
+                        }}
+                        title={c}
+                    />
+                ))}
+            </div>
         </div>
-    </div>
-)
+    )
+}
 
 export const ResponsiveInput = ({ value, onChange, label }: { value: any; onChange: (v: any) => void; label?: string }) => {
     const { appState } = usePuck();

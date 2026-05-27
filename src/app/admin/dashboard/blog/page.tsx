@@ -409,7 +409,6 @@ export default function BlogDashboardPage() {
                     <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Publish Date</label>
                     <input
                       type="text"
-                      required
                       value={date}
                       onChange={e => setDate(e.target.value)}
                       placeholder="e.g. May 12, 2026"
@@ -420,7 +419,6 @@ export default function BlogDashboardPage() {
                     <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Read Duration</label>
                     <input
                       type="text"
-                      required
                       value={readTime}
                       onChange={e => setReadTime(e.target.value)}
                       placeholder="e.g. 6 min read"
@@ -431,7 +429,6 @@ export default function BlogDashboardPage() {
                     <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Author Node</label>
                     <input
                       type="text"
-                      required
                       value={author}
                       onChange={e => setAuthor(e.target.value)}
                       placeholder="Shahine"
@@ -443,7 +440,6 @@ export default function BlogDashboardPage() {
                 <div className="space-y-2">
                   <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Short Excerpt (Grid Card summary)</label>
                   <textarea
-                    required
                     value={excerpt}
                     onChange={e => setExcerpt(e.target.value)}
                     placeholder="Provide a 2-sentence summary of what this article targets..."
@@ -455,7 +451,6 @@ export default function BlogDashboardPage() {
                 <div className="space-y-2">
                   <label className="text-[9px] font-bold uppercase tracking-widest text-slate-500 font-mono">Lead Introductory Paragraph (Large font detail header)</label>
                   <textarea
-                    required
                     value={leadParagraph}
                     onChange={e => setLeadParagraph(e.target.value)}
                     placeholder="Enter the primary introductory hooks..."

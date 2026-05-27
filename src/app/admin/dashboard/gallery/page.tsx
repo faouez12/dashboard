@@ -89,8 +89,8 @@ export default function GalleryDashboardPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!title || !imageUrl) {
-      toast.warning('Validation Check', 'Please enter a title and upload/set an image.')
+    if (!title) {
+      toast.warning('Validation Check', 'Please enter a title.')
       return
     }
 
@@ -349,7 +349,6 @@ export default function GalleryDashboardPage() {
                   </label>
                   <input
                     type="text"
-                    required
                     value={location}
                     onChange={e => setLocation(e.target.value)}
                     placeholder="e.g. UTMB Chamonix"
@@ -364,7 +363,6 @@ export default function GalleryDashboardPage() {
                   </label>
                   <input
                     type="text"
-                    required
                     value={year}
                     onChange={e => setYear(e.target.value)}
                     placeholder="e.g. 2025"
@@ -380,7 +378,6 @@ export default function GalleryDashboardPage() {
                 </label>
                 <input
                   type="text"
-                  required
                   value={specs}
                   onChange={e => setSpecs(e.target.value)}
                   placeholder="e.g. 400mm • f/2.8 • 1/1600s • ISO 200"
@@ -408,7 +405,6 @@ export default function GalleryDashboardPage() {
                   <div className="flex-1 w-full space-y-2">
                     <input
                       type="text"
-                      required
                       value={imageUrl}
                       onChange={e => setImageUrl(e.target.value)}
                       placeholder="https://pub-xxxxxx.r2.dev/visuals/file.jpg"
@@ -446,7 +442,6 @@ export default function GalleryDashboardPage() {
                   Artistic Description & Narrative
                 </label>
                 <textarea
-                  required
                   value={description}
                   onChange={e => setDescription(e.target.value)}
                   placeholder="Artistic composition rationale..."

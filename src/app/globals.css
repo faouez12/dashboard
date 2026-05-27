@@ -183,3 +183,10 @@ div:has(> div > div > div > [id^="mcar-"]),
   padding: 0 !important;
 }
 
+/* ── Hide on Desktop style ── */
+@media (min-width: 1024px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
