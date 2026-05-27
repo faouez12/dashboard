@@ -342,7 +342,7 @@ export default function Home() {
     
     mm.add("(min-width: 768px)", () => {
       const container = document.querySelector(".horizontal-container") as HTMLElement;
-      if (container) {
+      if (container && container.scrollWidth > container.clientWidth) {
         gsap.to(".horizontal-container", {
           scrollTrigger: {
             trigger: ".horizontal-sec",

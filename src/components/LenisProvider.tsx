@@ -1,12 +1,17 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
+    if (pathname?.startsWith("/admin")) {
+      return;
+    }
     // Initialize Lenis with smooth deceleration physics
     const lenis = new Lenis({
       duration: 1.2,
