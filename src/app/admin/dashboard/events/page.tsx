@@ -34,6 +34,9 @@ interface RaceEvent {
   technicalLog: string
   gallery: RaceEventGalleryItem[]
   created_at: string
+  image_url?: string
+  featured_in_navbar?: boolean
+  featured_on_homepage?: boolean
 }
 
 export default function EventsDashboardPage() {
@@ -56,6 +59,8 @@ export default function EventsDashboardPage() {
   const [desc, setDesc] = useState('')
   const [highlight, setHighlight] = useState('')
   const [imageUrl, setImageUrl] = useState('')
+  const [featuredInNavbar, setFeaturedInNavbar] = useState(false)
+  const [featuredOnHomepage, setFeaturedOnHomepage] = useState(false)
   
   // Detail Form States
   const [weather, setWeather] = useState('')
@@ -119,6 +124,8 @@ export default function EventsDashboardPage() {
     setIntro('')
     setTechnicalLog('')
     setImageUrl('')
+    setFeaturedInNavbar(false)
+    setFeaturedOnHomepage(false)
 
     // Reset timeline items
     setTimelineStartTitle('The Preamble')
@@ -163,6 +170,8 @@ export default function EventsDashboardPage() {
     setIntro(evt.intro)
     setTechnicalLog(evt.technicalLog)
     setImageUrl(evt.image_url || '')
+    setFeaturedInNavbar(!!evt.featured_in_navbar)
+    setFeaturedOnHomepage(!!evt.featured_on_homepage)
 
     // Load timeline (with fallbacks if empty)
     const tStart = evt.gallery?.find(g => g.category === 'start')
@@ -262,7 +271,9 @@ export default function EventsDashboardPage() {
         intro,
         technicalLog,
         gallery: timelineGallery,
-        image_url: imageUrl
+        image_url: imageUrl,
+        featured_in_navbar: featuredInNavbar,
+        featured_on_homepage: featuredOnHomepage
       }, editingId || undefined)
 
       toast.success(
@@ -606,6 +617,35 @@ export default function EventsDashboardPage() {
                       </div>
                     </div>
                   </div>
+                </div>
+
+                {/* Featured Options */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-white/5 pt-4">
+                  <label className="flex items-center gap-3 p-3 bg-zinc-900 border border-white/5 rounded-xl cursor-pointer hover:bg-zinc-900/80 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={featuredInNavbar}
+                      onChange={e => setFeaturedInNavbar(e.target.checked)}
+                      className="w-4 h-4 accent-[#ccff00] cursor-pointer"
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black uppercase text-white tracking-wider">Feature in Navbar Dropdown</span>
+                      <span className="text-[9px] text-slate-500 font-bold uppercase mt-0.5">Show this card in the main navbar dropdown menu (max 2)</span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-center gap-3 p-3 bg-zinc-900 border border-white/5 rounded-xl cursor-pointer hover:bg-zinc-900/80 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={featuredOnHomepage}
+                      onChange={e => setFeaturedOnHomepage(e.target.checked)}
+                      className="w-4 h-4 accent-[#ccff00] cursor-pointer"
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black uppercase text-white tracking-wider">Feature on Homepage Showcase</span>
+                      <span className="text-[9px] text-slate-500 font-bold uppercase mt-0.5">Show this case study in the homepage horizontal slider (max 6)</span>
+                    </div>
+                  </label>
                 </div>
               </div>
 

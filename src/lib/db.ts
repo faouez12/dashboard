@@ -70,6 +70,8 @@ export interface RaceEvent {
   created_at: string
   puck_data?: any
   image_url?: string
+  featured_in_navbar?: boolean
+  featured_on_homepage?: boolean
 }
 
 export interface ContactMessage {
@@ -129,6 +131,33 @@ export interface CapabilitiesSettings {
   items: CapabilityItem[]
 }
 
+export interface OperationalCard {
+  title: string
+  desc: string
+  image_url?: string
+}
+
+export interface GearItem {
+  name: string
+  desc: string
+}
+
+export interface GearCategory {
+  category: string
+  items: GearItem[]
+}
+
+export interface AboutSettings {
+  badge: string
+  title: string
+  description: string
+  cards: OperationalCard[]
+  gear_badge?: string
+  gear_title?: string
+  gear_description?: string
+  gear_categories?: GearCategory[]
+}
+
 export interface DbSchema {
   gallery: GalleryItem[]
   blogs: BlogPost[]
@@ -136,6 +165,7 @@ export interface DbSchema {
   messages: ContactMessage[]
   hero_settings: HeroSettings
   capabilities_settings?: CapabilitiesSettings
+  about_settings?: AboutSettings
   homepage_puck_data?: any
   templates?: Record<string, any>
   saved_designs?: SavedDesign[]
@@ -378,6 +408,57 @@ const defaultCapabilitiesSettings: CapabilitiesSettings = {
   ]
 }
 
+const defaultAboutSettings: AboutSettings = {
+  badge: "The Photographer",
+  title: "Behind the Lens: Shahine",
+  description: "I document the boundary points of athletic capability. Having run trail ultra-marathons myself, I understand where the mental barriers break, where sponsors' logos get maximum exposure, and how to stay ahead of the pack to capture stories that convert.",
+  cards: [
+    {
+      title: "Zero-Failure Protocol",
+      desc: "Race events have zero room for error. We run dual CFexpress slots for instant write backups, carry fully redundant weather-sealed bodies, and operate back-up batteries tested to sub-zero temperatures.",
+      image_url: ""
+    },
+    {
+      title: "Real-Time Media Pipeline",
+      desc: "Using built-in FTPS cameras and localized cellular-satellite nodes, we transmit high-res elite selection files directly from the course to your PR team's inbox while the race is still running.",
+      image_url: ""
+    },
+    {
+      title: "Sponsor-Centric Eye",
+      desc: "We design our compositions to frame the athlete's peak emotion alongside clearly readable race branding, bib sponsor logos, and partner banner visibility.",
+      image_url: ""
+    }
+  ],
+  gear_badge: "The Equipment",
+  gear_title: "Professional Toolkit",
+  gear_description: "High-shutter speed cameras, ultra-bright lenses, and rugged field gear. Here is the technical foundation that ensures crisp, sharp details under any lighting and weather conditions.",
+  gear_categories: [
+    {
+      category: "Camera Bodies",
+      items: [
+        { name: "Sony Alpha 9 III", desc: "Global shutter sensor, 120 fps burst shooting, zero rolling shutter distortion for fast-moving runners." },
+        { name: "Sony Alpha 1", desc: "50.1 MP resolution, 30 fps, dual processors. Used for ultra-high-res marketing prints and branding campaigns." }
+      ]
+    },
+    {
+      category: "Lenses",
+      items: [
+        { name: "Sony FE 70-200mm f/2.8 GM OSS II", desc: "Industry-standard sports lens. Pin-sharp focus tracking, excellent background separation." },
+        { name: "Sony FE 400mm f/2.8 GM OSS", desc: "Super-telephoto lens for compressing perspective and isolating runners on trail ridges from distance." },
+        { name: "Sony FE 24-70mm f/2.8 GM II", desc: "Standard zoom for wide-angle start line crowds and atmospheric race atmosphere." }
+      ]
+    },
+    {
+      category: "Field Operations & Backup",
+      items: [
+        { name: "Dual-Slot Redundancy", desc: "Every photo is written to two CFexpress cards simultaneously to guarantee zero data loss." },
+        { name: "Mobile Satellite Upload", desc: "Real-time on-course uploads via satellite hotspots for instantaneous social media turnarounds." },
+        { name: "Weatherproof Enclosures", desc: "All bodies and lenses are double-sealed against dust, mountain rain, and coastal spray." }
+      ]
+    }
+  ]
+}
+
 const defaultDb: DbSchema = {
   gallery: defaultGallery,
   blogs: defaultBlogs,
@@ -385,6 +466,7 @@ const defaultDb: DbSchema = {
   messages: [],
   hero_settings: defaultHeroSettings,
   capabilities_settings: defaultCapabilitiesSettings,
+  about_settings: defaultAboutSettings,
   saved_designs: []
 }
 
@@ -594,5 +676,26 @@ export async function getCapabilitiesSettings(): Promise<CapabilitiesSettings> {
 export async function saveCapabilitiesSettings(settings: CapabilitiesSettings): Promise<void> {
   const db = await readDb()
   db.capabilities_settings = settings
+  await writeDb(db)
+}
+
+// ============================================
+// ABOUT SETTINGS METHODS
+// ============================================
+export async function getAboutSettings(): Promise<AboutSettings> {
+  const db = await readDb()
+  const settings = db.about_settings || defaultAboutSettings
+  if (!settings.gear_categories) {
+    settings.gear_badge = defaultAboutSettings.gear_badge
+    settings.gear_title = defaultAboutSettings.gear_title
+    settings.gear_description = defaultAboutSettings.gear_description
+    settings.gear_categories = defaultAboutSettings.gear_categories
+  }
+  return settings
+}
+
+export async function saveAboutSettings(settings: AboutSettings): Promise<void> {
+  const db = await readDb()
+  db.about_settings = settings
   await writeDb(db)
 }

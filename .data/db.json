@@ -73,7 +73,237 @@
         "exposure": "1/2000s • f/2.8 • ISO 160",
         "settingReason": "Global shutter allows shutter speed sync up to 1/80,000s. We selected 1/2000s to freeze runner strides while maintaining low ISO grain."
       },
-      "created_at": "2026-05-26T16:19:06.943Z"
+      "created_at": "2026-05-26T16:19:06.943Z",
+      "puck_data": {
+        "root": {
+          "props": {
+            "title": "BLOG DEFAULT Blueprint"
+          }
+        },
+        "content": [
+          {
+            "type": "OneBlock",
+            "props": {
+              "layout": "100",
+              "mobileLayout": "stack",
+              "flexRatio": 50,
+              "width": {
+                "d": "100%",
+                "t": "",
+                "m": ""
+              },
+              "height": {
+                "d": "auto",
+                "t": "",
+                "m": ""
+              },
+              "backgroundColor": "transparent",
+              "padding": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "borderRadius": "0px",
+              "gap": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "leftColumnBg": "transparent",
+              "leftColumnPadding": "0px",
+              "leftColumnRadius": "0px",
+              "rightColumnBg": "transparent",
+              "rightColumnPadding": "0px",
+              "rightColumnRadius": "0px",
+              "objectFit": "contain",
+              "display": "block",
+              "justifyContent": "flex-start",
+              "alignment": "left",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "transparent",
+              "zoneBackgroundColor": "transparent",
+              "zoneBorderWidth": "0px",
+              "zoneBorderStyle": "none",
+              "zoneBorderColor": "transparent",
+              "zoneBorderRadius": "0px",
+              "hideOnDesktop": "false",
+              "marginTop": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "marginBottom": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "marginLeft": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "marginRight": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "id": "OneBlock-38b1fd13-4657-477b-b778-aaf7c6c103d5"
+            }
+          }
+        ],
+        "zones": {
+          "OneBlock-38b1fd13-4657-477b-b778-aaf7c6c103d5:zone": [
+            {
+              "type": "Heading",
+              "props": {
+                "text": "BLOG TITLE",
+                "level": "h1",
+                "fontFamily": "Inter",
+                "fontSize": {
+                  "d": "46px",
+                  "t": "",
+                  "m": ""
+                },
+                "fontWeight": "bold",
+                "color": "#ffffff",
+                "textAlign": {
+                  "d": "center",
+                  "t": "",
+                  "m": ""
+                },
+                "display": "block",
+                "width": {
+                  "d": "auto",
+                  "t": "",
+                  "m": ""
+                },
+                "alignment": {
+                  "d": "left",
+                  "t": "",
+                  "m": ""
+                },
+                "marginTop": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "marginBottom": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "backgroundColor": "transparent",
+                "borderRadius": "0px",
+                "borderWidth": "0px",
+                "borderColor": "#000000",
+                "borderStyle": "none",
+                "boxShadow": "none",
+                "hideOnDesktop": "false",
+                "id": "Heading-1dbae9a3-ec73-4530-933b-0e16f796cea1"
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "src": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779882391462-9rzxb4kt0gi.jpeg",
+                "alt": "Image",
+                "width": {
+                  "d": "100%",
+                  "t": "",
+                  "m": "100%"
+                },
+                "height": {
+                  "d": "460PX",
+                  "t": "",
+                  "m": "320px"
+                },
+                "aspectRatio": {
+                  "d": "auto",
+                  "t": "",
+                  "m": "auto"
+                },
+                "objectFit": "contain",
+                "display": "block",
+                "textAlign": {
+                  "d": "left",
+                  "t": "",
+                  "m": ""
+                },
+                "hideOnDesktop": "false",
+                "href": "",
+                "sharePlatform": "none",
+                "target": "_self",
+                "borderRadius": "12px",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "#ffffff",
+                "boxShadow": "none",
+                "marginTop": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "marginBottom": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "fullWidthMobile": "false",
+                "id": "Image-43c2e328-9dca-4092-a351-bb8db50bc894"
+              }
+            },
+            {
+              "type": "RichText",
+              "props": {
+                "content": "A marathon runner photographer is a specialized sports photographer who captures the physical exertion, emotion, and motion of endurance running. They plan ahead to secure multiple strategic vantage points along a race route, utilizing fast-action cameras, continuous autofocus, and high shutter speeds to freeze athletes in their stride",
+                "fontFamily": "Inter",
+                "fontSize": {
+                  "d": "16px",
+                  "t": "",
+                  "m": ""
+                },
+                "fontWeight": "normal",
+                "width": {
+                  "d": "80%",
+                  "t": "",
+                  "m": ""
+                },
+                "height": {
+                  "d": "auto",
+                  "t": "",
+                  "m": ""
+                },
+                "color": "#ffffff",
+                "textAlign": {
+                  "d": "center",
+                  "t": "",
+                  "m": ""
+                },
+                "alignment": {
+                  "d": "center",
+                  "t": "",
+                  "m": ""
+                },
+                "marginTop": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "marginBottom": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "backgroundColor": "transparent",
+                "borderRadius": "0px",
+                "hideOnDesktop": "false",
+                "id": "RichText-45571942-a192-4725-a32f-f479c61d67aa"
+              }
+            }
+          ]
+        }
+      }
     },
     {
       "id": "blog-2",
@@ -110,7 +340,237 @@
         "exposure": "1/1600s • f/2.8 • ISO 200",
         "settingReason": "Telephoto compression allows framing the runner directly against the massive alpine peaks from a distance of over 300 meters."
       },
-      "created_at": "2026-05-26T16:19:06.943Z"
+      "created_at": "2026-05-26T16:19:06.943Z",
+      "puck_data": {
+        "root": {
+          "props": {
+            "title": "BLOG DEFAULT Blueprint"
+          }
+        },
+        "content": [
+          {
+            "type": "OneBlock",
+            "props": {
+              "layout": "100",
+              "mobileLayout": "stack",
+              "flexRatio": 50,
+              "width": {
+                "d": "100%",
+                "t": "",
+                "m": ""
+              },
+              "height": {
+                "d": "auto",
+                "t": "",
+                "m": ""
+              },
+              "backgroundColor": "transparent",
+              "padding": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "borderRadius": "0px",
+              "gap": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "leftColumnBg": "transparent",
+              "leftColumnPadding": "0px",
+              "leftColumnRadius": "0px",
+              "rightColumnBg": "transparent",
+              "rightColumnPadding": "0px",
+              "rightColumnRadius": "0px",
+              "objectFit": "contain",
+              "display": "block",
+              "justifyContent": "flex-start",
+              "alignment": "left",
+              "borderWidth": "0px",
+              "borderStyle": "none",
+              "borderColor": "transparent",
+              "zoneBackgroundColor": "transparent",
+              "zoneBorderWidth": "0px",
+              "zoneBorderStyle": "none",
+              "zoneBorderColor": "transparent",
+              "zoneBorderRadius": "0px",
+              "hideOnDesktop": "false",
+              "marginTop": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "marginBottom": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "marginLeft": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "marginRight": {
+                "d": "0px",
+                "t": "",
+                "m": ""
+              },
+              "id": "OneBlock-38b1fd13-4657-477b-b778-aaf7c6c103d5"
+            }
+          }
+        ],
+        "zones": {
+          "OneBlock-38b1fd13-4657-477b-b778-aaf7c6c103d5:zone": [
+            {
+              "type": "Heading",
+              "props": {
+                "text": "shahine",
+                "level": "h1",
+                "fontFamily": "Inter",
+                "fontSize": {
+                  "d": "46px",
+                  "t": "",
+                  "m": ""
+                },
+                "fontWeight": "bold",
+                "color": "#ffffff",
+                "textAlign": {
+                  "d": "center",
+                  "t": "",
+                  "m": ""
+                },
+                "display": "block",
+                "width": {
+                  "d": "auto",
+                  "t": "",
+                  "m": ""
+                },
+                "alignment": {
+                  "d": "left",
+                  "t": "",
+                  "m": ""
+                },
+                "marginTop": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "marginBottom": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "backgroundColor": "transparent",
+                "borderRadius": "0px",
+                "borderWidth": "0px",
+                "borderColor": "#000000",
+                "borderStyle": "none",
+                "boxShadow": "none",
+                "hideOnDesktop": "false",
+                "id": "Heading-1dbae9a3-ec73-4530-933b-0e16f796cea1"
+              }
+            },
+            {
+              "type": "Image",
+              "props": {
+                "src": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779882391462-9rzxb4kt0gi.jpeg",
+                "alt": "Image",
+                "width": {
+                  "d": "100%",
+                  "t": "",
+                  "m": "100%"
+                },
+                "height": {
+                  "d": "460PX",
+                  "t": "",
+                  "m": "320px"
+                },
+                "aspectRatio": {
+                  "d": "auto",
+                  "t": "",
+                  "m": "auto"
+                },
+                "objectFit": "contain",
+                "display": "block",
+                "textAlign": {
+                  "d": "left",
+                  "t": "",
+                  "m": ""
+                },
+                "hideOnDesktop": "false",
+                "href": "",
+                "sharePlatform": "none",
+                "target": "_self",
+                "borderRadius": "12px",
+                "borderWidth": "0px",
+                "borderStyle": "none",
+                "borderColor": "#ffffff",
+                "boxShadow": "none",
+                "marginTop": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "marginBottom": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "fullWidthMobile": "false",
+                "id": "Image-43c2e328-9dca-4092-a351-bb8db50bc894"
+              }
+            },
+            {
+              "type": "RichText",
+              "props": {
+                "content": "A marathon runner photographer is a specialized sports photographer who captures the physical exertion, emotion, and motion of endurance running. They plan ahead to secure multiple strategic vantage points along a race route, utilizing fast-action cameras, continuous autofocus, and high shutter speeds to freeze athletes in their stride",
+                "fontFamily": "Inter",
+                "fontSize": {
+                  "d": "16px",
+                  "t": "",
+                  "m": ""
+                },
+                "fontWeight": "normal",
+                "width": {
+                  "d": "80%",
+                  "t": "",
+                  "m": ""
+                },
+                "height": {
+                  "d": "auto",
+                  "t": "",
+                  "m": ""
+                },
+                "color": "#ffffff",
+                "textAlign": {
+                  "d": "center",
+                  "t": "",
+                  "m": ""
+                },
+                "alignment": {
+                  "d": "center",
+                  "t": "",
+                  "m": ""
+                },
+                "marginTop": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "marginBottom": {
+                  "d": "0px",
+                  "t": "",
+                  "m": ""
+                },
+                "backgroundColor": "transparent",
+                "borderRadius": "0px",
+                "hideOnDesktop": "false",
+                "id": "RichText-45571942-a192-4725-a32f-f479c61d67aa"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "events": [
@@ -167,7 +627,7 @@
         }
       ],
       "id": "evt-1d24c69b-d552-43e2-8c7c-5eab7a7c530f",
-      "created_at": "2026-05-27T11:57:13.977Z",
+      "created_at": "2026-05-27T12:29:21.499Z",
       "puck_data": {
         "root": {
           "props": {
@@ -556,7 +1016,9 @@
           ]
         }
       },
-      "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779883026379-5fzc9x8mqa4.jpeg"
+      "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779883026379-5fzc9x8mqa4.jpeg",
+      "featured_in_navbar": true,
+      "featured_on_homepage": true
     },
     {
       "title": "Monastir",
@@ -612,7 +1074,9 @@
       ],
       "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779883751941-tdk3bpe15vn.jpeg",
       "id": "evt-61011b13-247e-4abc-9f2a-e09dc17c5c88",
-      "created_at": "2026-05-27T12:09:24.079Z"
+      "created_at": "2026-05-27T12:29:45.762Z",
+      "featured_in_navbar": true,
+      "featured_on_homepage": true
     }
   ],
   "messages": [],
@@ -1588,6 +2052,28 @@
         "title": "Looking for Custom Rates?",
         "desc": "Custom media structures configured specifically to client runner counts and commercial logo deliveries.",
         "bg_image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779883563277-bz9aj3pznt9.jpeg"
+      }
+    ]
+  },
+  "about_settings": {
+    "badge": "The Photographer",
+    "title": "Behind the Lens: Shahine",
+    "description": "I document the boundary points of athletic capability. Having run trail ultra-marathons myself, I understand where the mental barriers break, where sponsors' logos get maximum exposure, and how to stay ahead of the pack to capture stories that convert.",
+    "cards": [
+      {
+        "title": "Zero-Failure Protocol",
+        "desc": "Race events have zero room for error. We run dual CFexpress slots for instant write backups, carry fully redundant weather-sealed bodies, and operate back-up batteries tested to sub-zero temperatures.",
+        "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779885330149-omt2mbhq1gq.jpeg"
+      },
+      {
+        "title": "Real-Time Media Pipeline",
+        "desc": "Using built-in FTPS cameras and localized cellular-satellite nodes, we transmit high-res elite selection files directly from the course to your PR team's inbox while the race is still running.",
+        "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779885333100-nne9xke80w.jpeg"
+      },
+      {
+        "title": "Sponsor-Centric Eye",
+        "desc": "We design our compositions to frame the athlete's peak emotion alongside clearly readable race branding, bib sponsor logos, and partner banner visibility.",
+        "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779885342903-wjcc5rnd0wj.jpeg"
       }
     ]
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   Camera, 
@@ -18,6 +18,7 @@ import {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { fetchAboutSettings } from "@/app/admin/actions";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -52,8 +53,26 @@ const GEAR_ITEMS = [
 
 export default function AboutPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [settings, setSettings] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await fetchAboutSettings();
+        setSettings(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
 
   useGSAP(() => {
+    if (loading) return;
+
     // Entrance animations
     gsap.from(".about-header-anim", {
       opacity: 0,
@@ -96,7 +115,15 @@ export default function AboutPage() {
       stagger: 0.1,
       ease: "power2.out"
     });
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [loading] });
+
+  if (loading) {
+    return (
+      <div className="h-screen w-screen bg-[#070708] flex items-center justify-center font-mono text-[10px] uppercase tracking-widest text-[#ccff00] italic animate-pulse">
+        Decrypting_Profile_Stream...
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="bg-background text-foreground flex-1 flex flex-col font-sans">
@@ -110,13 +137,13 @@ export default function AboutPage() {
           
           <div className="max-w-4xl mx-auto text-center flex flex-col items-center gap-5 relative z-10 about-header-anim">
             <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono border border-accent/30 bg-accent/10 px-3 py-1 rounded-full">
-              The Photographer
+              {settings?.badge || "The Photographer"}
             </span>
             <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight uppercase font-display leading-tight">
-              Behind the Lens: Shahine
+              {settings?.title || "Behind the Lens: Shahine"}
             </h1>
             <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-              I document the boundary points of athletic capability. Having run trail ultra-marathons myself, I understand where the mental barriers break, where sponsors' logos get maximum exposure, and how to stay ahead of the pack to capture stories that convert.
+              {settings?.description || "I document the boundary points of athletic capability. Having run trail ultra-marathons myself, I understand where the mental barriers break, where sponsors' logos get maximum exposure, and how to stay ahead of the pack to capture stories that convert."}
             </p>
           </div>
         </section>
@@ -125,35 +152,28 @@ export default function AboutPage() {
         <section className="py-24 px-6 max-w-7xl mx-auto w-full about-card-trigger">
           <div className="grid md:grid-cols-3 gap-8">
             
-            <div className="border border-border p-8 rounded-lg bg-muted/15 flex flex-col gap-4 about-card-anim">
-              <div className="p-3 bg-muted border border-border rounded-md w-12 flex items-center justify-center">
-                <Shield className="h-6 w-6 text-accent" />
-              </div>
-              <h3 className="text-lg font-bold uppercase font-display tracking-tight">Zero-Failure Protocol</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Race events have zero room for error. We run dual CFexpress slots for instant write backups, carry fully redundant weather-sealed bodies, and operate back-up batteries tested to sub-zero temperatures.
-              </p>
-            </div>
-
-            <div className="border border-border p-8 rounded-lg bg-muted/15 flex flex-col gap-4 about-card-anim">
-              <div className="p-3 bg-muted border border-border rounded-md w-12 flex items-center justify-center">
-                <Cpu className="h-6 w-6 text-accent" />
-              </div>
-              <h3 className="text-lg font-bold uppercase font-display tracking-tight">Real-Time Media Pipeline</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Using built-in FTPS cameras and localized cellular-satellite nodes, we transmit high-res elite selection files directly from the course to your PR team's inbox while the race is still running.
-              </p>
-            </div>
-
-            <div className="border border-border p-8 rounded-lg bg-muted/15 flex flex-col gap-4 about-card-anim">
-              <div className="p-3 bg-muted border border-border rounded-md w-12 flex items-center justify-center">
-                <Users className="h-6 w-6 text-accent" />
-              </div>
-              <h3 className="text-lg font-bold uppercase font-display tracking-tight">Sponsor-Centric Eye</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                We design our compositions to frame the athlete's peak emotion alongside clearly readable race branding, bib sponsor logos, and partner banner visibility.
-              </p>
-            </div>
+            {(settings?.cards || []).map((card: any, idx: number) => {
+              const icons = [
+                <Shield className="h-6 w-6 text-accent" key="shield" />,
+                <Cpu className="h-6 w-6 text-accent" key="cpu" />,
+                <Users className="h-6 w-6 text-accent" key="users" />
+              ];
+              return (
+                <div key={idx} className="border border-border p-8 rounded-2xl bg-muted/15 flex flex-col gap-4 about-card-anim overflow-hidden relative group hover:border-accent/40 transition-colors">
+                  {card.image_url ? (
+                    <div className="h-44 w-full relative rounded-xl overflow-hidden mb-2 bg-zinc-950">
+                      <img src={card.image_url} alt={card.title} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500" />
+                    </div>
+                  ) : (
+                    <div className="p-3 bg-muted border border-border rounded-md w-12 flex items-center justify-center">
+                      {icons[idx] || <Shield className="h-6 w-6 text-accent" />}
+                    </div>
+                  )}
+                  <h3 className="text-lg font-bold uppercase font-display tracking-tight">{card.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{card.desc}</p>
+                </div>
+              );
+            })}
 
           </div>
         </section>
@@ -164,18 +184,18 @@ export default function AboutPage() {
             
             <div className="flex flex-col gap-3 max-w-xl gear-section-anim">
               <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono">
-                The Equipment
+                {settings?.gear_badge || "The Equipment"}
               </span>
               <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight uppercase font-display">
-                Professional Toolkit
+                {settings?.gear_title || "Professional Toolkit"}
               </h2>
               <p className="text-muted-foreground text-sm leading-relaxed">
-                High-shutter speed cameras, ultra-bright lenses, and rugged field gear. Here is the technical foundation that ensures crisp, sharp details under any lighting and weather conditions.
+                {settings?.gear_description || "High-shutter speed cameras, ultra-bright lenses, and rugged field gear. Here is the technical foundation that ensures crisp, sharp details under any lighting and weather conditions."}
               </p>
             </div>
 
             <div className="grid lg:grid-cols-3 gap-8">
-              {GEAR_ITEMS.map((category, catIdx) => (
+              {(settings?.gear_categories && settings.gear_categories.length > 0 ? settings.gear_categories : GEAR_ITEMS).map((category: any, catIdx: number) => (
                 <div key={catIdx} className="flex flex-col gap-6 gear-card-anim">
                   <div className="flex items-center gap-3 border-b border-border pb-3">
                     <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
@@ -185,7 +205,7 @@ export default function AboutPage() {
                   </div>
 
                   <div className="flex flex-col gap-5">
-                    {category.items.map((item, itemIdx) => (
+                    {category.items?.map((item: any, itemIdx: number) => (
                       <div key={itemIdx} className="border border-border p-5 rounded-lg bg-background/50 hover:bg-muted/10 transition-colors">
                         <h4 className="font-bold text-sm text-foreground uppercase tracking-tight">{item.name}</h4>
                         <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{item.desc}</p>

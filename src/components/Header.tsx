@@ -7,11 +7,31 @@ import { Camera, Menu, X, ArrowRight, Sparkles, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
+import { fetchEvents } from "@/app/admin/actions";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+  const [featuredEvents, setFeaturedEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function loadEvents() {
+      try {
+        const data = await fetchEvents();
+        let filtered = data.filter((e: any) => e.featured_in_navbar);
+        if (filtered.length === 0) {
+          filtered = data.slice(0, 2);
+        } else {
+          filtered = filtered.slice(0, 2);
+        }
+        setFeaturedEvents(filtered);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    loadEvents();
+  }, [isOpen]);
 
   // Disable body scroll when menu is open
   useEffect(() => {
@@ -30,17 +50,14 @@ export default function Header() {
     setIsOpen(false);
   }, [pathname]);
 
-  const platformLinks = [
-    { label: "Shahine* Home", href: "/" },
-    { label: "Specialization", href: "/#about" },
-    { label: "Race Events", href: "/events" },
-    { label: "About & Gear", href: "/about" },
+  const workLinks = [
+    { label: "Race Chronicles", href: "/events" },
+    { label: "Selected Gallery", href: "/gallery" },
   ];
 
-  const resourcesLinks = [
-    { label: "Photo Gallery", href: "/gallery" },
-    { label: "Endurance Journal", href: "/blog" },
-    { label: "Book Live Coverage", href: "/#book" },
+  const profileLinks = [
+    { label: "About & Equipment", href: "/about" },
+    { label: "Technical Journal", href: "/blog" },
   ];
 
   return (
@@ -136,13 +153,13 @@ export default function Header() {
             <div className="flex-1 overflow-y-auto px-6 py-14 max-w-7xl mx-auto w-full flex flex-col justify-center">
               <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
                 
-                {/* Column PLATFORM */}
+                {/* Column CHRONICLES & ART */}
                 <div className="lg:col-span-3 flex flex-col gap-6">
                   <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest font-mono border-b border-border pb-2.5">
-                    Platform
+                    Chronicles & Art
                   </span>
                   <div className="flex flex-col gap-4">
-                    {platformLinks.map((link, idx) => (
+                    {workLinks.map((link, idx) => (
                       <Link
                         key={idx}
                         href={link.href}
@@ -154,13 +171,13 @@ export default function Header() {
                   </div>
                 </div>
 
-                {/* Column JOURNAL & WORK */}
+                {/* Column PROFILE & INSIGHTS */}
                 <div className="lg:col-span-3 flex flex-col gap-6">
                   <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest font-mono border-b border-border pb-2.5">
-                    Journal & Work
+                    Profile & Insights
                   </span>
                   <div className="flex flex-col gap-4">
-                    {resourcesLinks.map((link, idx) => (
+                    {profileLinks.map((link, idx) => (
                       <Link
                         key={idx}
                         href={link.href}
@@ -178,59 +195,45 @@ export default function Header() {
                     Featured Chronicles
                   </span>
                   <div className="grid sm:grid-cols-2 gap-6">
-                    
-                    {/* Featured Card 1 */}
-                    <Link
-                      href="/events/boston-marathon"
-                      className="group border border-slate-200 hover:border-accent/50 rounded-[1.5rem] bg-slate-50 p-6 flex flex-col justify-between h-64 overflow-hidden relative transition-all duration-300"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-tr from-cyan-950/30 via-teal-950/20 to-transparent opacity-40 group-hover:opacity-80 transition-opacity z-0" />
-                      <div className="relative z-10 flex justify-between items-start">
-                        <span className="text-[9px] font-mono font-bold text-accent border border-accent/20 bg-accent/5 px-2.5 py-1 rounded">
-                          BOSTON
-                        </span>
-                        <Sparkles className="h-4.5 w-4.5 text-accent animate-pulse" />
-                      </div>
-                      <div className="relative z-10 mt-auto">
-                        <h4 className="text-md font-bold uppercase text-slate-900 group-hover:text-accent transition-colors font-display">
-                          Boston Marathon
-                        </h4>
-                        <p className="text-[10px] text-slate-500 mt-1.5 leading-relaxed">
-                          Finish line stagers & heartbreaks. Real-time media configurations.
-                        </p>
-                        <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-accent mt-3">
-                          <span>Explore study</span>
-                          <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                    {featuredEvents.map((event, idx) => (
+                      <Link
+                        key={event.id || idx}
+                        href={`/events/${event.slug}`}
+                        className="group border border-border hover:border-accent/50 rounded-[1.5rem] bg-muted/40 p-6 flex flex-col justify-between h-64 overflow-hidden relative transition-all duration-300"
+                      >
+                        {event.image_url ? (
+                          <img
+                            src={event.image_url}
+                            alt={event.title}
+                            className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity duration-300 z-0"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-950/30 via-teal-950/20 to-transparent opacity-40 group-hover:opacity-80 transition-opacity z-0" />
+                        )}
+                        <div className="relative z-10 flex justify-between items-start">
+                          <span className="text-[9px] font-mono font-bold text-accent border border-accent/20 bg-accent/5 px-2.5 py-1 rounded uppercase">
+                            {event.location ? event.location.split(',')[0] : 'RACE'}
+                          </span>
+                          {idx === 0 ? (
+                            <Sparkles className="h-4.5 w-4.5 text-accent animate-pulse" />
+                          ) : (
+                            <Camera className="h-4.5 w-4.5 text-accent" />
+                          )}
                         </div>
-                      </div>
-                    </Link>
-
-                    {/* Featured Card 2 */}
-                    <Link
-                      href="/events/utmb-mont-blanc"
-                      className="group border border-slate-200 hover:border-accent/50 rounded-[1.5rem] bg-slate-50 p-6 flex flex-col justify-between h-64 overflow-hidden relative transition-all duration-300"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-tr from-cyan-950/30 via-teal-950/20 to-transparent opacity-40 group-hover:opacity-80 transition-opacity z-0" />
-                      <div className="relative z-10 flex justify-between items-start">
-                        <span className="text-[9px] font-mono font-bold text-accent border border-accent/20 bg-accent/5 px-2.5 py-1 rounded">
-                          CHAMONIX
-                        </span>
-                        <Camera className="h-4.5 w-4.5 text-accent" />
-                      </div>
-                      <div className="relative z-10 mt-auto">
-                        <h4 className="text-md font-bold uppercase text-foreground group-hover:text-accent transition-colors font-display">
-                          UTMB Mont Blanc
-                        </h4>
-                        <p className="text-[10px] text-muted-foreground mt-1.5 leading-relaxed">
-                          Ridge running & sub-zero pass photography. Weather-proof configurations.
-                        </p>
-                        <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-accent mt-3">
-                          <span>Explore study</span>
-                          <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                        <div className="relative z-10 mt-auto">
+                          <h4 className="text-md font-bold uppercase text-slate-900 dark:text-white group-hover:text-accent transition-colors font-display">
+                            {event.title}
+                          </h4>
+                          <p className="text-[10px] text-muted-foreground mt-1.5 leading-relaxed line-clamp-2">
+                            {event.desc}
+                          </p>
+                          <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-accent mt-3">
+                            <span>Explore study</span>
+                            <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-
+                      </Link>
+                    ))}
                   </div>
                 </div>
 

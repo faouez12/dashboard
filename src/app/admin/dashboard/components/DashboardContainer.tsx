@@ -34,6 +34,7 @@ export default function DashboardContainer({ children, userName, avatarUrl }: Da
         { name: 'Overview', href: '/admin/dashboard', icon: Layout },
         { name: 'Hero Settings', href: '/admin/dashboard/settings/hero', icon: Sparkles },
         { name: 'Capabilities Settings', href: '/admin/dashboard/settings/capabilities', icon: Settings },
+        { name: 'About Settings', href: '/admin/dashboard/settings/about', icon: Settings },
         { name: 'Templates', href: '/admin/dashboard/settings/templates', icon: Layout },
         { name: 'Gallery', href: '/admin/dashboard/gallery', icon: ImageIcon },
         { name: 'Events', href: '/admin/dashboard/events', icon: ClipboardList },

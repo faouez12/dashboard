@@ -26,7 +26,7 @@ export default function CapabilitiesSettingsPage() {
   ])
 
   // 4 Cards / Items
-  const [items, setItems] = useState([
+  const [items, setItems] = useState<{ num: string; title: string; desc: string; bg_image_url?: string }[]>([
     { num: '01', title: '', desc: '', bg_image_url: '' },
     { num: '02', title: '', desc: '', bg_image_url: '' },
     { num: '03', title: '', desc: '', bg_image_url: '' },

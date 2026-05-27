@@ -217,3 +217,17 @@ export async function updateCapabilitiesSettings(data: db.CapabilitiesSettings) 
   revalidatePath('/')
   revalidatePath('/admin/dashboard/settings/capabilities')
 }
+
+// ============================================
+// ABOUT SETTINGS ACTIONS
+// ============================================
+export async function fetchAboutSettings() {
+  return await db.getAboutSettings()
+}
+
+export async function updateAboutSettings(data: db.AboutSettings) {
+  await db.saveAboutSettings(data)
+  revalidatePath('/')
+  revalidatePath('/about')
+  revalidatePath('/admin/dashboard/settings/about')
+}

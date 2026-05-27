@@ -318,6 +318,13 @@ export default function Home() {
 
   const hasPuckData = puckData && puckData.content && puckData.content.length > 0;
 
+  // Filter events for the homepage showcase (max 6, fallback to first 6)
+  const homepageFeatured = dbEvents.filter((e: any) => e.featured_on_homepage).slice(0, 6);
+  const showcaseEvents = homepageFeatured.length > 0 
+    ? homepageFeatured 
+    : (dbEvents.length > 0 ? dbEvents.slice(0, 6) : EVENTS_DATA);
+
+
   // GSAP 2026 Overhaul Animations
   useGSAP(() => {
     if (loading) return;
@@ -681,7 +688,7 @@ export default function Home() {
               {/* Horizontal Scroll sliding panel on Right */}
               <div className="md:col-span-8 overflow-hidden py-10" style={{ perspective: "1000px" }}>
                 <div className="horizontal-container flex flex-row gap-6 md:gap-10 pl-0 md:pl-8 pr-0 md:pr-24 overflow-x-auto md:overflow-x-visible w-full scroll-smooth snap-x snap-mandatory md:snap-none pb-6 md:pb-0">
-                  {(dbEvents.length > 0 ? dbEvents : EVENTS_DATA).map((event) => (
+                  {showcaseEvents.map((event) => (
                     <div
                       key={event.id}
                       onMouseMove={handleCardMouseMove}
