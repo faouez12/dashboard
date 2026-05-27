@@ -287,15 +287,13 @@ export default function Home() {
   useGSAP(() => {
     if (loading) return;
     
-    // 1. Initial Page Load Clip-Path Reveal (Header titles)
-    if (!hasPuckData) {
-      gsap.from(".hero-text-reveal", {
-        y: "115%",
-        duration: 1.4,
-        ease: "power4.out",
-        stagger: 0.15
-      });
-    }
+    // 1. Initial Page Load Clip-Path Reveal (Header titles) — always shown now
+    gsap.from(".hero-text-reveal", {
+      y: "115%",
+      duration: 1.4,
+      ease: "power4.out",
+      stagger: 0.15
+    });
 
     // 2. Horizontal Scroll Pinning (Desktop only)
     const mm = gsap.matchMedia();
@@ -397,41 +395,50 @@ export default function Home() {
       
       {/* Main Content */}
       <main className="flex-1 flex flex-col pt-20">
-        {hasPuckData ? 
-          <Render config={puckConfig} data={puckData} />
-         : 
-          <section className="relative min-h-[90vh] border-b border-border overflow-hidden bg-zinc-950">
-          {/* Background render selector */}
-          {hero?.background_type === 'video_carousel' && hero.media_urls && hero.media_urls.length > 0 ? (
-            <div className="absolute inset-0 z-0 bg-black pointer-events-none">
-              <video
-                key={hero.media_urls[currentMediaIdx]}
-                src={hero.media_urls[currentMediaIdx]}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-35 transition-opacity duration-1000"
-              />
-            </div>
-          ) : hero?.background_type === 'image_carousel' && hero.media_urls && hero.media_urls.length > 0 ? (
-            <div className="absolute inset-0 z-0 bg-black pointer-events-none">
-              {hero.media_urls.map((url: string, idx: number) => (
-                <div
-                  key={url}
-                  style={{ backgroundImage: `url(${url})` }}
-                  className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
-                    idx === currentMediaIdx ? 'opacity-35' : 'opacity-0'
-                  }`}
-                />
-              ))}
+        <section className="relative min-h-[90vh] border-b border-border overflow-hidden bg-zinc-950">
+
+          {/* ── BACKGROUND LAYER (z-0) ── */}
+          {hasPuckData ? (
+            /* Puck builder controls the background — absolute behind text */
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" style={{ minHeight: '100%' }}>
+              <Render config={puckConfig} data={puckData} />
             </div>
           ) : (
-            <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
-              <AuroraBackground className="min-h-[90vh]" />
-            </div>
+            /* Static background selector */
+            <>
+              {hero?.background_type === 'video_carousel' && hero.media_urls && hero.media_urls.length > 0 ? (
+                <div className="absolute inset-0 z-0 bg-black pointer-events-none">
+                  <video
+                    key={hero.media_urls[currentMediaIdx]}
+                    src={hero.media_urls[currentMediaIdx]}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover opacity-35 transition-opacity duration-1000"
+                  />
+                </div>
+              ) : hero?.background_type === 'image_carousel' && hero.media_urls && hero.media_urls.length > 0 ? (
+                <div className="absolute inset-0 z-0 bg-black pointer-events-none">
+                  {hero.media_urls.map((url: string, idx: number) => (
+                    <div
+                      key={url}
+                      style={{ backgroundImage: `url(${url})` }}
+                      className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+                        idx === currentMediaIdx ? 'opacity-35' : 'opacity-0'
+                      }`}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
+                  <AuroraBackground className="min-h-[90vh]" />
+                </div>
+              )}
+            </>
           )}
-          
+
+          {/* ── HERO TEXT CONTENT (z-10 — always above background) ── */}
           <div className="relative z-10 min-h-[90vh] flex flex-col justify-center px-6 md:px-16">
             <div className="max-w-7xl mx-auto w-full flex flex-col justify-between py-12">
               
@@ -491,7 +498,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-      }
+
 
         {/* Infinite Typography Marquee Ticker */}
         <div className="w-full overflow-hidden bg-accent py-5 border-y border-border flex whitespace-nowrap text-accent-foreground font-display font-black uppercase text-xl md:text-3xl tracking-widest pointer-events-none z-10 relative">

@@ -368,7 +368,7 @@ function EditItemBuilderContent({ paramsPromise }: { paramsPromise: Promise<{ ty
     }
 
     return (
-        <div className="h-screen flex flex-col bg-white overflow-hidden text-slate-800">
+        <div className="h-full flex flex-col bg-white overflow-hidden text-slate-800">
             {/* Management Bar */}
             <div className="bg-slate-100/90 backdrop-blur-md border-b px-8 py-4 shrink-0 z-20">
                 <div className="flex flex-wrap items-center justify-between gap-6">

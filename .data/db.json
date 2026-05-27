@@ -353,7 +353,7 @@
             "borderRadius": "24px",
             "borderWidth": "1px",
             "borderStyle": "solid",
-            "borderColor": "rgba(255,255,255,0.1)",
+            "borderColor": "transparent",
             "boxShadow": "0 20px 50px rgba(0,0,0,0.5)",
             "objectFit": "cover",
             "display": "block",
@@ -370,7 +370,8 @@
               "m": ""
             },
             "fullWidthMobile": "false",
-            "id": "ImageCarousel-9afcfda8-4c6f-47e3-b300-9a249bc62352"
+            "id": "ImageCarousel-9afcfda8-4c6f-47e3-b300-9a249bc62352",
+            "backgroundColor": "transparent"
           }
         }
       ]

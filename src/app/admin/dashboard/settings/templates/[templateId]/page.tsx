@@ -60,7 +60,7 @@ function TemplateEditorContent({ paramsPromise }: { paramsPromise: Promise<{ tem
     const titleStr = templateId.replace('-', ' ').toUpperCase()
 
     return (
-        <div className="h-screen flex flex-col bg-white overflow-hidden text-slate-800">
+        <div className="h-full flex flex-col bg-white overflow-hidden text-slate-800">
             {/* Template Header - Gray Aesthetic */}
             <div className="bg-slate-100/90 backdrop-blur-md border-b border-slate-200 px-8 py-5 shrink-0 z-20">
                 <div className="flex items-center justify-between">

@@ -207,6 +207,7 @@ export const ImageCarousel = {
         },
         borderColor: { type: 'custom', label: 'Border Color', render: ColorPicker },
         boxShadow: { type: 'text', label: 'Box Shadow' },
+        padding: { type: 'text', label: 'Container Padding (e.g. 8px 16px)' },
         objectFit: { type: 'select', label: 'Object Fit', options: [{ label: 'Contain', value: 'contain' }, { label: 'Cover', value: 'cover' }, { label: 'Fill', value: 'fill' }] },
         display: { type: 'radio', label: 'Display', options: [{ label: 'Block', value: 'block' }, { label: 'Inline Block', value: 'inline-block' }, { label: 'Inline', value: 'inline' }] },
         textAlign: { type: 'radio', label: 'Alignment', options: [{ label: 'Left', value: 'left' }, { label: 'Center', value: 'center' }, { label: 'Right', value: 'right' }] },
@@ -225,8 +226,8 @@ export const ImageCarousel = {
     defaultProps: {
         items: [{ src: '', alt: 'Image 1' }, { src: '', alt: 'Image 2' }],
         width: { d: '100%', t: '', m: '100%' }, height: { d: '350px', t: '300px', m: '250px' }, backgroundColor: 'transparent', captionPosition: 'above', autoPlay: 'false', interval: 3000,
-        aspectRatio: { d: 'auto', t: 'auto', m: 'auto' }, borderRadius: '24px', borderWidth: '1px', borderStyle: 'solid', borderColor: 'rgba(255,255,255,0.1)',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+        aspectRatio: { d: 'auto', t: 'auto', m: 'auto' }, borderRadius: '16px', borderWidth: '0px', borderStyle: 'none', borderColor: 'transparent',
+        boxShadow: 'none', padding: '0px',
         objectFit: 'cover', display: 'block', textAlign: 'left', hideOnDesktop: 'false', marginTop: { d: '0px', t: '', m: '' }, marginBottom: { d: '0px', t: '', m: '' },
         fullWidthMobile: 'false'
     },
@@ -245,6 +246,8 @@ export const ImageCarousel = {
         const safeIndex = (index >= items.length) ? 0 : index
         const isFullWidthMobile = allProps.fullWidthMobile === 'true';
 
+        const textAlignVal = (typeof textAlign === 'object' ? textAlign?.d : textAlign) || 'left';
+        const { padding } = allProps;
         const containerStyle: React.CSSProperties = {
             position: 'relative',
             width: 'var(--width)',
@@ -252,9 +255,12 @@ export const ImageCarousel = {
             aspectRatio: 'var(--aspect-ratio)',
             overflow: 'hidden',
             borderRadius: isFullWidthMobile ? 'var(--final-radius)' : borderRadius,
-            border: `${borderWidth} ${borderStyle} ${borderColor}`,
-            boxShadow,
-            display: 'inline-block',
+            border: borderStyle !== 'none' ? `${borderWidth} ${borderStyle} ${borderColor}` : 'none',
+            boxShadow: boxShadow || 'none',
+            padding: padding || '0px',
+            display: 'block',
+            marginLeft: textAlignVal === 'center' ? 'auto' : textAlignVal === 'right' ? 'auto' : undefined,
+            marginRight: textAlignVal === 'center' ? 'auto' : textAlignVal === 'right' ? '0' : undefined,
             backgroundColor: backgroundColor || 'transparent'
         }
 
@@ -266,7 +272,8 @@ export const ImageCarousel = {
                     display: display as any, 
                     width: '100%', 
                     marginTop: 'var(--margin-top)', 
-                    marginBottom: 'var(--margin-bottom)' 
+                    marginBottom: 'var(--margin-bottom)',
+                    lineHeight: 0
                 }} 
                 className={`${hideOnDesktop === 'true' ? 'hide-desktop' : ''} ${isFullWidthMobile ? 'full-width-mobile-fix' : ''}`}
             >
@@ -465,12 +472,27 @@ export const VideoCarousel = {
                 />
             )
         },
+        borderRadius: { type: 'text', label: 'Border Radius (e.g. 12px)' },
+        borderWidth: { type: 'text', label: 'Border Width (e.g. 1px)' },
+        borderStyle: {
+            type: 'select',
+            label: 'Border Style',
+            options: [
+                { label: 'None', value: 'none' },
+                { label: 'Solid', value: 'solid' },
+                { label: 'Dashed', value: 'dashed' },
+                { label: 'Dotted', value: 'dotted' }
+            ]
+        },
+        borderColor: { type: 'custom', label: 'Border Color', render: ColorPicker },
+        boxShadow: { type: 'text', label: 'Box Shadow' },
+        padding: { type: 'text', label: 'Container Padding (e.g. 8px 16px)' },
         objectFit: { type: 'select', label: 'Object Fit', options: [{ label: 'Contain', value: 'contain' }, { label: 'Cover', value: 'cover' }, { label: 'Fill', value: 'fill' }] }, display: { type: 'radio', label: 'Display', options: [{ label: 'Block', value: 'block' }, { label: 'Inline Block', value: 'inline-block' }, { label: 'Inline', value: 'inline' }] }, textAlign: { type: 'custom', label: 'Alignment', render: (props: any) => (<ResponsiveRadio {...props} options={[{ label: 'Left', value: 'left' }, { label: 'Center', value: 'center' }, { label: 'Right', value: 'right' }]} />) }, hideOnDesktop: { type: 'radio', label: 'Hide on Desktop', options: [{ label: 'Show', value: 'false' }, { label: 'Hide', value: 'true' }] }, marginTop: { type: 'custom', label: 'Margin Top', render: ResponsiveInput }, marginBottom: { type: 'custom', label: 'Margin Bottom', render: ResponsiveInput }
     },
-    defaultProps: { items: [{ uploadMethod: 'url', videoUrl: '', alt: 'Video 1' }], width: { d: '100%', t: '', m: '' }, height: { d: '350px', t: '300px', m: '250px' }, backgroundColor: 'transparent', captionPosition: 'above', autoPlay: 'false', interval: 5000, aspectRatio: { d: 'auto', t: 'auto', m: 'auto' }, objectFit: 'cover', display: 'block', textAlign: { d: 'left', t: '', m: '' }, hideOnDesktop: 'false', marginTop: { d: '0px', t: '', m: '' }, marginBottom: { d: '0px', t: '', m: '' } },
+    defaultProps: { items: [{ uploadMethod: 'url', videoUrl: '', alt: 'Video 1' }], width: { d: '100%', t: '', m: '' }, height: { d: '350px', t: '300px', m: '250px' }, backgroundColor: 'transparent', captionPosition: 'above', autoPlay: 'false', interval: 5000, aspectRatio: { d: 'auto', t: 'auto', m: 'auto' }, borderRadius: '12px', borderWidth: '0px', borderStyle: 'none', borderColor: 'transparent', boxShadow: 'none', padding: '0px', objectFit: 'cover', display: 'block', textAlign: { d: 'left', t: '', m: '' }, hideOnDesktop: 'false', marginTop: { d: '0px', t: '', m: '' }, marginBottom: { d: '0px', t: '', m: '' } },
 
     render: (allProps: any) => {
-        const { items, autoPlay, interval, backgroundColor, captionPosition, objectFit, display, textAlign, hideOnDesktop, id } = allProps;
+        const { items, autoPlay, interval, backgroundColor, captionPosition, objectFit, display, textAlign, hideOnDesktop, id, borderRadius, borderWidth, borderStyle, borderColor, boxShadow, padding } = allProps;
         const [index, setIndex] = useState(0)
         React.useEffect(() => { if (autoPlay === 'true' && items && items.length > 1) { const timer = setInterval(() => { setIndex((prev) => (prev + 1) % items.length) }, interval || 5000); return () => clearInterval(timer); } }, [autoPlay, interval, items])
         const carouselId = `vcar-${(id || 'default').replace(/[:.]/g, '-')}`;
@@ -479,7 +501,7 @@ export const VideoCarousel = {
         const { aspectRatio } = allProps;
 
         return (
-            <div id={carouselId} style={{ textAlign: 'var(--text-align)' as any, display: display as any, width: '100%', marginTop: 'var(--margin-top)', marginBottom: 'var(--margin-bottom)' }} className={hideOnDesktop === 'true' ? 'hide-desktop' : ''}>
+            <div id={carouselId} style={{ textAlign: 'var(--text-align)' as any, display: display as any, width: '100%', marginTop: 'var(--margin-top)', marginBottom: 'var(--margin-bottom)', lineHeight: 0 }} className={hideOnDesktop === 'true' ? 'hide-desktop' : ''}>
                 <ResponsiveStyles id={carouselId} props={allProps} />
                 <style dangerouslySetInnerHTML={{ __html: `
                     #${carouselId} {
@@ -499,7 +521,7 @@ export const VideoCarousel = {
                         }
                     }
                 `}} />
-                <div style={{ position: 'relative', width: 'var(--width)', height: 'var(--final-height)', aspectRatio: 'var(--aspect-ratio)', overflow: 'hidden', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', display: 'inline-block', backgroundColor: backgroundColor || 'transparent' }}>
+                <div style={{ position: 'relative', width: 'var(--width)', height: 'var(--final-height)', aspectRatio: 'var(--aspect-ratio)', overflow: 'hidden', borderRadius: borderRadius || '12px', border: borderStyle !== 'none' ? `${borderWidth} ${borderStyle} ${borderColor}` : 'none', boxShadow: boxShadow || 'none', padding: padding || '0px', display: 'block', backgroundColor: backgroundColor || 'transparent' }}>
                     <div style={{ display: 'flex', height: '100%', transform: `translateX(-${safeIndex * 100}%)`, transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)' }}>
                         {items.map((item: any, i: number) => {
                             const src = item.videoUrl || item.uploadedVideo;
@@ -639,6 +661,21 @@ export const MediaCarousel = {
                 />
             )
         },
+        borderRadius: { type: 'text', label: 'Border Radius (e.g. 12px)' },
+        borderWidth: { type: 'text', label: 'Border Width (e.g. 1px)' },
+        borderStyle: {
+            type: 'select',
+            label: 'Border Style',
+            options: [
+                { label: 'None', value: 'none' },
+                { label: 'Solid', value: 'solid' },
+                { label: 'Dashed', value: 'dashed' },
+                { label: 'Dotted', value: 'dotted' }
+            ]
+        },
+        borderColor: { type: 'custom', label: 'Border Color', render: ColorPicker },
+        boxShadow: { type: 'text', label: 'Box Shadow' },
+        padding: { type: 'text', label: 'Container Padding (e.g. 8px 16px)' },
         objectFit: { type: 'select', label: 'Object Fit', options: [{ label: 'Contain', value: 'contain' }, { label: 'Cover', value: 'cover' }, { label: 'Fill', value: 'fill' }] }, display: { type: 'radio', label: 'Display', options: [{ label: 'Block', value: 'block' }, { label: 'Inline Block', value: 'inline-block' }, { label: 'Inline', value: 'inline' }] }, textAlign: { type: 'custom', label: 'Alignment', render: (props: any) => (<ResponsiveRadio {...props} options={[{ label: 'Left', value: 'left' }, { label: 'Center', value: 'center' }, { label: 'Right', value: 'right' }]} />) }, hideOnDesktop: { type: 'radio', label: 'Hide on Desktop', options: [{ label: 'Show', value: 'false' }, { label: 'Hide', value: 'true' }] }, marginTop: { type: 'custom', label: 'Margin Top', render: ResponsiveInput }, marginBottom: { type: 'custom', label: 'Margin Bottom', render: ResponsiveInput },
         fullWidthMobile: {
             type: 'radio',
@@ -652,12 +689,13 @@ export const MediaCarousel = {
     defaultProps: {
         items: [{ type: 'image', src: '', alt: 'Nature' }, { type: 'video', uploadMethod: 'url', videoUrl: '', alt: 'Big Buck Bunny' }],
         width: { d: '100%', t: '', m: '100%' }, height: { d: '350px', t: '300px', m: '250px' }, backgroundColor: 'transparent', captionPosition: 'above', autoPlay: 'false', interval: 5000,
-        aspectRatio: { d: 'auto', t: 'auto', m: 'auto' }, objectFit: 'cover', display: 'block', textAlign: 'left', hideOnDesktop: 'false', marginTop: { d: '0px', t: '', m: '' }, marginBottom: { d: '0px', t: '', m: '' },
+        aspectRatio: { d: 'auto', t: 'auto', m: 'auto' }, borderRadius: '12px', borderWidth: '0px', borderStyle: 'none', borderColor: 'transparent', boxShadow: 'none', padding: '0px',
+        objectFit: 'cover', display: 'block', textAlign: 'left', hideOnDesktop: 'false', marginTop: { d: '0px', t: '', m: '' }, marginBottom: { d: '0px', t: '', m: '' },
         fullWidthMobile: 'false'
     },
 
     render: (allProps: any) => {
-        const { items, autoPlay, interval, backgroundColor, captionPosition, objectFit, display, textAlign, hideOnDesktop, id, aspectRatio } = allProps;
+        const { items, autoPlay, interval, backgroundColor, captionPosition, objectFit, display, textAlign, hideOnDesktop, id, aspectRatio, borderRadius, borderWidth, borderStyle, borderColor, boxShadow, padding } = allProps;
         const [index, setIndex] = useState(0)
         React.useEffect(() => {
             if (autoPlay === 'true' && items && items.length > 1) {
@@ -679,7 +717,8 @@ export const MediaCarousel = {
                     display: display as any, 
                     width: '100%', 
                     marginTop: 'var(--margin-top)', 
-                    marginBottom: 'var(--margin-bottom)' 
+                    marginBottom: 'var(--margin-bottom)',
+                    lineHeight: 0
                 }} 
                 className={`${hideOnDesktop === 'true' ? 'hide-desktop' : ''} ${isFullWidthMobile ? 'full-width-mobile-fix' : ''}`}
             >
@@ -710,7 +749,7 @@ export const MediaCarousel = {
                         }
                     }
                 `}} />
-                <div style={{ position: 'relative', width: 'var(--width)', height: 'var(--final-height)', aspectRatio: 'var(--aspect-ratio)', overflow: 'hidden', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', display: 'inline-block', backgroundColor: backgroundColor || 'transparent' }}>
+                <div style={{ position: 'relative', width: 'var(--width)', height: 'var(--final-height)', aspectRatio: 'var(--aspect-ratio)', overflow: 'hidden', borderRadius: borderRadius || '12px', border: borderStyle !== 'none' ? `${borderWidth} ${borderStyle} ${borderColor}` : 'none', boxShadow: boxShadow || 'none', padding: padding || '0px', display: 'block', backgroundColor: backgroundColor || 'transparent' }}>
 
                     <div style={{ display: 'flex', height: '100%', transform: `translateX(-${safeIndex * 100}%)`, transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)' }}>
                         {items.map((item: any, i: number) => {

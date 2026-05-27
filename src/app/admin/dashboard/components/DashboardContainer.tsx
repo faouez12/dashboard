@@ -28,6 +28,7 @@ interface DashboardContainerProps {
 export default function DashboardContainer({ children, userName, avatarUrl }: DashboardContainerProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true)
     const pathname = usePathname()
+    const isBuilder = pathname?.includes('/builder') || pathname?.startsWith('/admin/dashboard/settings/templates/')
     
     const navItems = [
         { name: 'Overview', href: '/admin/dashboard', icon: Layout },
@@ -171,8 +172,8 @@ export default function DashboardContainer({ children, userName, avatarUrl }: Da
                 </header>
 
                 {/* Page Canvas */}
-                <main className="flex-1 overflow-auto bg-[#0F0F0F] p-8">
-                    <div className="max-w-[1600px] mx-auto h-full">
+                <main className={`flex-1 min-h-0 bg-[#0F0F0F] ${isBuilder ? 'overflow-hidden' : 'overflow-auto p-8'}`}>
+                    <div className={isBuilder ? 'h-full' : 'max-w-[1600px] mx-auto h-full'}>
                         {children}
                     </div>
                 </main>

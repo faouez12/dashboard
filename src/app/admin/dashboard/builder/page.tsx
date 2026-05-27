@@ -160,7 +160,7 @@ export default function BuilderPage() {
 
     if (showChoice) {
         return (
-            <div className="min-h-screen bg-[#070708] text-slate-300 font-sans p-8 overflow-y-auto relative z-20 -m-8">
+            <div className="min-h-full bg-[#070708] text-slate-300 font-sans p-8 overflow-y-auto relative z-20">
                 <div className="max-w-6xl mx-auto flex flex-col gap-10 py-8">
                     {/* Header */}
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between border-b border-zinc-800/85 pb-6 gap-4">
@@ -322,7 +322,7 @@ export default function BuilderPage() {
     }
 
     return (
-        <div className="h-screen flex flex-col bg-white overflow-hidden text-slate-800 -m-8 relative z-20">
+        <div className="h-full flex flex-col bg-white overflow-hidden text-slate-800 relative z-20">
             {/* Custom Top Management Bar */}
             <div className="bg-slate-100/90 backdrop-blur-md border-b px-8 py-4 shrink-0 z-20">
                 <div className="flex flex-wrap items-center justify-between gap-6">
