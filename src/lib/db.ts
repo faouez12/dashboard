@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 
 const hasR2 = !!(
   process.env.R2_ACCESS_KEY_ID &&
@@ -20,6 +20,33 @@ if (hasR2) {
       secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
     },
   })
+}
+
+async function deleteFromR2(url?: string): Promise<void> {
+  if (!url || !hasR2 || !s3Client) return
+  try {
+    let key = ''
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      const urlObj = new URL(url)
+      key = urlObj.pathname.startsWith('/') ? urlObj.pathname.slice(1) : urlObj.pathname
+    } else {
+      key = url
+    }
+    
+    if (!key || key.startsWith('database/')) {
+      return
+    }
+
+    await s3Client.send(
+      new DeleteObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME!,
+        Key: key,
+      })
+    )
+    console.log(`🗑️ Successfully deleted object from R2: ${key}`)
+  } catch (err) {
+    console.error('Failed to delete object from R2:', err)
+  }
 }
 
 export interface GalleryItem {
@@ -621,6 +648,10 @@ export async function saveGalleryItem(item: GalleryItem): Promise<void> {
 
 export async function deleteGalleryItem(id: string): Promise<void> {
   const db = await readDb()
+  const item = db.gallery.find(g => g.id === id)
+  if (item && item.image_url) {
+    await deleteFromR2(item.image_url)
+  }
   db.gallery = db.gallery.filter(g => g.id !== id)
   await writeDb(db)
 }
@@ -646,6 +677,10 @@ export async function saveBlogPost(post: BlogPost): Promise<void> {
 
 export async function deleteBlogPost(id: string): Promise<void> {
   const db = await readDb()
+  const post = db.blogs.find(b => b.id === id)
+  if (post && post.image_url) {
+    await deleteFromR2(post.image_url)
+  }
   db.blogs = db.blogs.filter(b => b.id !== id)
   await writeDb(db)
 }
@@ -671,6 +706,19 @@ export async function saveEvent(event: RaceEvent): Promise<void> {
 
 export async function deleteEvent(id: string): Promise<void> {
   const db = await readDb()
+  const event = db.events.find(e => e.id === id)
+  if (event) {
+    if (event.image_url) {
+      await deleteFromR2(event.image_url)
+    }
+    if (event.gallery) {
+      for (const item of event.gallery) {
+        if (item.image_url) {
+          await deleteFromR2(item.image_url)
+        }
+      }
+    }
+  }
   db.events = db.events.filter(e => e.id !== id)
   await writeDb(db)
 }
