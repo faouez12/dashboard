@@ -12,6 +12,7 @@ import {
   MessageSquare,
   Sparkles,
   ArrowRight,
+  ArrowLeft,
   Maximize2,
   X,
   Check
@@ -180,6 +181,7 @@ export default function Home() {
   const [currentMediaIdx, setCurrentMediaIdx] = useState(0);
   const [puckData, setPuckData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [galleryIndex, setGalleryIndex] = useState(0);
 
   useEffect(() => {
     async function loadData() {
@@ -337,26 +339,7 @@ export default function Home() {
       stagger: 0.15
     });
 
-    // 2. Horizontal Scroll Pinning (Desktop only)
-    const mm = gsap.matchMedia();
-    
-    mm.add("(min-width: 768px)", () => {
-      const container = document.querySelector(".horizontal-container") as HTMLElement;
-      if (container && container.scrollWidth > container.clientWidth) {
-        gsap.to(".horizontal-container", {
-          scrollTrigger: {
-            trigger: ".horizontal-sec",
-            start: "top top",
-            end: () => `+=${container.scrollWidth - container.clientWidth}`,
-            scrub: 1.2,
-            pin: true,
-            invalidateOnRefresh: true,
-          },
-          x: () => -(container.scrollWidth - container.clientWidth),
-          ease: "none"
-        });
-      }
-    });
+    // 2. Horizontal Scroll Pinning removed (converted to standard slide carousel)
 
     // 3. Word-by-Word Reveals for specialties section title
     gsap.from(".spec-word-reveal", {
@@ -662,104 +645,126 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Sticky Split-Screen Horizontal Event Showcase */}
-        <section id="gallery" className="relative horizontal-sec border-t border-border bg-muted/5 min-h-screen md:min-h-screen">
-          <div className="w-full h-auto py-20 md:py-0 md:h-screen md:overflow-hidden flex items-center overflow-visible">
-            <div className="max-w-7xl mx-auto w-full px-6 grid md:grid-cols-12 gap-8 items-center">
+        {/* Split-Screen Horizontal Event Showcase */}
+        <section id="gallery" className="relative border-t border-border bg-muted/5 py-24 overflow-hidden">
+          <div className="max-w-7xl mx-auto w-full px-6 grid md:grid-cols-12 gap-8 items-center">
+            
+            {/* Column details (left side) */}
+            <div className="md:col-span-4 flex flex-col items-start gap-4">
+              <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono">
+                THE CHRONICLES
+              </span>
+              <h2 className="text-3xl md:text-5xl font-black uppercase font-display leading-[0.95] tracking-tighter">
+                Endurance Case Studies
+              </h2>
+              <p className="text-xs text-muted-foreground leading-relaxed max-w-xs">
+                Navigate through our complete race archives using the controls. Look inside for detailed weather notes and camera configurations.
+              </p>
+
+              <Link
+                href="/events"
+                className="mt-2 flex items-center gap-2 px-5 py-3 border border-accent/30 hover:border-accent bg-accent/5 hover:bg-accent/10 text-accent font-black uppercase tracking-wider text-[10px] rounded-lg transition-all cursor-pointer"
+              >
+                View All Events <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
               
-              {/* Sticky Column details (locked left side) */}
-              <div className="md:col-span-4 flex flex-col items-start gap-4">
-                <span className="text-accent text-xs font-bold uppercase tracking-widest font-mono">
-                  THE CHRONICLES
-                </span>
-                <h2 className="text-3xl md:text-5xl font-black uppercase font-display leading-[0.95] tracking-tighter">
-                  Endurance Case Studies
-                </h2>
-                <p className="text-xs text-muted-foreground leading-relaxed max-w-xs">
-                  Scroll down to navigate horizontally through our complete race archives. Look inside for detailed weather notes and camera configurations.
-                </p>
-
-                <Link
-                  href="/events"
-                  className="mt-2 flex items-center gap-2 px-5 py-3 border border-accent/30 hover:border-accent bg-accent/5 hover:bg-accent/10 text-accent font-black uppercase tracking-wider text-[10px] rounded-lg transition-all cursor-pointer"
+              {/* Slide Controls */}
+              <div className="hidden md:flex gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setGalleryIndex(prev => Math.max(0, prev - 1))}
+                  disabled={galleryIndex === 0}
+                  className="w-10 h-10 rounded-full border border-border/80 flex items-center justify-center text-foreground hover:border-accent hover:text-accent disabled:opacity-30 disabled:hover:border-border/80 disabled:hover:text-foreground transition-all cursor-pointer bg-transparent"
+                  title="Previous Slide"
                 >
-                  View All Events <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-                
-                {/* Indicator dots mapping scroll progress */}
-                <div className="hidden md:flex gap-1.5 mt-4">
-                  <div className="h-1.5 w-8 rounded-full bg-accent" />
-                  <div className="h-1.5 w-2 rounded-full bg-zinc-800" />
-                  <div className="h-1.5 w-2 rounded-full bg-zinc-800" />
-                </div>
+                  <ArrowLeft className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGalleryIndex(prev => Math.min(Math.max(0, showcaseEvents.length - 2), prev + 1))}
+                  disabled={galleryIndex >= Math.max(0, showcaseEvents.length - 2)}
+                  className="w-10 h-10 rounded-full border border-border/80 flex items-center justify-center text-foreground hover:border-accent hover:text-accent disabled:opacity-30 disabled:hover:border-border/80 disabled:hover:text-foreground transition-all cursor-pointer bg-transparent"
+                  title="Next Slide"
+                >
+                  <ArrowRight className="h-4 w-4" />
+                </button>
               </div>
+            </div>
 
-              {/* Horizontal Scroll sliding panel on Right */}
-              <div className="md:col-span-8 overflow-hidden py-10" style={{ perspective: "1000px" }}>
-                <div className="horizontal-container flex flex-row gap-6 md:gap-10 pl-0 md:pl-8 pr-0 md:pr-24 overflow-x-auto md:overflow-x-visible w-full scroll-smooth snap-x snap-mandatory md:snap-none pb-6 md:pb-0">
-                  {showcaseEvents.map((event) => (
-                    <div
-                      key={event.id}
-                      onMouseMove={handleCardMouseMove}
-                      onMouseLeave={handleCardMouseLeave}
-                      className="w-[280px] md:w-[380px] h-[400px] shrink-0 border border-border bg-background rounded-[2rem] flex flex-col justify-between overflow-hidden relative transition-all duration-300 snap-start"
-                      style={{ transformStyle: "preserve-3d" }}
-                    >
-                      {/* Image or Gradient preview */}
-                      <div className="h-40 w-full relative overflow-hidden bg-zinc-950 flex items-center justify-center" style={{ transform: "translateZ(10px)" }}>
-                        {event.image_url ? (
-                          <img
-                            src={event.image_url}
-                            alt={event.title}
-                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                          />
-                        ) : (
-                          <div className={`absolute inset-0 bg-gradient-to-tr ${event.gradient} flex items-center justify-center p-6 w-full h-full`}>
-                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300" />
-                            <Camera className="h-8 w-8 text-white/10 group-hover:scale-110 transition-transform duration-500 relative z-10" />
-                          </div>
-                        )}
-                        
-                        <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded border border-white/10 text-[9px] font-mono text-white/95">
-                          <Sparkles className="h-3.5 w-3.5 text-accent animate-pulse" />
-                          <span>{event.highlight}</span>
+            {/* Horizontal Scroll sliding panel on Right */}
+            <div className="md:col-span-8 overflow-hidden py-10" style={{ perspective: "1000px" }}>
+              <style dangerouslySetInnerHTML={{ __html: `
+                @media (min-width: 768px) {
+                  .horizontal-container-slider {
+                    transform: translateX(-${galleryIndex * 420}px) !important;
+                    display: flex !important;
+                    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+                  }
+                }
+              `}} />
+              <div className="horizontal-container horizontal-container-slider flex flex-row gap-6 md:gap-10 pl-0 md:pl-8 pr-0 md:pr-24 overflow-x-auto md:overflow-x-visible w-full pb-6 md:pb-0">
+                {showcaseEvents.map((event) => (
+                  <div
+                    key={event.id}
+                    onMouseMove={handleCardMouseMove}
+                    onMouseLeave={handleCardMouseLeave}
+                    className="w-[280px] md:w-[380px] h-[400px] shrink-0 border border-border bg-background rounded-[2rem] flex flex-col justify-between overflow-hidden relative transition-all duration-300 snap-start"
+                    style={{ transformStyle: "preserve-3d" }}
+                  >
+                    {/* Image or Gradient preview */}
+                    <div className="h-40 w-full relative overflow-hidden bg-zinc-950 flex items-center justify-center" style={{ transform: "translateZ(10px)" }}>
+                      {event.image_url ? (
+                        <img
+                          src={event.image_url}
+                          alt={event.title}
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                      ) : (
+                        <div className={`absolute inset-0 bg-gradient-to-tr ${event.gradient} flex items-center justify-center p-6 w-full h-full`}>
+                          <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors duration-300" />
+                          <Camera className="h-8 w-8 text-white/10 group-hover:scale-110 transition-transform duration-500 relative z-10" />
                         </div>
-                      </div>
-
-                      {/* Detail metadata block */}
-                      <div className="p-6 flex flex-col justify-between flex-grow gap-4" style={{ transform: "translateZ(20px)" }}>
-                        <div className="flex flex-col gap-1.5">
-                          <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-wider text-accent">
-                            <span>{event.type}</span>
-                            <span className="h-1 w-1 rounded-full bg-muted-foreground" />
-                            <span className="text-muted-foreground flex items-center gap-1">
-                              <MapPin className="h-3 w-3" /> {event.location}
-                            </span>
-                          </div>
-
-                          <h3 className="text-lg font-bold uppercase tracking-tight text-white group-hover:text-accent transition-colors font-display">
-                            {event.title}
-                          </h3>
-                        </div>
-
-                        <div className="flex items-center justify-between border-t border-border/40 pt-4 text-[10px] font-bold text-muted-foreground uppercase tracking-wider group-hover:text-accent transition-colors">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" /> {event.date}
-                          </span>
-                          <Link 
-                            href={`/events/${event.slug}`} 
-                            className="flex items-center gap-1 text-accent font-black hover:underline text-[9px] uppercase tracking-widest cursor-pointer"
-                          >
-                            Explore study <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                          </Link>
-                        </div>
+                      )}
+                      
+                      <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded border border-white/10 text-[9px] font-mono text-white/95">
+                        <Sparkles className="h-3.5 w-3.5 text-accent animate-pulse" />
+                        <span>{event.highlight}</span>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
 
+                    {/* Detail metadata block */}
+                    <div className="p-6 flex flex-col justify-between flex-grow gap-4" style={{ transform: "translateZ(20px)" }}>
+                      <div className="flex flex-col gap-1.5">
+                        <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-wider text-accent">
+                          <span>{event.type}</span>
+                          <span className="h-1 w-1 rounded-full bg-muted-foreground" />
+                          <span className="text-muted-foreground flex items-center gap-1">
+                            <MapPin className="h-3 w-3" /> {event.location}
+                          </span>
+                        </div>
+
+                        <h3 className="text-lg font-bold uppercase tracking-tight text-white group-hover:text-accent transition-colors font-display">
+                          {event.title}
+                        </h3>
+                      </div>
+
+                      <div className="flex items-center justify-between border-t border-border/40 pt-4 text-[10px] font-bold text-muted-foreground uppercase tracking-wider group-hover:text-accent transition-colors">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" /> {event.date}
+                        </span>
+                        <Link 
+                          href={`/events/${event.slug}`} 
+                          className="flex items-center gap-1 text-accent font-black hover:underline text-[9px] uppercase tracking-widest cursor-pointer"
+                        >
+                          Explore study <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
+
           </div>
         </section>
 
