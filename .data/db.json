@@ -1079,6 +1079,72 @@
       "created_at": "2026-05-27T12:29:45.762Z",
       "featured_in_navbar": true,
       "featured_on_homepage": true
+    },
+    {
+      "title": "test 1",
+      "slug": "test-1",
+      "location": "",
+      "date": "",
+      "type": "marathon",
+      "runners": "30,000+ Runners",
+      "gradient": "from-blue-950 via-zinc-950 to-zinc-900",
+      "desc": "",
+      "highlight": "",
+      "weather": "Cool, 12°C, Overcast",
+      "gearUsed": "Sony A9 III + 70-200mm f/2.8 GM II",
+      "intro": "",
+      "technicalLog": "",
+      "gallery": [
+        {
+          "id": 101,
+          "title": "The Preamble",
+          "category": "start",
+          "specs": "70mm • f/2.8 • 1/500s",
+          "gradient": "from-amber-900/60 to-zinc-900",
+          "description": "Corral packing in Hopkinton as final gear adjustments are made in the cool morning air.",
+          "image_url": ""
+        },
+        {
+          "id": 102,
+          "title": "Heartbreak Climb",
+          "category": "grit",
+          "specs": "200mm • f/2.8 • 1/1600s",
+          "gradient": "from-orange-900/60 to-zinc-900",
+          "description": "Mid-race grit as runners battle the infamous incline, faces etched with effort.",
+          "image_url": ""
+        },
+        {
+          "id": 103,
+          "title": "Boylston Scream",
+          "category": "finish",
+          "specs": "135mm • f/2.0 • 1/2000s",
+          "gradient": "from-red-900/60 to-zinc-900",
+          "description": "Finisher crossing the line with arms raised in victory, crowd out of focus in the background.",
+          "image_url": ""
+        },
+        {
+          "id": 104,
+          "title": "Medals of honor",
+          "category": "details",
+          "specs": "50mm Macro • f/3.2 • 1/500s",
+          "gradient": "from-stone-900/60 to-zinc-900",
+          "description": "Finisher medals gleaming on the blue ribbons, stacked near the finish line tents.",
+          "image_url": ""
+        }
+      ],
+      "image_url": "",
+      "featured_in_navbar": false,
+      "featured_on_homepage": false,
+      "id": "evt-4bcc0f21-7d08-4a59-a161-4138a5a0a282",
+      "created_at": "2026-05-28T14:44:43.052Z",
+      "puck_data": {
+        "content": [],
+        "root": {
+          "props": {
+            "title": "test 1"
+          }
+        }
+      }
     }
   ],
   "messages": [

@@ -20,8 +20,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { fetchEvents } from "@/app/admin/actions";
 import Image from "next/image";
-import { Render } from "@measured/puck";
-import { config } from "@/app/admin/dashboard/components/puck-config";
+import CustomPageRenderer from "@/components/CustomPageRenderer";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -238,7 +237,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ slug: st
         {event.puck_data && (event.puck_data.content?.length > 0 || event.puck_data.root?.props?.title) ? (
           <section className="py-20 px-6 max-w-7xl mx-auto w-full">
             <div className="prose prose-invert max-w-none text-muted-foreground leading-relaxed text-sm md:text-base font-medium prose-p:text-slate-300 prose-headings:text-white prose-strong:text-white prose-a:text-[#ccff00]">
-              <Render config={config} data={event.puck_data} />
+              <CustomPageRenderer data={event.puck_data} />
             </div>
           </section>
         ) : (

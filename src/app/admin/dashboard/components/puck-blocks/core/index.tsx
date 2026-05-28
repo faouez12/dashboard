@@ -117,8 +117,17 @@ export const ColorPicker = ({ value, onChange, label }: { value: any; onChange: 
 }
 
 export const ResponsiveInput = ({ value, onChange, label }: { value: any; onChange: (v: any) => void; label?: string }) => {
-    const { appState } = usePuck();
-    const viewportWidth = appState.ui.viewports.current.width;
+    let viewportWidth = 1200;
+    try {
+        const puckContext = usePuck();
+        if (puckContext?.appState?.ui?.viewports?.current?.width !== undefined) {
+            viewportWidth = puckContext.appState.ui.viewports.current.width;
+        }
+    } catch {
+        if (typeof window !== 'undefined' && (window as any).__builderViewportWidth !== undefined) {
+            viewportWidth = (window as any).__builderViewportWidth;
+        }
+    }
     let mode: 'd' | 't' | 'm' = 'd';
 
     if (viewportWidth <= 640) mode = 'm';
@@ -211,8 +220,17 @@ export const ResponsiveInput = ({ value, onChange, label }: { value: any; onChan
 }
 
 export const ResponsiveRadio = ({ value, onChange, label, options }: { value: any; onChange: (v: any) => void; label?: string; options: { label: string; value: string }[] }) => {
-    const { appState } = usePuck();
-    const viewportWidth = appState.ui.viewports.current.width;
+    let viewportWidth = 1200;
+    try {
+        const puckContext = usePuck();
+        if (puckContext?.appState?.ui?.viewports?.current?.width !== undefined) {
+            viewportWidth = puckContext.appState.ui.viewports.current.width;
+        }
+    } catch {
+        if (typeof window !== 'undefined' && (window as any).__builderViewportWidth !== undefined) {
+            viewportWidth = (window as any).__builderViewportWidth;
+        }
+    }
     let mode: 'd' | 't' | 'm' = 'd';
 
     if (viewportWidth <= 640) mode = 'm';

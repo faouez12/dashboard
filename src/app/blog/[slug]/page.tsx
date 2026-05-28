@@ -6,8 +6,7 @@ import { ArrowLeft, Calendar, Clock, BookOpen, Camera, Sparkles, User, MapPin } 
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { fetchBlogPosts } from "@/app/admin/actions";
-import { Render } from "@measured/puck";
-import { config } from "@/app/admin/dashboard/components/puck-config";
+import CustomPageRenderer from "@/components/CustomPageRenderer";
 
 interface ArticleDetail {
   slug: string;
@@ -214,7 +213,7 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ slug: 
         {article.puck_data && (article.puck_data.content?.length > 0 || article.puck_data.root?.props?.title) ? (
           <section className="py-20 px-6 max-w-7xl mx-auto w-full">
             <div className="prose prose-invert max-w-none text-muted-foreground leading-relaxed text-sm md:text-base font-medium prose-p:text-slate-300 prose-headings:text-white prose-strong:text-white prose-a:text-[#ccff00]">
-              <Render config={config} data={article.puck_data} />
+              <CustomPageRenderer data={article.puck_data} />
             </div>
             
             {/* Back CTA */}

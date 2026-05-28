@@ -23,8 +23,7 @@ import { useGSAP } from "@gsap/react";
 import AuroraBackground from "@/components/AuroraBackground";
 import { EvervaultCard } from "@/components/ui/EvervaultCard";
 import { fetchHeroSettings, fetchEvents, fetchHomepagePuckData, fetchCapabilitiesSettings } from "@/app/admin/actions";
-import { Render } from "@measured/puck";
-import { config as puckConfig } from "@/app/admin/dashboard/components/puck-config";
+import CustomPageRenderer from "@/components/CustomPageRenderer";
 
 // Register ScrollTrigger client-side
 if (typeof window !== "undefined") {
@@ -435,9 +434,9 @@ export default function Home() {
 
           {/* ── BACKGROUND LAYER (z-0) ── */}
           {hasPuckData ? (
-            /* Puck builder controls the background — absolute behind text */
+            /* Custom builder controls the background — absolute behind text */
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" style={{ minHeight: '100%' }}>
-              <Render config={puckConfig} data={puckData} />
+              <CustomPageRenderer data={puckData} />
             </div>
           ) : (
             /* Static background selector */

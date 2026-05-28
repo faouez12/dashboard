@@ -2,17 +2,16 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 
-const hasR2 = !!(
-  process.env.R2_ACCESS_KEY_ID &&
-  process.env.R2_SECRET_ACCESS_KEY &&
-  process.env.R2_ENDPOINT &&
-  process.env.R2_BUCKET_NAME
-)
-
-let s3Client: S3Client | null = null
-
-if (hasR2) {
-  s3Client = new S3Client({
+function getR2Config() {
+  const isConfigured = !!(
+    process.env.R2_ACCESS_KEY_ID &&
+    process.env.R2_SECRET_ACCESS_KEY &&
+    process.env.R2_ENDPOINT &&
+    process.env.R2_BUCKET_NAME
+  )
+  if (!isConfigured) return null
+  
+  const client = new S3Client({
     region: 'auto',
     endpoint: process.env.R2_ENDPOINT!,
     credentials: {
@@ -20,10 +19,12 @@ if (hasR2) {
       secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
     },
   })
+  return { client, bucketName: process.env.R2_BUCKET_NAME! }
 }
 
 async function deleteFromR2(url?: string): Promise<void> {
-  if (!url || !hasR2 || !s3Client) return
+  const r2 = getR2Config()
+  if (!url || !r2) return
   try {
     let key = ''
     if (url.startsWith('http://') || url.startsWith('https://')) {
@@ -37,9 +38,9 @@ async function deleteFromR2(url?: string): Promise<void> {
       return
     }
 
-    await s3Client.send(
+    await r2.client.send(
       new DeleteObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME!,
+        Bucket: r2.bucketName,
         Key: key,
       })
     )
@@ -541,11 +542,12 @@ export async function readDb(): Promise<DbSchema> {
     return cachedDb
   }
 
-  if (hasR2 && s3Client) {
-    const bucketName = process.env.R2_BUCKET_NAME!
+  const r2 = getR2Config()
+  if (r2) {
+    const bucketName = r2.bucketName
     const key = 'database/db.json'
     try {
-      const response = await s3Client.send(
+      const response = await r2.client.send(
         new GetObjectCommand({
           Bucket: bucketName,
           Key: key,
@@ -597,12 +599,13 @@ export async function writeDb(data: DbSchema): Promise<void> {
   cachedDb = data
   lastFetchedTime = Date.now()
 
-  if (hasR2 && s3Client) {
-    const bucketName = process.env.R2_BUCKET_NAME!
+  const r2 = getR2Config()
+  if (r2) {
+    const bucketName = r2.bucketName
     const key = 'database/db.json'
     try {
       const body = JSON.stringify(data, null, 2)
-      await s3Client.send(
+      await r2.client.send(
         new PutObjectCommand({
           Bucket: bucketName,
           Key: key,

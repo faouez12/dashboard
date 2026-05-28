@@ -1,7 +1,6 @@
 'use client'
-import { Puck, Data } from '@measured/puck'
-import '@measured/puck/puck.css'
 import config from '../components/puck-config'
+import { CustomVisualBuilder } from '../components/CustomVisualBuilder'
 import { useState, useEffect } from 'react'
 import {
     fetchHomepagePuckData,
@@ -17,7 +16,7 @@ import Link from 'next/link'
 
 export default function BuilderPage() {
     const toast = useToast()
-    const [data, setData] = useState<Data>({ content: [], root: { props: {} } })
+    const [data, setData] = useState<any>({ content: [], root: { props: {} } })
     const [loading, setLoading] = useState(true)
     const [showChoice, setShowChoice] = useState(true)
     const [presets, setPresets] = useState<any[]>([])
@@ -141,7 +140,7 @@ export default function BuilderPage() {
         }
     }
 
-    const handlePublish = async (newData: Data) => {
+    const handlePublish = async (newData: any) => {
         try {
             await saveHomepagePuckData(newData)
             toast.success('Matrix Configured', 'Homepage visual elements successfully compiled.')
@@ -322,96 +321,12 @@ export default function BuilderPage() {
     }
 
     return (
-        <div className="h-full flex flex-col bg-white overflow-hidden text-slate-800 relative z-20">
-            {/* Custom Top Management Bar */}
-            <div className="bg-slate-100/90 backdrop-blur-md border-b px-8 py-4 shrink-0 z-20">
-                <div className="flex flex-wrap items-center justify-between gap-6">
-                    <div className="flex items-center gap-4">
-                        <Link
-                            href={backUrl}
-                            className="p-2 hover:bg-slate-200 rounded-xl transition-all text-slate-400 hover:text-slate-900 cursor-pointer"
-                        >
-                            <ArrowLeft size={20} />
-                        </Link>
-                        <div>
-                            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest italic block">Puck Page Builder</span>
-                            <span className="text-sm font-black italic uppercase tracking-tight text-slate-950">
-                                Homepage Visual Editor
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <button
-                            onClick={() => setIsSaveModalOpen(true)}
-                            className="flex items-center gap-2 px-4 py-2 bg-[#ccff00] text-black hover:bg-black hover:text-[#ccff00] font-black italic uppercase text-xs tracking-wider rounded-xl transition-all duration-300 shadow-md border border-black/10"
-                        >
-                            <Save size={14} />
-                            Save Layout as Preset
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Puck Editor */}
-            <main className="flex-1 min-h-0">
-                <Puck
-                    config={config}
-                    data={data}
-                    onPublish={handlePublish}
-                    onChange={(newData) => setData(newData)}
-                />
-            </main>
-
-            {/* Save Preset Dialog Modal */}
-            {isSaveModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-                    <div className="w-full max-w-md bg-[#121214] border border-zinc-800 rounded-[2rem] p-8 shadow-2xl relative">
-                        <h3 className="text-lg font-black uppercase italic tracking-tight text-white mb-2">
-                            Save Layout Preset_
-                        </h3>
-                        <p className="text-xs text-zinc-500 uppercase font-mono tracking-wider mb-6">
-                            Create a non-deployed visual design template
-                        </p>
-
-                        <form onSubmit={handleSavePresetSubmit} className="space-y-6">
-                            <div>
-                                <label className="block text-[9px] font-black uppercase tracking-widest text-zinc-400 font-mono mb-2">
-                                    Preset Design Name
-                                </label>
-                                <input
-                                    type="text"
-                                    required
-                                    placeholder="e.g. Summer Trail Run, Aurora Hero Grid"
-                                    value={presetName}
-                                    onChange={(e) => setPresetName(e.target.value)}
-                                    className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 focus:border-[#ccff00] focus:ring-1 focus:ring-[#ccff00] rounded-xl text-white placeholder-zinc-600 text-sm focus:outline-none transition-all"
-                                />
-                            </div>
-
-                            <div className="flex items-center justify-end gap-3 pt-2">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setIsSaveModalOpen(false)
-                                        setPresetName('')
-                                    }}
-                                    className="px-4 py-2.5 border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 hover:bg-zinc-900 rounded-xl text-xs font-mono tracking-widest uppercase transition-all duration-300 text-slate-400 hover:text-white"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={isSavingPreset}
-                                    className="px-5 py-2.5 bg-[#ccff00] text-black hover:bg-black hover:text-[#ccff00] border border-transparent hover:border-zinc-800 font-black italic uppercase text-xs tracking-wider rounded-xl transition-all duration-300 shadow-md"
-                                >
-                                    {isSavingPreset ? 'Saving...' : 'Save Preset_'}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+        <div className="h-screen bg-[#070708] relative z-20 -m-8 p-8 overflow-hidden">
+            <CustomVisualBuilder
+                initialData={data}
+                onSave={handlePublish}
+                title="Homepage Layout Builder"
+            />
         </div>
     )
 }

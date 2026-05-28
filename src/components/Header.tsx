@@ -15,6 +15,9 @@ export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const [featuredEvents, setFeaturedEvents] = useState<any[]>([]);
 
+  const isAdmin = pathname?.startsWith("/admin");
+  if (isAdmin) return null;
+
   useEffect(() => {
     async function loadEvents() {
       try {

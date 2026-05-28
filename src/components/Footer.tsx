@@ -3,8 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith("/admin");
+  if (isAdmin) return null;
+
   return (
     <footer className="border-t border-border bg-background pt-20 pb-12 px-6 relative z-10">
       <div className="max-w-7xl mx-auto flex flex-col gap-16">

@@ -1,17 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 
-const hasR2 = !!(
-  process.env.R2_ACCESS_KEY_ID &&
-  process.env.R2_SECRET_ACCESS_KEY &&
-  process.env.R2_ENDPOINT &&
-  process.env.R2_BUCKET_NAME
-)
-
-let s3Client: S3Client | null = null
-
-if (hasR2) {
-  s3Client = new S3Client({
+function getR2Config() {
+  const isConfigured = !!(
+    process.env.R2_ACCESS_KEY_ID &&
+    process.env.R2_SECRET_ACCESS_KEY &&
+    process.env.R2_ENDPOINT &&
+    process.env.R2_BUCKET_NAME
+  )
+  if (!isConfigured) return null
+  
+  const client = new S3Client({
     region: 'auto',
     endpoint: process.env.R2_ENDPOINT!,
     credentials: {
@@ -19,6 +18,7 @@ if (hasR2) {
       secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
     },
   })
+  return { client, bucketName: process.env.R2_BUCKET_NAME! }
 }
 
 export async function POST(request: NextRequest) {
@@ -49,15 +49,16 @@ export async function POST(request: NextRequest) {
     const folder = file.type.startsWith('video/') ? 'videos' : 'visuals'
     const filePath = `${folder}/${fileName}`
 
-    if (hasR2 && s3Client) {
-      const bucketName = process.env.R2_BUCKET_NAME!
+    const r2 = getR2Config()
+    if (r2) {
+      const bucketName = r2.bucketName
       let publicUrl = process.env.R2_PUBLIC_URL || ''
 
       if (publicUrl.endsWith('/')) {
         publicUrl = publicUrl.slice(0, -1)
       }
 
-      await s3Client.send(
+      await r2.client.send(
         new PutObjectCommand({
           Bucket: bucketName,
           Key: filePath,
