@@ -128,6 +128,38 @@ const cleanId = (id: string): string => {
     return id
 }
 
+const getBlockZones = (block: Block): string[] => {
+    const { type, props } = block
+    if (type === 'OneBlock') {
+        const layout = props.layout || '100'
+        if (layout === '50-50') return ['left', 'right']
+        if (layout === '33-33-33') return ['col1', 'col2', 'col3']
+        return ['zone']
+    }
+    if (type === 'Row') {
+        const layout = props.layout || '100'
+        if (layout === '50-50') return ['left', 'right']
+        if (layout === '33-33-33') return ['col1', 'col2', 'col3']
+        return ['top', 'bottom']
+    }
+    if (type === 'GridRow') {
+        const layout = props.layout || '50-50'
+        if (layout === '50-50' || layout === '50-50-fixed') return ['left', 'right']
+        if (layout === '33-33-33') return ['col1', 'col2', 'col3']
+        return ['content']
+    }
+    if (type === 'FlexBox') {
+        return ['content']
+    }
+    if (type === 'List' || type === 'ListItem') {
+        return ['children']
+    }
+    if (type === 'Hero') {
+        return ['hero-content']
+    }
+    return []
+}
+
 interface SortableOutlineItemProps {
     block: Block
     indent: number
@@ -1028,9 +1060,7 @@ export function CustomVisualBuilder({
                     <div className="space-y-1">
                         {blocks.map((block) => {
                             const isSelected = selectedId === block.id
-                            const hasZones = Object.keys(config.components[block.type]?.fields || {}).some(
-                                (fieldKey) => data.zones?.[`${block.id}:${fieldKey}`] !== undefined
-                            )
+                            const hasZones = getBlockZones(block).length > 0
                             const isCollapsed = !!collapsedBlocks[block.id]
                             const onToggleCollapse = () => {
                                 setCollapsedBlocks((prev) => ({
@@ -1053,19 +1083,17 @@ export function CustomVisualBuilder({
                                         onToggleCollapse={onToggleCollapse}
                                     >
                                         {/* Render zones outline */}
-                                        {Object.keys(config.components[block.type]?.fields || {}).map((fieldKey) => {
-                                            const zoneId = `${block.id}:${fieldKey}`
-                                            if (data.zones?.[zoneId]) {
-                                                return (
-                                                    <div key={zoneId} className="pl-4 border-l border-zinc-800 my-1">
-                                                        <div className="text-[8px] font-black text-zinc-650 tracking-wider uppercase font-mono py-1">
-                                                            Zone: {fieldKey}
-                                                        </div>
-                                                        {renderOutlineTree(data.zones[zoneId], zoneId, indent + 1)}
+                                        {getBlockZones(block).map((zoneName) => {
+                                            const zoneId = `${block.id}:${zoneName}`
+                                            const zoneItems = data.zones?.[zoneId] || []
+                                            return (
+                                                <div key={zoneId} className="pl-4 border-l border-zinc-800 my-1">
+                                                    <div className="text-[8px] font-black text-zinc-650 tracking-wider uppercase font-mono py-1">
+                                                        Zone: {zoneName}
                                                     </div>
-                                                )
-                                            }
-                                            return null
+                                                    {renderOutlineTree(zoneItems, zoneId, indent + 1)}
+                                                </div>
+                                            )
                                         })}
                                     </SortableOutlineItem>
                                 </div>
