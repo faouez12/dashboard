@@ -25,7 +25,7 @@ import {
     useSortable
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { GripVertical } from 'lucide-react'
+import { GripVertical, ChevronRight } from 'lucide-react'
 import {
     Monitor,
     Tablet,
@@ -135,6 +135,9 @@ interface SortableOutlineItemProps {
     onSelect: () => void
     onDuplicate: () => void
     onDelete: () => void
+    hasZones: boolean
+    isCollapsed: boolean
+    onToggleCollapse: () => void
     children?: React.ReactNode
 }
 
@@ -145,6 +148,9 @@ function SortableOutlineItem({
     onSelect,
     onDuplicate,
     onDelete,
+    hasZones,
+    isCollapsed,
+    onToggleCollapse,
     children
 }: SortableOutlineItemProps) {
     const {
@@ -182,6 +188,18 @@ function SortableOutlineItem({
                     >
                         <GripVertical size={11} />
                     </button>
+                    {hasZones && (
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                onToggleCollapse()
+                            }}
+                            className="p-0.5 hover:bg-zinc-800 rounded text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
+                        >
+                            {isCollapsed ? <ChevronRight size={11} /> : <ChevronDown size={11} />}
+                        </button>
+                    )}
                     <span className="text-[10px] font-mono uppercase font-black truncate max-w-[120px]">
                         {block.type}
                     </span>
@@ -212,7 +230,7 @@ function SortableOutlineItem({
                     </button>
                 </div>
             </div>
-            {children}
+            {!isCollapsed && children}
         </div>
     )
 }
@@ -348,6 +366,7 @@ export function CustomVisualBuilder({
     const [activeTab, setActiveTab] = useState<'elements' | 'outline'>('elements')
     const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
     const [activeDragId, setActiveDragId] = useState<string | null>(null)
+    const [collapsedBlocks, setCollapsedBlocks] = useState<Record<string, boolean>>({})
     
     const dragStartStateRef = useRef<PageData | null>(null)
 
@@ -1009,6 +1028,17 @@ export function CustomVisualBuilder({
                     <div className="space-y-1">
                         {blocks.map((block) => {
                             const isSelected = selectedId === block.id
+                            const hasZones = Object.keys(config.components[block.type]?.fields || {}).some(
+                                (fieldKey) => data.zones?.[`${block.id}:${fieldKey}`] !== undefined
+                            )
+                            const isCollapsed = !!collapsedBlocks[block.id]
+                            const onToggleCollapse = () => {
+                                setCollapsedBlocks((prev) => ({
+                                    ...prev,
+                                    [block.id]: !prev[block.id]
+                                }))
+                            }
+
                             return (
                                 <div key={block.id} style={{ paddingLeft: `${indent * 12}px` }}>
                                     <SortableOutlineItem
@@ -1018,6 +1048,9 @@ export function CustomVisualBuilder({
                                         onSelect={() => setSelectedId(block.id)}
                                         onDuplicate={() => handleDuplicate(block.id)}
                                         onDelete={() => handleDelete(block.id)}
+                                        hasZones={hasZones}
+                                        isCollapsed={isCollapsed}
+                                        onToggleCollapse={onToggleCollapse}
                                     >
                                         {/* Render zones outline */}
                                         {Object.keys(config.components[block.type]?.fields || {}).map((fieldKey) => {
