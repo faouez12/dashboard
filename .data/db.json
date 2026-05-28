@@ -304,7 +304,7 @@
           ]
         }
       },
-      "image_url": "blob:http://localhost:3000/b3cd5216-b85e-4f99-a2e6-9517f72b41ed"
+      "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779882614373-h5vkb08kxg.jpeg"
     },
     {
       "id": "blog-2",
@@ -572,7 +572,7 @@
           ]
         }
       },
-      "image_url": "blob:http://localhost:3000/4ff53a31-d0ce-4ef4-b5e7-7d3c97d196f2"
+      "image_url": "https://pub-8bbb29bb20824cdfa1758a59e40f0c50.r2.dev/visuals/1779883026379-5fzc9x8mqa4.jpeg"
     }
   ],
   "events": [

@@ -1,5 +1,26 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
+
+const hasR2 = !!(
+  process.env.R2_ACCESS_KEY_ID &&
+  process.env.R2_SECRET_ACCESS_KEY &&
+  process.env.R2_ENDPOINT &&
+  process.env.R2_BUCKET_NAME
+)
+
+let s3Client: S3Client | null = null
+
+if (hasR2) {
+  s3Client = new S3Client({
+    region: 'auto',
+    endpoint: process.env.R2_ENDPOINT!,
+    credentials: {
+      accessKeyId: process.env.R2_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
+    },
+  })
+}
 
 export interface GalleryItem {
   id: string
@@ -472,6 +493,9 @@ const defaultDb: DbSchema = {
 }
 
 let isInit = false
+let cachedDb: DbSchema | null = null
+let lastFetchedTime = 0
+const CACHE_TTL = 5000 // 5 seconds in-memory caching to avoid multiple parallel R2 reads
 
 async function initDb(): Promise<void> {
   if (isInit) return
@@ -479,17 +503,63 @@ async function initDb(): Promise<void> {
   try {
     await fs.access(filePath)
   } catch {
-    // If the db file does not exist, write the seeded structure
     await fs.writeFile(filePath, JSON.stringify(defaultDb, null, 2), 'utf8')
   }
   isInit = true
 }
 
 export async function readDb(): Promise<DbSchema> {
+  const now = Date.now()
+  if (cachedDb && (now - lastFetchedTime < CACHE_TTL)) {
+    return cachedDb
+  }
+
+  if (hasR2 && s3Client) {
+    const bucketName = process.env.R2_BUCKET_NAME!
+    const key = 'database/db.json'
+    try {
+      const response = await s3Client.send(
+        new GetObjectCommand({
+          Bucket: bucketName,
+          Key: key,
+        })
+      )
+      const raw = await response.Body?.transformToString()
+      if (raw) {
+        cachedDb = JSON.parse(raw) as DbSchema
+        lastFetchedTime = now
+        console.log('✅ Loaded database from Cloudflare R2')
+        return cachedDb!
+      }
+    } catch (err: any) {
+      const isNotFound = err.name === 'NoSuchKey' || err.code === 'NoSuchKey' || err.$metadata?.httpStatusCode === 404
+      if (isNotFound) {
+        console.log('⚠️ Database file not found in Cloudflare R2. Checking for migration...')
+        let initialData = defaultDb
+        try {
+          await initDb()
+          const rawLocal = await fs.readFile(filePath, 'utf8')
+          initialData = JSON.parse(rawLocal) as DbSchema
+          console.log('🚀 Found local database file. Migrating to Cloudflare R2...')
+        } catch {
+          console.log('No local database file found. Seeding default data to R2...')
+        }
+        await writeDb(initialData)
+        cachedDb = initialData
+        lastFetchedTime = now
+        return initialData
+      }
+      console.error('Failed to read database from R2, falling back to local file:', err)
+    }
+  }
+
+  // Fallback to local filesystem
   await initDb()
   try {
     const raw = await fs.readFile(filePath, 'utf8')
-    return JSON.parse(raw) as DbSchema
+    cachedDb = JSON.parse(raw) as DbSchema
+    lastFetchedTime = now
+    return cachedDb!
   } catch (error) {
     console.error('Failed to read local database:', error)
     return defaultDb
@@ -497,9 +567,34 @@ export async function readDb(): Promise<DbSchema> {
 }
 
 export async function writeDb(data: DbSchema): Promise<void> {
+  cachedDb = data
+  lastFetchedTime = Date.now()
+
+  if (hasR2 && s3Client) {
+    const bucketName = process.env.R2_BUCKET_NAME!
+    const key = 'database/db.json'
+    try {
+      const body = JSON.stringify(data, null, 2)
+      await s3Client.send(
+        new PutObjectCommand({
+          Bucket: bucketName,
+          Key: key,
+          Body: body,
+          ContentType: 'application/json',
+        })
+      )
+      console.log('✅ Database written to Cloudflare R2 storage')
+      return
+    } catch (err) {
+      console.error('Failed to write database to R2, writing locally instead:', err)
+    }
+  }
+
+  // Fallback to local filesystem
   await initDb()
   try {
     await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8')
+    console.log('✅ Database written to local filesystem')
   } catch (error) {
     console.error('Failed to write local database:', error)
   }

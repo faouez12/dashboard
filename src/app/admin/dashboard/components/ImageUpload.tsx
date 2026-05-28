@@ -39,9 +39,22 @@ export default function ImageUpload({ onImageUploaded, currentImage, uploadHandl
                 onImageUploaded(publicUrl)
                 setPreview(publicUrl)
             } else {
-                console.log('No uploadHandler provided. Simulating upload...')
-                await new Promise((resolve) => setTimeout(resolve, 1000))
-                onImageUploaded(objectUrl)
+                const body = new FormData()
+                body.append('file', file)
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    body
+                })
+                if (!res.ok) {
+                    const errorData = await res.json()
+                    throw new Error(errorData.error || 'Failed to upload image')
+                }
+                const data = await res.json()
+                if (!data.url) {
+                    throw new Error('No URL returned from upload server')
+                }
+                onImageUploaded(data.url)
+                setPreview(data.url)
             }
 
         } catch (err: any) {
